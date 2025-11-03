@@ -1,57 +1,65 @@
+
+
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.coinvista.android.application.compose)
+
 }
 
 android {
-    namespace = "com.dalingge.coinvista"
-    compileSdk {
-        version = release(36)
+
+
+
+    signingConfigs {
+        create("config") {
+//            storeFile = file("$rootDir"+SigningConfigs.KEY_SIGNING_FILE)
+//            storePassword = SigningConfigs.KEYSTORE_PASSWORD
+//            keyAlias = SigningConfigs.KEY_ALIAS
+//            keyPassword = SigningConfigs.KEY_PASSWORD
+
+            // 启用所有签名方案以确保最大兼容性
+            enableV1Signing = true  // JAR 签名 (Android 1.0+)
+            enableV2Signing = true  // APK 签名 v2 (Android 7.0+)
+            enableV3Signing = true  // APK 签名 v3 (Android 9.0+)
+            enableV4Signing = true  // APK 签名 v4 (Android 11.0+)
+        }
     }
 
-    defaultConfig {
-        applicationId = "com.dalingge.coinvista"
-        minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    bundle {
+        language {
+            enableSplit = false
+        }
     }
 
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
+            isShrinkResources = false
+         //   signingConfig = signingConfigs.getByName("config")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
+        release {
+            isMinifyEnabled = true   // 是否启用代码压缩
+            isShrinkResources = true  // 资源压缩
+       //    signingConfig = signingConfigs.getByName("config")
+            // 配置ProGuard规则文件
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
     }
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    implementation(projects.navigation)
+    implementation(projects.core.design)
+    implementation(projects.core.data)
+    implementation(projects.core.common)
+    implementation(projects.core.network)
+
+    // 首页模块
+    implementation(projects.feature.main)
+    //市场交易模块
+    implementation(projects.feature.market)
+    // 登录(认证)模块
+    implementation(projects.feature.auth)
+    // 通用模块
+    implementation(projects.feature.common)
 }

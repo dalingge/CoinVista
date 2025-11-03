@@ -4,44 +4,28 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.dalingge.coinvista.ui.theme.CoinVistaTheme
+import com.dalingge.coinvista.core.design.theme.AppTheme
+import com.dalingge.coinvista.navigation.AppNavHost
+import com.dalingge.coinvista.navigation.AppNavigator
+import org.koin.android.ext.android.inject
+
 
 class MainActivity : ComponentActivity() {
+
+    val navigator: AppNavigator by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 启用边缘到边缘的显示效果
         enableEdgeToEdge()
+        // 设置Compose内容
         setContent {
-            CoinVistaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            // 应用主题包装
+            AppTheme {
+                // 设置应用的导航宿主，并传入导航管理器和路由注册器
+                // 这样所有页面都可以通过导航管理器进行导航操作
+                AppNavHost(navigator = navigator)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CoinVistaTheme {
-        Greeting("Android")
     }
 }

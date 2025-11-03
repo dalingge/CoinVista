@@ -1,32 +1,254 @@
 [versions]
+# 项目基础配置
+# 构建版本
+versionCode = "1"
+# 版本号
+versionName = "1.0.0"
+# 包名
+packageName = "com.dalingge.coinvista"
+applicationId = "com.dalingge.coinvista"
+
+# Android SDK 配置
+# 编译 SDK 版本
+compileSdk = "36"
+# 最低支持的 SDK 版本
+minSdk = "26"
+# 目标 SDK 版本
+targetSdk = "36"
+
+# 构建工具版本
+# Android Gradle Plugin: https://developer.android.com/studio/releases/gradle-plugin
 agp = "8.13.0"
-kotlin = "2.0.21"
+# Kotlin 编译器: https://kotlinlang.org/docs/releases.html
+# 注意: 当前 kotlin 版本为 2.2.10 注意需要和 hilt 版本对应
+kotlin = "2.2.21"
+# KSP (Kotlin Symbol Processing): https://github.com/google/ksp
+# 说明: Kotlin 注解处理器，用于代码生成
+ksp-kitlin = "2.2.0-2.0.2"
+# Android 核心库版本
+# AndroidX Core KTX: https://developer.android.com/jetpack/androidx/releases/core
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
-lifecycleRuntimeKtx = "2.9.4"
-activityCompose = "1.11.0"
-composeBom = "2024.09.00"
+appcompat = "1.7.1"
+kotlinpoetKsp = "2.2.0"
+# 动画相关版本
+# Lottie Compose 动画库: https://airbnb.io/lottie/#/android-compose
+# 说明: 支持 After Effects 动画的 Compose 库
+lottie = "6.7.0"
+material = "1.13.0"
+# 数据存储相关版本
+# 腾讯 MMKV 高性能存储: https://github.com/Tencent/MMKV
+mmkv = "2.2.4"
+credentials = "1.2.2"
+flexbox = "3.0.0"
+update = "2.1.0"
+# AndroidX Activity Compose: https://developer.android.com/jetpack/androidx/releases/activity
+activity = "1.11.0"
+fragment = "1.8.9"
+constraintlayout = "2.2.1"
+mavericks = "3.0.11"
+multidex = "2.0.1"
+# 权限相关版本
+# XXPermissions 权限框架: https://github.com/getActivity/XXPermissions
+xxpermissions = "26.5"
+permissionx = "1.8.1"
+recyclerview = "1.4.0"
+# 网络请求相关版本
+# scarlet websocket 客户端: https://github.com/Tinder/Scarlet/
+scarlet = "0.1.12"
+# OkHttp HTTP 客户端: https://square.github.io/okhttp/
+okhttp = "5.2.1"
+# Retrofit HTTP 客户端: https://square.github.io/retrofit/
+retrofit = "3.0.0"
+# rxhttp HTTP 客户端: https://github.com/ChuckerTeam/chucker
+rxhttp = "3.5.0"
+# Chucker 网络调试工具: https://github.com/liujingxing/rxhttp
+# 说明: 通过 OkHttp 拦截器机制在应用通知栏显示网络请求功能
+chucker = "4.2.0"
+# Jetpack Compose 相关版本
+# Compose BOM: https://developer.android.com/jetpack/compose/bom
+# 说明: BOM 统一管理所有 Compose 库版本，确保兼容性
+composeBom = "2025.10.00"
+# 导航相关版本
+# Navigation Compose: https://developer.android.com/jetpack/androidx/releases/navigation
+navigation = "2.9.5"
+# 序列化相关版本
+# Kotlinx Serialization JSON: https://github.com/Kotlin/kotlinx.serialization
+kotlinxSerializationJson = "1.9.0"
+swiperefreshlayout = "1.1.0"
+viewpager = "1.1.0"
+startup = "1.2.0"
+lifecycle = "2.9.4"
+databinding = "8.6.1"
+firebaseCrashlyticsPlugin = "3.0.2"
+firebasePerformancePlugin = "1.4.2"
+# 图片加载相关版本
+# Coil  图片加载库: https://coil-kt.github.io/coil/
+coil = "3.3.0"
+moshi = "1.15.2"
+autoServiceAnnotations = "1.1.1"
+datastorePreferences = "1.1.1"
+xlog = "1.11.1"
+koin = "4.1.1"
+googleid = "1.1.1"
+gms = "4.4.2"
+playServicesMeasurementApi = "22.1.2"
+playServicesAdsIdentifier = "18.2.0"
+firebaseBom = "33.7.0"
+picker = "4.1.14"
+appUpdate = "2.1.0"
+playServicesBase = "18.7.0"
+conscryptAndroid = "2.5.3"
+
 
 [libraries]
+# Android 核心库
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
+androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "startup" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewModel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+
+# Jetpack Compose 相关库
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material = { group = "androidx.compose.material", name = "material" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
+
+# 导航相关库
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-navigation-ui = { group = "androidx.navigation",  name = "navigation-ui",version.ref = "navigation" }
+androidx-navigation-fragment = { group = "androidx.navigation",  name = "navigation-fragment",version.ref = "navigation" }
+
+# 序列化相关库
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
+update = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "update" }
+
+#
+kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoetKsp" }
+# 序列化相关库
+moshi-ktx = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-adapters = { group = "com.squareup.moshi", name = "moshi-adapters", version.ref = "moshi" }
+# 网络请求相关库
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+retrofit-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit" }
+retrofit-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+
+okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+rxhttp = { module = "com.github.liujingxing.rxhttp:rxhttp", version.ref = "rxhttp" }
+rxhttp-moshi = { module = "com.github.liujingxing.rxhttp:converter-moshi", version.ref = "rxhttp" }
+rxhttp-compiler = { module = "com.github.liujingxing.rxhttp:rxhttp-compiler", version.ref = "rxhttp" }
+# 网络调试相关库
+chucker-library = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+chucker-library-no= { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
+
+scarlet-core = { group = "com.tinder.scarlet", name = "scarlet", version.ref = "scarlet" }
+scarlet-okhttp = { group = "com.tinder.scarlet", name = "websocket-okhttp", version.ref = "scarlet" }
+scarlet-lifecycle = { group = "com.tinder.scarlet", name = "lifecycle-android", version.ref = "scarlet" }
+
+# 图片加载相关库
+coil-core= { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
+coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "coil" }
+coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+
+# 依赖注入相关库
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compat = { group = "io.insert-koin", name = "koin-android-compat", version.ref = "koin" }
+koin-workManage = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
+koin-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation", version.ref = "koin" }
+koin-startup = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+
+# 权限相关库
+permissionx = { module = "com.guolindev.permissionx:permissionx", version.ref = "permissionx" }
+xxpermissions = { module = "com.github.getActivity:XXPermissions", version.ref = "xxpermissions" }
+# 日志框架
+xlog = { module = "com.elvishew:xlog", version.ref = "xlog" }
+# 动画相关库
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+#MVI框架
+mavericks = { module = "com.airbnb.android:mavericks", version.ref = "mavericks" }
+mavericks-navigation = { module = "com.airbnb.android:mavericks-navigation", version.ref = "mavericks" }
+# 数据存储相关库
+mmkv = { module = "com.tencent:mmkv", version.ref = "mmkv" }
+
+# 测试相关库
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# firebase相关 异常 统计 消息
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-messaging-directboot = { group = "com.google.firebase", name = "firebase-messaging-directboot" }
+
+
+# Dependencies of the included build-logic
+android-build-logic = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-build-logic = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-build-logic = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp-kitlin" }
+firebase-crashlytics-build-logic = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-performance-build-logic = { group = "com.google.firebase", name = "firebase-perf-gradle", version.ref = "firebasePerformancePlugin" }
+play-services-measurement-api = { group = "com.google.android.gms", name = "play-services-measurement-api", version.ref = "playServicesMeasurementApi" }
+play-services-ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
+app-update = { group = "com.google.android.play", name = "app-update", version.ref = "appUpdate" }
+play-services-base = { group = "com.google.android.gms", name = "play-services-base", version.ref = "playServicesBase" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-kitlin" }
+gms = { id = "com.google.gms.google-services", version.ref = "gms" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-performance = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerformancePlugin" }
 
+coinvista-android-application= { id = "com.dalingge.coinvista.android.application" }
+coinvista-android-application-compose = { id = "com.dalingge.coinvista.android.application.compose" }
+coinvista-android-library = { id = "com.dalingge.coinvista.android.library" }
+coinvista-android-library-compose = { id = "com.dalingge.coinvista.android.library.compose" }
+coinvista-android-feature = { id = "com.dalingge.coinvista.android.feature" }
+coinvista-android-firebase = { id = "com.dalingge.coinvista.android.firebase" }
+
+
+# 版本更新说明
+# 1. 更新 Kotlin 版本时，需要同时更新 KSP 版本
+# 2. 更新 Hilt 版本时，需要检查与 Kotlin 版本的兼容性
+# 3. 更新 Compose BOM 时，所有 Compose 相关库版本会自动更新
+# 4. 更新 Room 版本时，确保所有 Room 相关库使用相同版本
+# 5. 更新网络库时，确保 OkHttp、Retrofit 版本兼容
+#
+# 官方版本兼容性参考：
+# - Compose Compiler 兼容性: https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+# - KSP 兼容性: https://github.com/google/ksp/releases
+# - Hilt 兼容性: https://developer.android.com/jetpack/androidx/releases/hilt
