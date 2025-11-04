@@ -6,6 +6,6 @@
         <!--启动页背景颜色-->
         <item name="android:windowSplashScreenBackground">@android:color/white</item>
         <!--启动页图标-->
-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_icon</item>
     </style>
 </resources>

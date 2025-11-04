@@ -1,13 +1,9 @@
-
-
 plugins {
     alias(libs.plugins.coinvista.android.application.compose)
 
 }
 
 android {
-
-
 
     signingConfigs {
         create("config") {
@@ -62,4 +58,9 @@ dependencies {
     implementation(projects.feature.auth)
     // 通用模块
     implementation(projects.feature.common)
+
+    // 测试依赖
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -5,8 +5,9 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.dalingge.coinvista.main.view.MainRoute
 import com.dalingge.coinvista.main.view.SplashRoute
-import com.dalingge.coinvista.navigation.routes.MainRoutes
+import com.dalingge.coinvista.navigation.models.MainScreen
 
 /**
  *
@@ -29,7 +30,7 @@ fun NavGraphBuilder.mainGraph(
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.splashScreen(sharedTransitionScope: SharedTransitionScope) {
-    composable(route = MainRoutes.SPLASH) {
+    composable(route = MainScreen.Splash.route) {
         SplashRoute(sharedTransitionScope, this@composable)
     }
 }
@@ -39,7 +40,7 @@ fun NavGraphBuilder.splashScreen(sharedTransitionScope: SharedTransitionScope) {
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.mainScreen(navController: NavHostController) {
-    composable(MainRoutes.MAIN) {
-       // MainRoute()
+    composable(MainScreen.MainGraph.route) {
+       MainRoute()
     }
 }

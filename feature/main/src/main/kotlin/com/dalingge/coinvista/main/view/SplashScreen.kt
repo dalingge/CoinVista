@@ -11,7 +11,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.dalingge.coinvista.core.design.theme.AppTheme
+import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.viewmodel.SplashViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,18 +78,18 @@ private fun SplashContentView(
 ) {
 
     Column(modifier = Modifier.fillMaxSize()) {
-//        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
-//        // 如果选中，播放动画；如果未选中，不播放动画但保持在初始帧
-//        val progress by animateLottieCompositionAsState(composition)
-//
-//        // 播放结束回调
-//        LaunchedEffect(progress) {
-//            if (progress >= 1f) {
-//                toHome()
-//            }
-//        }
-//
-//        LottieAnimation(composition, progress = { progress })
+       val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.splash))
+        // 如果选中，播放动画；如果未选中，不播放动画但保持在初始帧
+        val progress by animateLottieCompositionAsState(composition)
+
+        // 播放结束回调
+        LaunchedEffect(progress) {
+            if (progress >= 1f) {
+                toHome()
+            }
+        }
+
+        LottieAnimation(composition, progress = { progress })
     }
 }
 
