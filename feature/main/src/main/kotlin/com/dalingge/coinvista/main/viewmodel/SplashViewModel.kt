@@ -13,7 +13,7 @@ import com.dalingge.coinvista.navigation.models.MainScreen
  */
 class SplashViewModel(
     navigator: AppNavigator,
-    appState: AppState,
+    appState: AppState
 ) : BaseViewModel(navigator, appState) {
 
     /**

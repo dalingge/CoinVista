@@ -15,8 +15,10 @@ import kotlinx.coroutines.flow.asStateFlow
  * @Author :丁博洋
  * @Time :2025/10/14  15:14
  */
-class MainViewModel(navigator: AppNavigator,
-                    appState: AppState,) : BaseViewModel(navigator, appState) {
+class MainViewModel(
+    navigator: AppNavigator,
+    appState: AppState
+) : BaseViewModel(navigator, appState) {
 
     // 当前选中的导航目标
     private val _currentDestination = MutableStateFlow(TopLevelDestination.HOME.screen)

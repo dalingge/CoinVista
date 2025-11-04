@@ -1,9 +1,12 @@
+
 package com.dalingge.coinvista.main.view
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
@@ -28,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
@@ -52,6 +56,7 @@ internal fun MainRoute(
     // 从ViewModel获取当前导航状态
     val currentDestination by viewModel.currentDestination.collectAsState()
     val currentPageIndex by viewModel.currentPageIndex.collectAsState()
+
     MainScreen(
         currentDestination = currentDestination,
         currentPageIndex = currentPageIndex,
@@ -145,9 +150,11 @@ private fun MainScreenContentView(
         modifier = Modifier.padding(paddingValues),
         userScrollEnabled = false
     ) { page: Int ->
-        val route = TopLevelDestination.entries[page].screen.route
-//        val feature: FeatureEntry = getKoin().get(named(route))
-//        feature.PagerScreen()
+        when (page) {
+            0 -> HomeRoute()
+            1 -> MarketRoute()
+            2 -> MineRoute()
+        }
     }
 }
 

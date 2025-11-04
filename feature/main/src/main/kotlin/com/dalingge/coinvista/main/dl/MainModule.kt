@@ -1,6 +1,9 @@
 package com.dalingge.coinvista.main.dl
 
+import com.dalingge.coinvista.main.viewmodel.HomeViewModel
 import com.dalingge.coinvista.main.viewmodel.MainViewModel
+import com.dalingge.coinvista.main.viewmodel.MarketViewModel
+import com.dalingge.coinvista.main.viewmodel.MineViewModel
 import com.dalingge.coinvista.main.viewmodel.SplashViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -13,8 +16,9 @@ import org.koin.dsl.module
  */
 val mainModule = module {
 
-    // ViewModel for Detail View
     viewModel { SplashViewModel(get(), get()) }
-
     viewModel { MainViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get()) }
+    viewModel { MarketViewModel(get(), get()) }
+    viewModel { MineViewModel(get(), get()) }
 }

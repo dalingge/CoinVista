@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
  * 适用场景：主要按钮、主题色、重要操作元素等
  * 在浅色和深色模式下保持一致
  */
-val Primary = Color(0xFF5865FC) // 浅色模式和深色模式相同
+val Primary = Color(0xFF2B71FF) // 浅色模式和深色模式相同
 
 // 辅助色
 /**
