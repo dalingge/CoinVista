@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
+import com.dalingge.coinvista.core.ui.componet.divider.VDivider
 
 /**
  *
@@ -34,7 +35,7 @@ fun ScrollableTextTabComponent(
         edgePadding = 0.dp,
         selectedTabIndex = selectedIndex,
         minTabWidth = 0.dp,
-        divider = {},
+        divider = {  },
         indicator = {
             TabRowDefaults.PrimaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(selectedIndex),

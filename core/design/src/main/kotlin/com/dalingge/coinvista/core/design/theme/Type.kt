@@ -83,7 +83,7 @@ fun appTextColors(): AppTextColors {
  * 适用场景: 页面主标题、启动页标题、特大号标题文字
  */
 val DisplayLarge = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily =  FontFamily(Font(R.font.roboto_bold)),
     fontWeight = FontWeight.SemiBold,
     fontSize = 22.sp, // 44px
     lineHeight = 31.sp, // 62px
@@ -95,9 +95,9 @@ val DisplayLarge = TextStyle(
  * 适用场景: 页面大标题、模块主标题
  */
 val DisplayMedium = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.roboto_bold)),
     fontWeight = FontWeight.SemiBold,
-    fontSize = 18.sp, // 36px
+    fontSize = 16.sp, // 36px
     lineHeight = 27.sp, // 54px
 )
 
@@ -107,8 +107,8 @@ val DisplayMedium = TextStyle(
  * 适用场景: 二级标题、导航栏标题、列表标题、段落标题
  */
 val TitleLarge = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Bold,
+    fontFamily =  FontFamily(Font(R.font.roboto_medium)),
+    fontWeight = FontWeight.Medium,
     fontSize = 16.sp, // 32px
     lineHeight = 24.sp, // 48px
 )
@@ -119,9 +119,9 @@ val TitleLarge = TextStyle(
  * 适用场景: 分类名称、卡片标题、强调文字
  */
 val TitleMedium = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Bold,
-    fontSize = 14.sp, // 28px
+    fontFamily = FontFamily(Font(R.font.roboto_medium)),
+    fontWeight = FontWeight.Medium,
+    fontSize = 12.sp, // 28px
     lineHeight = 22.sp, // 44px
 )
 
@@ -131,7 +131,7 @@ val TitleMedium = TextStyle(
  * 适用场景: 正文内容、段落文字、列表内容
  */
 val BodyLarge = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.roboto_regular)),
     fontWeight = FontWeight.Normal,
     fontSize = 14.sp, // 28px
     lineHeight = 22.sp, // 44px
@@ -143,7 +143,7 @@ val BodyLarge = TextStyle(
  * 适用场景: 辅助文字、标签文字、底部导航栏文字、次要信息
  */
 val BodyMedium = TextStyle(
-    fontFamily = FontFamily.Default,
+    fontFamily = FontFamily(Font(R.font.roboto_regular)),
     fontWeight = FontWeight.Normal,
     fontSize = 12.sp, // 24px
     lineHeight = 18.sp, // 36px
