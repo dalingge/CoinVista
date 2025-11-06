@@ -1,5 +1,7 @@
 package com.dalingge.coinvista.core.network.datasource.market
 
+import com.dalingge.coinvista.core.model.entity.MarketsCap
+
 
 /**
  *
@@ -9,5 +11,9 @@ package com.dalingge.coinvista.core.network.datasource.market
  */
 interface MarketNetworkDataSource {
 
+    /**
+     * 市值
+     */
+    suspend fun getMarketsCap(): MarketsCap
 
 }

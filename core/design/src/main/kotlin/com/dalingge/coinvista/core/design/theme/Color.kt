@@ -101,7 +101,7 @@ val TextQuaternaryDark = Color(0xFF5E5E5E) // 深色模式下的四级文字
  * 浅色模式下页面背景色：#FFF8F8F8
  * 适用场景：应用整体背景、页面底色
  */
-val BgGreyLight = Color(0xFFFFFFF) // 页面背景底色
+val BgGreyLight = Color(0xFFFFFFFF) // 页面背景底色
 
 /**
  * 浅色模式下白色背景：#FFFFFF

@@ -1,17 +1,22 @@
 package com.dalingge.coinvista.main.viewmodel
 
 import androidx.lifecycle.DefaultLifecycleObserver
+import com.dalingge.coinvista.core.common.base.viewmodel.BaseNetWorkViewModel
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
+import com.dalingge.coinvista.core.data.repository.MarketRepository
 import com.dalingge.coinvista.core.data.state.AppState
+import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.navigation.AppNavigator
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class HomeViewModel(
     navigator: AppNavigator,
-    appState: AppState
-) : BaseViewModel(navigator, appState) ,DefaultLifecycleObserver{
+    appState: AppState,
+    private val marketRepository: MarketRepository,
+) : BaseNetWorkViewModel<MarketsCap>(navigator, appState) ,DefaultLifecycleObserver{
 
 
     // 当前选中的标签索引
@@ -24,6 +29,13 @@ class HomeViewModel(
     private val _isAnimatingTabChange = MutableStateFlow(false)
     val isAnimatingTabChange: StateFlow<Boolean> = _isAnimatingTabChange.asStateFlow()
 
+    init {
+        executeRequest()
+    }
+
+    override fun requestApiFlow(): Flow<MarketsCap> {
+        return marketRepository.getMarketsCap()
+    }
 
     /**
      * 加载数据（如果未加载）

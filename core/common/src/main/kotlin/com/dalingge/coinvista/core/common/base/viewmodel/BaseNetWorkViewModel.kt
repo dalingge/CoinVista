@@ -9,7 +9,6 @@ import com.dalingge.coinvista.core.common.base.state.BaseNetWorkUiState
 import com.dalingge.coinvista.core.common.result.ResultHandler
 import com.dalingge.coinvista.core.common.result.asResult
 import com.dalingge.coinvista.core.data.state.AppState
-import com.dalingge.coinvista.core.model.response.NetworkResponse
 import com.dalingge.coinvista.navigation.AppNavigator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -90,7 +89,7 @@ abstract class BaseNetWorkViewModel<T>(
      *
      * 注意：此方法不应在基类构造函数中调用，以避免子类属性初始化问题
      */
-    protected abstract fun requestApiFlow(): Flow<NetworkResponse<T>>
+    protected abstract fun requestApiFlow(): Flow<T>
 
     /**
      * 加载或刷新数据

@@ -1,5 +1,7 @@
 package com.dalingge.coinvista.core.network.service
 
+import com.dalingge.coinvista.core.model.entity.MarketsCap
+import retrofit2.http.GET
 
 
 /**
@@ -10,5 +12,10 @@ package com.dalingge.coinvista.core.network.service
  */
 interface MarketService {
 
+    /**
+     * 市值
+     */
+    @GET("/markets")
+    suspend fun getMarketsCap(): MarketsCap
 
 }

@@ -34,7 +34,7 @@ object ResultHandler {
      */
     fun <T> handleResult(
         scope: CoroutineScope,
-        flow: Flow<Result<NetworkResponse<T>>>,
+        flow: Flow<Result<T>>,
         showToast: Boolean = true,
         onLoading: () -> Unit = {},
         onSuccess: (NetworkResponse<T>) -> Unit = {},
@@ -47,14 +47,7 @@ object ResultHandler {
                 flow.collectLatest { result ->
                     when (result) {
                         is Result.Loading -> onLoading()
-                        is Result.Success -> handleSuccess(
-                            response = result.data,
-                            onSuccess = onSuccess,
-                            onSuccessWithData = onSuccessWithData,
-                            showToast = showToast,
-                            onError = onError
-                        )
-
+                        is Result.Success -> onSuccessWithData(result.data)
                         is Result.Error -> handleError(
                             errorMsg = result.exception.message ?: "网络请求失败",
                             throwable = result.exception,
@@ -91,7 +84,7 @@ object ResultHandler {
      */
     fun <T> handleResultWithData(
         scope: CoroutineScope,
-        flow: Flow<Result<NetworkResponse<T>>>,
+        flow: Flow<Result<T>>,
         showToast: Boolean = true,
         onLoading: () -> Unit = {},
         onData: (T) -> Unit,

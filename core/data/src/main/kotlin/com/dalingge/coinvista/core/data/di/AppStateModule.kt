@@ -27,7 +27,7 @@ val appStateModule = module {
     }
     single { AppState(get(ApplicationScope)) }
 
-    factory { MarketRepository(get(), get()) }
+    factory { MarketRepository(get()) }
     factory { NewsRepository(get()) }
     factory { TradingRepository(get()) }
 

@@ -64,40 +64,18 @@ val networkModule = module {
             .writeTimeout(20, TimeUnit.SECONDS)
             .enableMultiBaseUrls()
             .addInterceptor(HeaderInterceptor())
-//            .addInterceptor(SubdomainInterceptor(BuildConfig.FLAVOR))
             .apply {
-                if (BuildConfig.DEBUG) {
-                    val chucker = ChuckerInterceptor.Builder(androidApplication())
-//                .addBodyDecoder(object : BodyDecoder {
-//                    override fun decodeRequest(request: Request, body: ByteString): String {
-//                        val onResultDecoder = "false" != request.header(Param.DATA_DECRYPT)
-//                        val result = body.string(UTF_8)
-//                        return if (onResultDecoder){
-//                            String(result.decodeHex().desDecrypt(GlobalData.key, GlobalData.iv))
-//                        }else{
-//                            result
-//                        }
-//                    }
-//
-//                    override fun decodeResponse(response: Response, body: ByteString): String {
-//                        val onResultDecoder = OkHttpCompat.needDecodeResult(response)
-//                        val result = body.string(UTF_8)
-//                        return if (onResultDecoder){
-//                            String(result.decodeHex().desDecrypt(GlobalData.key, GlobalData.iv))
-//                        }else{
-//                            result
-//                        }
-//                    }
-//                })
-                        .alwaysReadResponseBody(true)
-                        .build()
-
-                    addInterceptor(chucker)
-                    addInterceptor(HttpLoggingInterceptor().apply {
+//                if (BuildConfig.DEBUG) {
+                    addInterceptor(
+                        ChuckerInterceptor.Builder(androidApplication())
+                            .alwaysReadResponseBody(true)
+                            .build()
+                    )
+                    addNetworkInterceptor(HttpLoggingInterceptor().apply {
                         level = HttpLoggingInterceptor.Level.BODY
                     })
                 }
-            }
+//            }
             .retryOnConnectionFailure(true)
             .proxy(if (BuildConfig.DEBUG) null else Proxy.NO_PROXY)
             .hostnameVerifier { _, _ -> true } //忽略host验证
@@ -107,7 +85,7 @@ val networkModule = module {
     single {
         val contentType = "application/json".toMediaType()
         Retrofit.Builder()
-            .baseUrl("https://hqdev.stellaforex.com/")
+            .baseUrl("https://openapiv1.coinstats.app/")
             .client(get())
             .addConverterFactory(get<Json>().asConverterFactory(contentType))
             .build()

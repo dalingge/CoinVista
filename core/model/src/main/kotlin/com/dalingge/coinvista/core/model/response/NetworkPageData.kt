@@ -10,10 +10,10 @@ data class NetworkPageData<T>(
     /**
      * 列表
      */
-    var list: List<T> = emptyList(),
+    var result: List<T> = emptyList(),
 
     /**
      * 分页数据
      */
-    var pagination: NetworkPageMeta? = null,
+    var meta: NetworkPageMeta? = null,
 )

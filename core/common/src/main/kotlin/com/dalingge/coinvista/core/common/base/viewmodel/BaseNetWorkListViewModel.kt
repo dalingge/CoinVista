@@ -10,7 +10,6 @@ import com.dalingge.coinvista.core.common.result.ResultHandler
 import com.dalingge.coinvista.core.common.result.asResult
 import com.dalingge.coinvista.core.data.state.AppState
 import com.dalingge.coinvista.core.model.response.NetworkPageData
-import com.dalingge.coinvista.core.model.response.NetworkResponse
 import com.dalingge.coinvista.navigation.AppNavigator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -83,7 +82,7 @@ abstract class BaseNetWorkListViewModel<T : Any>(
      *
      * @return 返回包含分页数据的Flow
      */
-    protected abstract fun requestListData(): Flow<NetworkResponse<NetworkPageData<T>>>
+    protected abstract fun requestListData(): Flow<NetworkPageData<T>>
 
     /**
      * 初始化函数，在子类init块中调用
@@ -126,13 +125,13 @@ abstract class BaseNetWorkListViewModel<T : Any>(
      * 处理成功响应
      */
     protected open fun handleSuccess(data: NetworkPageData<T>?) {
-        val newList = data?.list ?: emptyList()
-        val pagination = data?.pagination
+        val newList = data?.result ?: emptyList()
+        val pagination = data?.meta
 
         // 计算是否还有下一页数据
         val hasNextPage = if (pagination != null) {
-            val total = pagination.total ?: 0
-            val size = pagination.size ?: pageSize
+            val total = pagination.itemCount ?: 0
+            val size = pagination.limit ?: pageSize
             val currentPageNum = pagination.page ?: currentPage
 
             // 当前页的数据量 * 当前页码 < 总数据量，说明还有下一页

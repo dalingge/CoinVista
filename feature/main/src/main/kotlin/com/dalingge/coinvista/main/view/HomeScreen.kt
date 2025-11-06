@@ -38,12 +38,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.dalingge.coinvista.core.common.base.state.BaseNetWorkUiState
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.BgContentLight
 import com.dalingge.coinvista.core.design.theme.BodyMedium
@@ -62,11 +65,11 @@ import com.dalingge.coinvista.core.design.theme.SpaceVerticalXSmall
 import com.dalingge.coinvista.core.design.theme.TextPrimaryLight
 import com.dalingge.coinvista.core.design.theme.TextSecondaryLight
 import com.dalingge.coinvista.core.design.theme.TitleMedium
+import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.ui.componet.divider.VDivider
+import com.dalingge.coinvista.core.ui.componet.network.BaseNetWorkView
 import com.dalingge.coinvista.core.ui.componet.scaffold.CommonScaffold
 import com.dalingge.coinvista.core.ui.componet.tab.ScrollableTextTabComponent
-import com.dalingge.coinvista.core.ui.componet.text.AppText
-import com.dalingge.coinvista.core.ui.componet.text.StockPriceText
 import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.model.HomeTab
 import com.dalingge.coinvista.main.viewmodel.HomeViewModel
@@ -88,12 +91,14 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
             lifecycleOwner.lifecycle.removeObserver(viewModel)
         }
     }
+    val uiState by viewModel.uiState.collectAsState()
 
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
     val isAnimatingTabChange by viewModel.isAnimatingTabChange.collectAsState()
 
 
     HomeScreen(
+        uiState = uiState,
         selectedTabIndex = selectedTabIndex,
         isAnimatingTabChange = isAnimatingTabChange,
         toSearch = viewModel::toSearch,
@@ -107,6 +112,7 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
+    uiState: BaseNetWorkUiState<MarketsCap> = BaseNetWorkUiState.Loading,
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
     toSearch: () -> Unit = {},
@@ -118,9 +124,6 @@ internal fun HomeScreen(
     // 创建TopAppBar的滚动行为
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(selectedTabIndex) { HomeTab.entries.size }
-
     CommonScaffold(
         topBar = {
             HomeTopAppBar(scrollBehavior, toSearch, toGitHubPage)
@@ -128,172 +131,19 @@ internal fun HomeScreen(
         scrollBehavior = scrollBehavior
     ) { paddingValues ->
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+        BaseNetWorkView(
+            uiState = uiState,
+            padding = paddingValues
         ) {
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .padding(horizontal = SpacePaddingMedium),
-                border = BorderStroke(SpaceDivider, MaterialTheme.colorScheme.outline)
-                //elevation = CardDefaults.cardElevation(defaultElevation = SpacePaddingXSmall)
-            ) {
-
-                Row {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(SpacePaddingSmall)
-                    ) {
-
-                        Text(
-                            text = "市值",
-                            color = TextSecondaryLight,
-                            style = BodyMedium,
-                            fontSize = 10.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "$3.40T",
-                            color = TextPrimaryLight,
-                            style = DisplayMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "1.45%",
-                            color = MarkerGreenColor,
-                            style = TitleMedium
-                        )
-                    }
-
-                    VDivider()
-
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(SpacePaddingSmall)
-                    ) {
-
-                        Text(
-                            text = "24H成交量",
-                            color = TextSecondaryLight,
-                            style = BodyMedium,
-                            fontSize = 10.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "$282.4B",
-                            color = TextPrimaryLight,
-                            style = DisplayMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "1.45%",
-                            color = MarkerRedColor,
-                            style = TitleMedium
-                        )
-
-                    }
-                    VDivider()
-
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(SpacePaddingSmall)
-                    ) {
-
-                        Text(
-                            text = "BTC领先指数",
-                            color = TextSecondaryLight,
-                            style = BodyMedium,
-                            fontSize = 10.sp
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "$282.4B",
-                            color = TextPrimaryLight,
-                            style = DisplayMedium
-                        )
-
-                        Spacer(modifier = Modifier.height(3.dp))
-
-                        Text(
-                            text = "1.45%",
-                            color = MarkerRedColor,
-                            style = TitleMedium
-                        )
-
-                    }
-
-                    VDivider()
-
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                            .padding(SpacePaddingSmall)
-                    ) {
-                        Text(
-                            text = "恐惧贪婪指数",
-                            color = TextSecondaryLight,
-                            style = BodyMedium,
-                            fontSize = 10.sp
-                        )
-                    }
-                }
-            }
-
-            SpaceVerticalSmall()
-
-            // Pager 与 Tab 联动
-            // 处理页面状态变化
-            HandlePageStateChanges(
-                pageState = pagerState,
+            HomeContentView(
+                marketsCap = it,
                 selectedTabIndex = selectedTabIndex,
                 isAnimatingTabChange = isAnimatingTabChange,
+                onTabSelected = onTabSelected,
                 onTabByPageChanged = onTabByPageChanged,
                 onAnimationCompleted = onAnimationCompleted
             )
-
-            ScrollableTextTabComponent(
-                tabs = HomeTab.entries.map { it.label },
-                selectedIndex = selectedTabIndex,
-                onTabSelected = { index ->
-                    onTabSelected(index)
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                }
-            )
-
-            HorizontalDivider(thickness = 5.dp, color = BgContentLight)
-
-
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.weight(1f),
-            ) { page ->
-            }
-
         }
-
     }
 }
 
@@ -363,6 +213,196 @@ private fun HomeTopAppBar(
 }
 
 /**
+ * 首页内容视图
+ *
+ * @param selectedTabIndex 当前选中的标签页索引
+ * @param isAnimatingTabChange 是否正在执行标签切换动画
+ * @param onTabSelected 标签被点击选择时的回调，参数为选中的标签索引
+ * @param onTabByPageChanged 通过页面滑动切换标签时的回调，参数为新的标签索引
+ * @param onAnimationCompleted 标签切换动画完成时的回调
+ */
+@Composable
+private fun HomeContentView(
+    marketsCap: MarketsCap,
+    selectedTabIndex: Int = 0,
+    isAnimatingTabChange: Boolean = false,
+    onTabSelected: (Int) -> Unit = {},
+    onTabByPageChanged: (Int) -> Unit = {},
+    onAnimationCompleted: () -> Unit = {},
+) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(selectedTabIndex) { HomeTab.entries.size }
+
+    Column {
+
+        HomeHeaderCard(marketsCap)
+
+        SpaceVerticalSmall()
+
+        // Pager 与 Tab 联动
+        // 处理页面状态变化
+        HandlePageStateChanges(
+            pageState = pagerState,
+            selectedTabIndex = selectedTabIndex,
+            isAnimatingTabChange = isAnimatingTabChange,
+            onTabByPageChanged = onTabByPageChanged,
+            onAnimationCompleted = onAnimationCompleted
+        )
+
+        ScrollableTextTabComponent(
+            tabs = HomeTab.entries.map { it.label },
+            selectedIndex = selectedTabIndex,
+            onTabSelected = { index ->
+                onTabSelected(index)
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(index)
+                }
+            }
+        )
+
+        HorizontalDivider(thickness = 5.dp, color = BgContentLight)
+
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f),
+        ) { page ->
+        }
+    }
+}
+
+
+@Composable
+private fun HomeHeaderCard(
+    marketsCap: MarketsCap,
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .padding(horizontal = SpacePaddingMedium),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+
+        Row {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(SpacePaddingSmall)
+            ) {
+
+                Text(
+                    text = "市值",
+                    color = TextSecondaryLight,
+                    style = BodyMedium,
+                    fontSize = 10.sp
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = "$3.40T",
+                    color = TextPrimaryLight,
+                    style = DisplayMedium
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = marketsCap.marketCapChange.toString(),
+                    color = MarkerGreenColor,
+                    style = TitleMedium
+                )
+            }
+
+            VDivider()
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(SpacePaddingSmall)
+            ) {
+
+                Text(
+                    text = "24H成交量",
+                    color = TextSecondaryLight,
+                    style = BodyMedium,
+                    fontSize = 10.sp
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = "$282.4B",
+                    color = TextPrimaryLight,
+                    style = DisplayMedium
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = marketsCap.volumeChange.toString(),
+                    color = MarkerRedColor,
+                    style = TitleMedium
+                )
+
+            }
+            VDivider()
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(SpacePaddingSmall)
+            ) {
+
+                Text(
+                    text = "BTC领先指数",
+                    color = TextSecondaryLight,
+                    style = BodyMedium,
+                    fontSize = 10.sp
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = "$282.4B",
+                    color = TextPrimaryLight,
+                    style = DisplayMedium
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = marketsCap.btcDominanceChange.toString(),
+                    color = MarkerRedColor,
+                    style = TitleMedium
+                )
+            }
+
+            VDivider()
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(SpacePaddingSmall)
+            ) {
+                Text(
+                    text = "恐惧贪婪指数",
+                    color = TextSecondaryLight,
+                    style = BodyMedium,
+                    fontSize = 10.sp
+                )
+            }
+        }
+    }
+}
+
+
+/**
  * 处理页面状态变化的副作用
  *
  * @param pageState 分页器状态，控制标签页的滑动
@@ -408,6 +448,6 @@ private fun HandlePageStateChanges(
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreen()
+        HomeScreen(BaseNetWorkUiState.Success(MarketsCap()))
     }
 }
