@@ -1,20 +1,16 @@
 package com.dalingge.coinvista.main.view
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -29,7 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -38,38 +33,32 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.dalingge.coinvista.core.common.base.state.BaseNetWorkUiState
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.BgContentLight
 import com.dalingge.coinvista.core.design.theme.BodyMedium
 import com.dalingge.coinvista.core.design.theme.DisplayMedium
 import com.dalingge.coinvista.core.design.theme.MarkerGreenColor
 import com.dalingge.coinvista.core.design.theme.MarkerRedColor
-import com.dalingge.coinvista.core.design.theme.RightArrowGray
 import com.dalingge.coinvista.core.design.theme.ShapeMedium
-import com.dalingge.coinvista.core.design.theme.SpaceDivider
 import com.dalingge.coinvista.core.design.theme.SpacePaddingMedium
 import com.dalingge.coinvista.core.design.theme.SpacePaddingSmall
-import com.dalingge.coinvista.core.design.theme.SpacePaddingXSmall
-import com.dalingge.coinvista.core.design.theme.SpaceVerticalLarge
 import com.dalingge.coinvista.core.design.theme.SpaceVerticalSmall
-import com.dalingge.coinvista.core.design.theme.SpaceVerticalXSmall
 import com.dalingge.coinvista.core.design.theme.TextPrimaryLight
 import com.dalingge.coinvista.core.design.theme.TextSecondaryLight
 import com.dalingge.coinvista.core.design.theme.TitleMedium
+import com.dalingge.coinvista.core.model.entity.FearGreed
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.ui.componet.chart.FearGreedGauge
 import com.dalingge.coinvista.core.ui.componet.divider.VDivider
-import com.dalingge.coinvista.core.ui.componet.network.BaseNetWorkView
 import com.dalingge.coinvista.core.ui.componet.scaffold.CommonScaffold
 import com.dalingge.coinvista.core.ui.componet.tab.ScrollableTextTabComponent
+import com.dalingge.coinvista.core.util.extension.toCompactMoney
 import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.model.HomeTab
 import com.dalingge.coinvista.main.viewmodel.HomeViewModel
@@ -91,14 +80,15 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
             lifecycleOwner.lifecycle.removeObserver(viewModel)
         }
     }
-    val uiState by viewModel.uiState.collectAsState()
+    val marketsCapState by viewModel.marketsCapStat.collectAsState()
+    val fearGreedState by viewModel.fearGreedState.collectAsState()
 
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
     val isAnimatingTabChange by viewModel.isAnimatingTabChange.collectAsState()
 
-
     HomeScreen(
-        uiState = uiState,
+        marketsCap = marketsCapState,
+        fearGreed = fearGreedState,
         selectedTabIndex = selectedTabIndex,
         isAnimatingTabChange = isAnimatingTabChange,
         toSearch = viewModel::toSearch,
@@ -112,7 +102,8 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScreen(
-    uiState: BaseNetWorkUiState<MarketsCap> = BaseNetWorkUiState.Loading,
+    marketsCap: MarketsCap = MarketsCap(),
+    fearGreed: FearGreed = FearGreed(),
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
     toSearch: () -> Unit = {},
@@ -125,25 +116,19 @@ internal fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     CommonScaffold(
-        topBar = {
-            HomeTopAppBar(scrollBehavior, toSearch, toGitHubPage)
-        },
+        topBar = { HomeTopAppBar(scrollBehavior, toSearch, toGitHubPage) },
         scrollBehavior = scrollBehavior
     ) { paddingValues ->
-
-        BaseNetWorkView(
-            uiState = uiState,
-            padding = paddingValues
-        ) {
-            HomeContentView(
-                marketsCap = it,
-                selectedTabIndex = selectedTabIndex,
-                isAnimatingTabChange = isAnimatingTabChange,
-                onTabSelected = onTabSelected,
-                onTabByPageChanged = onTabByPageChanged,
-                onAnimationCompleted = onAnimationCompleted
-            )
-        }
+        HomeContentView(
+            marketsCap = marketsCap,
+            fearGreed = fearGreed,
+            padding = paddingValues,
+            selectedTabIndex = selectedTabIndex,
+            isAnimatingTabChange = isAnimatingTabChange,
+            onTabSelected = onTabSelected,
+            onTabByPageChanged = onTabByPageChanged,
+            onAnimationCompleted = onAnimationCompleted
+        )
     }
 }
 
@@ -224,6 +209,8 @@ private fun HomeTopAppBar(
 @Composable
 private fun HomeContentView(
     marketsCap: MarketsCap,
+    fearGreed: FearGreed,
+    padding: PaddingValues = PaddingValues(),
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
     onTabSelected: (Int) -> Unit = {},
@@ -234,11 +221,9 @@ private fun HomeContentView(
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(selectedTabIndex) { HomeTab.entries.size }
 
-    Column {
+    Column(modifier = Modifier.padding(padding)) {
 
-        HomeHeaderCard(marketsCap)
-
-        SpaceVerticalSmall()
+        GlobalStatsSection(marketsCap, fearGreed)
 
         // Pager 与 Tab 联动
         // 处理页面状态变化
@@ -267,140 +252,105 @@ private fun HomeContentView(
             state = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
+
+
         }
     }
 }
 
 
 @Composable
-private fun HomeHeaderCard(
+private fun GlobalStatsSection(
     marketsCap: MarketsCap,
+    fearGreed: FearGreed,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
-            .padding(horizontal = SpacePaddingMedium),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = SpacePaddingMedium, vertical = SpaceVerticalSmall)
+            .height(70.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
 
         Row {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .padding(SpacePaddingSmall)
-            ) {
+            // 市值
+            StatItem(
+                title = "市值",
+                value = marketsCap.marketCap.toCompactMoney(),
+                change = "${marketsCap.marketCapChange}%",
+                isNegative = marketsCap.marketCapChange < 0,
+                modifier = Modifier.weight(1f)
+            )
 
-                Text(
-                    text = "市值",
-                    color = TextSecondaryLight,
-                    style = BodyMedium,
-                    fontSize = 10.sp
-                )
+            VDivider()
 
-                Spacer(modifier = Modifier.height(3.dp))
+            StatItem(
+                title = "24H成交量",
+                value = marketsCap.volume.toCompactMoney(),
+                change = "${marketsCap.volumeChange}%",
+                isNegative = marketsCap.volumeChange < 0,
+                modifier = Modifier.weight(1f)
+            )
 
-                Text(
-                    text = "$3.40T",
-                    color = TextPrimaryLight,
-                    style = DisplayMedium
-                )
+            VDivider()
 
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(
-                    text = marketsCap.marketCapChange.toString(),
-                    color = MarkerGreenColor,
-                    style = TitleMedium
-                )
-            }
+            StatItem(
+                title = "BTC领先指数",
+                value = "${marketsCap.btcDominance}%",
+                change = "${marketsCap.btcDominanceChange}%",
+                isNegative = marketsCap.btcDominanceChange < 0,
+                modifier = Modifier.weight(1f)
+            )
 
             VDivider()
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight()
                     .padding(SpacePaddingSmall)
             ) {
 
-                Text(
-                    text = "24H成交量",
-                    color = TextSecondaryLight,
-                    style = BodyMedium,
-                    fontSize = 10.sp
-                )
-
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(
-                    text = "$282.4B",
-                    color = TextPrimaryLight,
-                    style = DisplayMedium
-                )
-
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(
-                    text = marketsCap.volumeChange.toString(),
-                    color = MarkerRedColor,
-                    style = TitleMedium
-                )
-
-            }
-            VDivider()
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .padding(SpacePaddingSmall)
-            ) {
-
-                Text(
-                    text = "BTC领先指数",
-                    color = TextSecondaryLight,
-                    style = BodyMedium,
-                    fontSize = 10.sp
-                )
-
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(
-                    text = "$282.4B",
-                    color = TextPrimaryLight,
-                    style = DisplayMedium
-                )
-
-                Spacer(modifier = Modifier.height(3.dp))
-
-                Text(
-                    text = marketsCap.btcDominanceChange.toString(),
-                    color = MarkerRedColor,
-                    style = TitleMedium
-                )
-            }
-
-            VDivider()
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .padding(SpacePaddingSmall)
-            ) {
                 Text(
                     text = "恐惧贪婪指数",
                     color = TextSecondaryLight,
                     style = BodyMedium,
                     fontSize = 10.sp
                 )
+
+                FearGreedGauge(score = fearGreed.now.value, modifier = Modifier.align(Alignment.CenterHorizontally))
+
             }
         }
     }
 }
 
+@Composable
+fun StatItem(title: String, value: String, change: String, isNegative: Boolean, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.padding(start = SpacePaddingSmall, top = SpacePaddingSmall)) {
+        Text(
+            text = title,
+            color = TextSecondaryLight,
+            style = BodyMedium,
+            fontSize = 10.sp
+        )
+
+        Spacer(modifier = Modifier.height(3.dp))
+
+        Text(
+            text = value,
+            color = TextPrimaryLight,
+            style = DisplayMedium
+        )
+
+        Spacer(modifier = Modifier.height(3.dp))
+
+        Text(
+            text = change,
+            color = if (isNegative) MarkerRedColor else MarkerGreenColor,
+            style = TitleMedium
+        )
+    }
+}
 
 /**
  * 处理页面状态变化的副作用
@@ -448,6 +398,6 @@ private fun HandlePageStateChanges(
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreen(BaseNetWorkUiState.Success(MarketsCap()))
+        HomeScreen(MarketsCap())
     }
 }

@@ -3,7 +3,7 @@ package com.dalingge.coinvista.main.viewmodel
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
 import com.dalingge.coinvista.core.data.state.AppState
 import com.dalingge.coinvista.navigation.AppNavigator
-import com.dalingge.coinvista.navigation.models.MainScreen
+import com.dalingge.coinvista.navigation.routes.MainRoutes
 
 /**
  *
@@ -49,6 +49,9 @@ class SplashViewModel(
      * 跳转到主页并关闭当前启动页
      */
     fun toMainPage() {
-        toPageAndCloseCurrent(MainScreen.MainGraph.route, MainScreen.Splash.route)
+        navigateAndCloseCurrent(
+            route = MainRoutes.Main,
+            currentRoute = MainRoutes.Splash
+        )
     }
 }

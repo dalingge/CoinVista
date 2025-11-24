@@ -1,13 +1,16 @@
 package com.dalingge.coinvista.main.viewmodel
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import com.dalingge.coinvista.core.common.base.viewmodel.BaseNetWorkViewModel
+import androidx.lifecycle.viewModelScope
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
+import com.dalingge.coinvista.core.common.result.ResultHandler
+import com.dalingge.coinvista.core.common.result.asResult
+import com.dalingge.coinvista.core.data.repository.InsightsRepository
 import com.dalingge.coinvista.core.data.repository.MarketRepository
 import com.dalingge.coinvista.core.data.state.AppState
+import com.dalingge.coinvista.core.model.entity.FearGreed
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.navigation.AppNavigator
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,8 +19,14 @@ class HomeViewModel(
     navigator: AppNavigator,
     appState: AppState,
     private val marketRepository: MarketRepository,
-) : BaseNetWorkViewModel<MarketsCap>(navigator, appState) ,DefaultLifecycleObserver{
+    private val insightsRepository: InsightsRepository,
+) : BaseViewModel(navigator, appState), DefaultLifecycleObserver {
 
+    private val _marketsCapState: MutableStateFlow<MarketsCap> = MutableStateFlow(MarketsCap())
+    val marketsCapStat: StateFlow<MarketsCap> = _marketsCapState.asStateFlow()
+
+    private val _fearGreedState: MutableStateFlow<FearGreed> = MutableStateFlow(FearGreed())
+    val fearGreedState: StateFlow<FearGreed> = _fearGreedState.asStateFlow()
 
     // 当前选中的标签索引
     private val _selectedTabIndex = MutableStateFlow(0)
@@ -30,11 +39,29 @@ class HomeViewModel(
     val isAnimatingTabChange: StateFlow<Boolean> = _isAnimatingTabChange.asStateFlow()
 
     init {
-        executeRequest()
+        requestGreedState()
+        requestFearGreed()
     }
 
-    override fun requestApiFlow(): Flow<MarketsCap> {
-        return marketRepository.getMarketsCap()
+    fun requestGreedState(){
+        ResultHandler.handleResultWithData(
+            scope = viewModelScope,
+            flow = marketRepository.getMarketsCap().asResult(),
+            onData = {
+                _marketsCapState.value = it
+            }
+        )
+
+    }
+
+    fun requestFearGreed() {
+        ResultHandler.handleResultWithData(
+            scope = viewModelScope,
+            flow = insightsRepository.getFearAndGreed().asResult(),
+            onData = {
+                _fearGreedState.value = it
+            }
+        )
     }
 
     /**
@@ -96,4 +123,5 @@ class HomeViewModel(
 //            }&title=${java.net.URLEncoder.encode(title, "UTF-8")}"
 //        )
     }
+
 }

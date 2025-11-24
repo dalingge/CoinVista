@@ -1,5 +1,6 @@
 package com.dalingge.coinvista.core.data.di
 
+import com.dalingge.coinvista.core.data.repository.InsightsRepository
 import com.dalingge.coinvista.core.data.repository.MarketRepository
 import com.dalingge.coinvista.core.data.repository.NewsRepository
 import com.dalingge.coinvista.core.data.repository.TradingRepository
@@ -28,6 +29,7 @@ val appStateModule = module {
     single { AppState(get(ApplicationScope)) }
 
     factory { MarketRepository(get()) }
+    factory { InsightsRepository(get()) }
     factory { NewsRepository(get()) }
     factory { TradingRepository(get()) }
 

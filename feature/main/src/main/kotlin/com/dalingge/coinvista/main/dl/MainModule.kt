@@ -18,7 +18,7 @@ val mainModule = module {
 
     viewModel { SplashViewModel(get(), get()) }
     viewModel { MainViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get(),get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { MarketViewModel(get(), get()) }
     viewModel { MineViewModel(get(), get()) }
 }

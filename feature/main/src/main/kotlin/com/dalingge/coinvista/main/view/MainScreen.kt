@@ -1,12 +1,9 @@
-
 package com.dalingge.coinvista.main.view
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.exclude
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.HorizontalPager
@@ -31,13 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
 import com.dalingge.coinvista.main.model.TopLevelDestination
 import com.dalingge.coinvista.main.viewmodel.MainViewModel
-import com.dalingge.coinvista.navigation.models.MainScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.forEachIndexed
@@ -54,11 +49,9 @@ internal fun MainRoute(
     viewModel: MainViewModel = koinViewModel(),
 ) {
     // 从ViewModel获取当前导航状态
-    val currentDestination by viewModel.currentDestination.collectAsState()
     val currentPageIndex by viewModel.currentPageIndex.collectAsState()
 
     MainScreen(
-        currentDestination = currentDestination,
         currentPageIndex = currentPageIndex,
         onPageChanged = viewModel::updatePageIndex,
         onNavigationItemSelected = viewModel::updateDestination,
@@ -73,7 +66,6 @@ internal fun MainRoute(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MainScreen(
-    currentDestination: MainScreen = TopLevelDestination.HOME.screen,
     currentPageIndex: Int = 0,
     onPageChanged: (Int) -> Unit = {},
     onNavigationItemSelected: (Int) -> Unit = {},
@@ -98,7 +90,7 @@ internal fun MainScreen(
             NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
                 TopLevelDestination.entries.forEachIndexed { index, destination ->
                     NavigationBarItem(
-                        selected = currentDestination == destination.screen,
+                        selected = currentPageIndex == index,
                         onClick = {
                             onNavigationItemSelected(index)
                             scope.launch {

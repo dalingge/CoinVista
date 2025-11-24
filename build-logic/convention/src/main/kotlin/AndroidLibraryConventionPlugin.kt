@@ -1,11 +1,12 @@
 import com.android.build.gradle.LibraryExtension
 import com.dalingge.coinvista.plugin.configureKotlinAndroid
 import com.dalingge.coinvista.plugin.libs
-import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import java.io.FileInputStream
+import java.util.Properties
 
 /**
  * Android库模块构建插件
@@ -25,7 +26,16 @@ import org.gradle.kotlin.dsl.dependencies
 class AndroidLibraryConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
+
         with(target) {
+
+            //  读取 local.properties 文件
+            val localProperties = Properties()
+            val localPropertiesFile = rootProject.file("local.properties")
+            if (localPropertiesFile.exists()) {
+                localProperties.load(FileInputStream(localPropertiesFile))
+            }
+
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
@@ -68,16 +78,29 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
 
                 defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+
+
+                flavorDimensions += listOf("env")
+                productFlavors {
+                    create("dev") {
+                        dimension = "env"
+                        buildConfigField("Boolean", "DEBUG", "true")
+                        buildConfigField("String", "API_KEY", "\"${localProperties["COINSTATS_API_KEY"]}\"")
+                    }
+                    create("prod") {
+                        dimension = "env"
+                        buildConfigField("Boolean", "DEBUG", "false")
+                        buildConfigField("String", "API_KEY", "\"${localProperties["COINSTATS_API_KEY"]}\"")
+                    }
+                }
             }
 
-//            extensions.configure<KspExtension>("ksp") {
-//               arg("rxhttp_package", libs.findVersion("namespace").get().toString()  + name)
-//            }
 
             configureDependencies()
         }
     }
 }
+
 
 /**
  * 配置库模块的通用依赖

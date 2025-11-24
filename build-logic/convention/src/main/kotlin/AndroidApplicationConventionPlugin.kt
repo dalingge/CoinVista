@@ -49,13 +49,14 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
              //   configureFlavors(this)
 
-                lint {
-                    abortOnError = false
-                    checkReleaseBuilds = false
-                }
-
-                dependenciesInfo {
-                    includeInBundle = false
+                flavorDimensions += listOf("env")
+                productFlavors {
+                    create("dev") {
+                        dimension = "env"
+                    }
+                    create("prod") {
+                        dimension = "env"
+                    }
                 }
 
             }

@@ -6,8 +6,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.dalingge.coinvista.main.view.MainRoute
+import com.dalingge.coinvista.main.view.MainScreen
 import com.dalingge.coinvista.main.view.SplashRoute
-import com.dalingge.coinvista.navigation.models.MainScreen
+import com.dalingge.coinvista.navigation.routes.MainRoutes
 
 /**
  *
@@ -18,7 +19,7 @@ import com.dalingge.coinvista.navigation.models.MainScreen
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.mainGraph(
     navController: NavHostController,
-    sharedTransitionScope: SharedTransitionScope
+    sharedTransitionScope: SharedTransitionScope,
 ) {
     splashScreen(sharedTransitionScope)
     mainScreen(navController)
@@ -30,7 +31,7 @@ fun NavGraphBuilder.mainGraph(
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.splashScreen(sharedTransitionScope: SharedTransitionScope) {
-    composable(route = MainScreen.Splash.route) {
+    composable<MainRoutes.Splash> {
         SplashRoute(sharedTransitionScope, this@composable)
     }
 }
@@ -40,7 +41,7 @@ fun NavGraphBuilder.splashScreen(sharedTransitionScope: SharedTransitionScope) {
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.mainScreen(navController: NavHostController) {
-    composable(MainScreen.MainGraph.route) {
-       MainRoute()
+    composable<MainRoutes.Main> {
+        MainRoute()
     }
 }

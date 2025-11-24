@@ -8,6 +8,9 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
 import coil3.util.DebugLogger
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.dalingge.coinvista.core.network.BuildConfig
+import com.dalingge.coinvista.core.network.datasource.insights.InsightsNetworkDataSource
+import com.dalingge.coinvista.core.network.datasource.insights.InsightsNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.news.NewsNetworkDataSource
@@ -18,11 +21,11 @@ import com.dalingge.coinvista.core.network.datasource.user.UserNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.user.UserNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.interceptor.HeaderInterceptor
 import com.dalingge.coinvista.core.network.multibaseurls.enableMultiBaseUrls
+import com.dalingge.coinvista.core.network.service.InsightsService
 import com.dalingge.coinvista.core.network.service.MarketService
 import com.dalingge.coinvista.core.network.service.NewsService
 import com.dalingge.coinvista.core.network.service.TradingService
 import com.dalingge.coinvista.core.network.service.UserService
-import com.tinder.scarlet.lifecycle.android.BuildConfig
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
@@ -65,7 +68,7 @@ val networkModule = module {
             .enableMultiBaseUrls()
             .addInterceptor(HeaderInterceptor())
             .apply {
-//                if (BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG) {
                     addInterceptor(
                         ChuckerInterceptor.Builder(androidApplication())
                             .alwaysReadResponseBody(true)
@@ -75,7 +78,7 @@ val networkModule = module {
                         level = HttpLoggingInterceptor.Level.BODY
                     })
                 }
-//            }
+            }
             .retryOnConnectionFailure(true)
             .proxy(if (BuildConfig.DEBUG) null else Proxy.NO_PROXY)
             .hostnameVerifier { _, _ -> true } //忽略host验证
@@ -114,13 +117,6 @@ val networkModule = module {
         ImageLoader.Builder(androidApplication())
             .crossfade(true)
             .logger(if (BuildConfig.DEBUG) DebugLogger() else null)
-//            .components {
-//                if (Build.VERSION.SDK_INT >= 28) {
-//                    add(AnimatedImageDecoder.Factory())
-//                } else {
-//                    add(GifDecoder.Factory())
-//                }
-//            }
             .memoryCache {
                 MemoryCache.Builder()
                     .maxSizePercent(androidApplication(), 0.25)
@@ -139,11 +135,13 @@ val networkModule = module {
     }
 
     single { get<Retrofit>().create(MarketService::class.java) }
+    single { get<Retrofit>().create(InsightsService::class.java) }
     single { get<Retrofit>().create(TradingService::class.java) }
     single { get<Retrofit>().create(UserService::class.java) }
     single { get<Retrofit>().create(NewsService::class.java) }
 
     single<MarketNetworkDataSource> { MarketNetworkDataSourceImpl(get()) }
+    single<InsightsNetworkDataSource> { InsightsNetworkDataSourceImpl(get()) }
     single<TradingNetworkDataSource> { TradingNetworkDataSourceImpl(get()) }
     single<UserNetworkDataSource> { UserNetworkDataSourceImpl(get()) }
     single<NewsNetworkDataSource> { NewsNetworkDataSourceImpl(get()) }

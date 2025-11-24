@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.dalingge.coinvista.main.navigation.mainGraph
-import com.dalingge.coinvista.navigation.models.MainScreen
+import com.dalingge.coinvista.navigation.routes.MainRoutes
 import kotlinx.coroutines.flow.collectLatest
 
 /**
@@ -36,7 +36,7 @@ fun AppNavHost(
     SharedTransitionLayout {
         NavHost(
             navController = navController,
-            startDestination = MainScreen.Splash.route,
+            startDestination = MainRoutes.Splash,
             modifier = modifier,
             // 页面进入动画
             enterTransition = {

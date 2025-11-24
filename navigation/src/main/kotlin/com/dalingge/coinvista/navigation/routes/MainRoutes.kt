@@ -1,44 +1,47 @@
 package com.dalingge.coinvista.navigation.routes
 
+import kotlinx.serialization.Serializable
+
 /**
- * 主模块路由常量
+ * 主模块路由
  */
 object MainRoutes {
-    /**
-     * 主模块根路由
-     */
-    const val MAIN = "main"
 
     /**
      * 启动页路由
      */
-    const val SPLASH = "$MAIN/splash"
+    @Serializable
+    data object Splash
 
     /**
-     * 引导页路由
+     * 主框架路由
+     *
+     * 应用的主框架，包含底部导航栏
      */
-    const val GUIDE = "$MAIN/guide"
-
-
-    /**
-     * 交易页面路由
-     */
-    const val TRADE = "trade"
+    @Serializable
+    data object Main
 
     /**
-     * 持仓页面路由
+     * 首页路由
+     *
+     * 应用首页，展示推荐商品和营销活动
      */
-    const val POSITION = "position"
-    
+    @Serializable
+    data object Home
+
     /**
-     * 比赛页面路由
+     * 行情页面路由
+     *
+     * 行情分类浏览页面
      */
-    const val CONTEST = "contest"
-    
+    @Serializable
+    data object Market
+
     /**
      * 我的页面路由
+     *
+     * 个人中心页面
      */
-    const val MINE = "mine"
-
-
+    @Serializable
+    data object Mine
 }

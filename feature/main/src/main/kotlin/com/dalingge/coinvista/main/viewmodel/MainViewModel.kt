@@ -2,9 +2,7 @@ package com.dalingge.coinvista.main.viewmodel
 
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
 import com.dalingge.coinvista.core.data.state.AppState
-import com.dalingge.coinvista.main.model.TopLevelDestination
 import com.dalingge.coinvista.navigation.AppNavigator
-import com.dalingge.coinvista.navigation.models.MainScreen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,9 +18,7 @@ class MainViewModel(
     appState: AppState
 ) : BaseViewModel(navigator, appState) {
 
-    // 当前选中的导航目标
-    private val _currentDestination = MutableStateFlow(TopLevelDestination.HOME.screen)
-    val currentDestination: StateFlow<MainScreen> = _currentDestination.asStateFlow()
+
 
     // 当前页面索引
     private val _currentPageIndex = MutableStateFlow(0)
@@ -32,9 +28,7 @@ class MainViewModel(
      * 更新当前选中的导航项和页面索引
      */
     fun updateDestination(index: Int) {
-        val destination = TopLevelDestination.entries[index]
         _currentPageIndex.value = index
-        _currentDestination.value = destination.screen
     }
 
     /**
@@ -42,6 +36,5 @@ class MainViewModel(
      */
     fun updatePageIndex(index: Int) {
         _currentPageIndex.value = index
-        _currentDestination.value = TopLevelDestination.entries[index].screen
     }
 }
