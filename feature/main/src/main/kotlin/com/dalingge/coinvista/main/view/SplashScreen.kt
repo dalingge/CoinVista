@@ -132,11 +132,8 @@ private fun SplashContentView(
         textAnim.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1000, easing = FastOutLinearInEasing)
-        ){
-            if (value >= 1f) {
-                toHome()
-            }
-        }
+        )
+        toHome()
     }
 
     // --- 2. 界面布局 ---

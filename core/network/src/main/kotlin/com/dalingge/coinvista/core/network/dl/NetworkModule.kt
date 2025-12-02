@@ -15,6 +15,8 @@ import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSo
 import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.news.NewsNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.news.NewsNetworkDataSourceImpl
+import com.dalingge.coinvista.core.network.datasource.nft.NFTsNetworkDataSource
+import com.dalingge.coinvista.core.network.datasource.nft.NFTsNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.trading.TradingNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.trading.TradingNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.user.UserNetworkDataSource
@@ -23,6 +25,7 @@ import com.dalingge.coinvista.core.network.interceptor.HeaderInterceptor
 import com.dalingge.coinvista.core.network.multibaseurls.enableMultiBaseUrls
 import com.dalingge.coinvista.core.network.service.InsightsService
 import com.dalingge.coinvista.core.network.service.MarketService
+import com.dalingge.coinvista.core.network.service.NFTsService
 import com.dalingge.coinvista.core.network.service.NewsService
 import com.dalingge.coinvista.core.network.service.TradingService
 import com.dalingge.coinvista.core.network.service.UserService
@@ -136,12 +139,14 @@ val networkModule = module {
 
     single { get<Retrofit>().create(MarketService::class.java) }
     single { get<Retrofit>().create(InsightsService::class.java) }
+    single { get<Retrofit>().create(NFTsService::class.java) }
     single { get<Retrofit>().create(TradingService::class.java) }
     single { get<Retrofit>().create(UserService::class.java) }
     single { get<Retrofit>().create(NewsService::class.java) }
 
     single<MarketNetworkDataSource> { MarketNetworkDataSourceImpl(get()) }
     single<InsightsNetworkDataSource> { InsightsNetworkDataSourceImpl(get()) }
+    single<NFTsNetworkDataSource> { NFTsNetworkDataSourceImpl(get()) }
     single<TradingNetworkDataSource> { TradingNetworkDataSourceImpl(get()) }
     single<UserNetworkDataSource> { UserNetworkDataSourceImpl(get()) }
     single<NewsNetworkDataSource> { NewsNetworkDataSourceImpl(get()) }

@@ -40,7 +40,7 @@ fun TextShowcase() {
 /**
  * 文本组件展示页面预览 - 浅色主题
  *
- * @author Joker.X
+ * 
  */
 @Preview(showBackground = true)
 @Composable
@@ -53,7 +53,7 @@ fun TextShowcasePreviewLight() {
 /**
  * 文本组件展示页面预览 - 深色主题
  *
- * @author Joker.X
+ * 
  */
 @Preview(showBackground = true)
 @Composable

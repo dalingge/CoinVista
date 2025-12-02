@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
@@ -87,7 +88,9 @@ internal fun MainScreen(
         // 排除顶部导航栏边距
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets.exclude(WindowInsets.statusBars),
         bottomBar = {
-            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+            NavigationBar(
+                windowInsets = NavigationBarDefaults.windowInsets
+            ) {
                 TopLevelDestination.entries.forEachIndexed { index, destination ->
                     NavigationBarItem(
                         selected = currentPageIndex == index,
@@ -123,7 +126,6 @@ internal fun MainScreen(
             }
         }
     ) { paddingValues ->
-
         MainScreenContentView(
             pageState = pageState,
             paddingValues = paddingValues
@@ -145,7 +147,8 @@ private fun MainScreenContentView(
         when (page) {
             0 -> HomeRoute()
             1 -> MarketRoute()
-            2 -> MineRoute()
+            2 -> PortfolioRoute()
+            3 -> MineRoute()
         }
     }
 }

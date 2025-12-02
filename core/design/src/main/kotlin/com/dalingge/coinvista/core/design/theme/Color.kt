@@ -45,7 +45,7 @@ val ColorSuccess = Color(0xFF09BE4F) // 成功色/绿色
  * 浅色模式下主要文字颜色：#343438
  * 适用场景：标题、重要文本内容
  */
-val TextPrimaryLight = Color(0xFF343438 ) // 用于重要标题内容
+val TextPrimaryLight = Color(0xFF343438) // 用于重要标题内容
 
 /**
  * 浅色模式下次要文字颜色：#333333
@@ -207,17 +207,17 @@ val BorderDark = Color(0xFF242424) // 深色模式边框
 /**
  * 行情绿色：#FF2DA64C
  */
-val MarkerGreenColor  = Color(0xFF2DA64C)
+val MarkerGreenColor = Color(0xFF2DA64C)
 
 /**
  * 行情红色：#FFF6583C
  */
-val MarkerRedColor  = Color(0xFFF6583C)
+val MarkerRedColor = Color(0xFFF6583C)
 
 /**
  * 行情灰色：#FFF6583C
  */
-val MarkerGrayColor  = Color(0xFFD7D8E1)
+val MarkerGrayColor = Color(0xFFD7D8E1)
 
 
 // 其他颜色

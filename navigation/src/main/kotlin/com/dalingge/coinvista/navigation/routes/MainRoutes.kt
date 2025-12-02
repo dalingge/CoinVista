@@ -23,24 +23,24 @@ object MainRoutes {
 
     /**
      * 首页路由
-     *
-     * 应用首页，展示推荐商品和营销活动
      */
     @Serializable
     data object Home
 
     /**
      * 行情页面路由
-     *
-     * 行情分类浏览页面
      */
     @Serializable
     data object Market
 
     /**
+     * 投资组合页面路由
+     */
+    @Serializable
+    data object Portfolio
+
+    /**
      * 我的页面路由
-     *
-     * 个人中心页面
      */
     @Serializable
     data object Mine

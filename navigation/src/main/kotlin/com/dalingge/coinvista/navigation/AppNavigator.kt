@@ -58,7 +58,7 @@ class AppNavigator() {
      * navigateTo(UserRoutes.Profile, navOptions)
      * ```
      *
-     * @author Joker.X
+     * 
      */
     suspend fun navigateTo(route: Any, navOptions: NavOptions? = null) {
         _navigationEvents.emit(NavigationEvent.NavigateTo(route, navOptions))
@@ -72,7 +72,7 @@ class AppNavigator() {
      * navigateBack()
      * ```
      *
-     * @author Joker.X
+     * 
      */
     suspend fun navigateBack() {
         _navigationEvents.emit(NavigationEvent.NavigateUp)
@@ -107,7 +107,7 @@ class AppNavigator() {
      * }
      * ```
      *
-     * @author Joker.X
+     * 
      */
     suspend fun <T> popBackStackWithResult(key: NavigationResultKey<T>, result: T) {
         _navigationEvents.emit(NavigationEvent.PopBackStackWithResult(key, result))
@@ -128,7 +128,7 @@ class AppNavigator() {
      * navigateBackTo(AuthRoutes.Login, inclusive = true)
      * ```
      *
-     * @author Joker.X
+     * 
      */
     suspend fun navigateBackTo(route: Any, inclusive: Boolean = false) {
         _navigationEvents.emit(NavigationEvent.NavigateBackTo(route, inclusive))
@@ -141,7 +141,7 @@ class AppNavigator() {
  * 将导航事件转换为实际的导航操作
  *
  * @param event 导航事件
- * @author Joker.X
+ * 
  */
 fun NavController.handleNavigationEvent(event: NavigationEvent) {
     when (event) {

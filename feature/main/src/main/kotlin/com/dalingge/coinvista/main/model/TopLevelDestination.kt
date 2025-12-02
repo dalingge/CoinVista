@@ -20,6 +20,11 @@ enum class TopLevelDestination(
         iconResId = R.drawable.ic_tab_market,
         route = MainRoutes.Market
     ),
+    PORTFOLIO(
+        titleTextId = R.string.main_tab_portfolio,
+        iconResId = R.drawable.ic_tab_portfolio,
+        route = MainRoutes.Portfolio
+    ),
     MINE(
         titleTextId = R.string.main_tab_mine,
         iconResId = R.drawable.ic_tab_mine,

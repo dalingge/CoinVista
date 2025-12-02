@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.dalingge.coinvista.main.view.MainRoute
-import com.dalingge.coinvista.main.view.MainScreen
 import com.dalingge.coinvista.main.view.SplashRoute
 import com.dalingge.coinvista.navigation.routes.MainRoutes
 

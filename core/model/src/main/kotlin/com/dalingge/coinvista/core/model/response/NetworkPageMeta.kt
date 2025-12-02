@@ -30,10 +30,10 @@ data class NetworkPageMeta(
     /**
      * 是否有上一页
      */
-    val hasPreviousPage: Boolean? = null,
+    val hasPreviousPage: Boolean = false,
 
     /**
      * 是否有下一页
      */
-    val hasNextPage: Boolean? = null,
+    val hasNextPage: Boolean = false,
 )

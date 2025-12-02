@@ -3,17 +3,23 @@ package com.dalingge.coinvista.main.view
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,15 +36,22 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextOverflow.Companion
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.dalingge.coinvista.core.common.base.state.BaseNetWorkListUiState
+import com.dalingge.coinvista.core.common.base.state.LoadMoreState
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.BgContentLight
 import com.dalingge.coinvista.core.design.theme.BodyMedium
@@ -46,24 +59,37 @@ import com.dalingge.coinvista.core.design.theme.DisplayMedium
 import com.dalingge.coinvista.core.design.theme.MarkerGreenColor
 import com.dalingge.coinvista.core.design.theme.MarkerRedColor
 import com.dalingge.coinvista.core.design.theme.ShapeMedium
+import com.dalingge.coinvista.core.design.theme.ShapeXSmall
 import com.dalingge.coinvista.core.design.theme.SpacePaddingMedium
 import com.dalingge.coinvista.core.design.theme.SpacePaddingSmall
 import com.dalingge.coinvista.core.design.theme.SpaceVerticalSmall
 import com.dalingge.coinvista.core.design.theme.TextPrimaryLight
 import com.dalingge.coinvista.core.design.theme.TextSecondaryLight
+import com.dalingge.coinvista.core.design.theme.TextTertiaryLight
 import com.dalingge.coinvista.core.design.theme.TitleMedium
 import com.dalingge.coinvista.core.model.entity.FearGreed
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.model.entity.MarketsCoins
 import com.dalingge.coinvista.core.ui.componet.chart.FearGreedGauge
 import com.dalingge.coinvista.core.ui.componet.divider.VDivider
+import com.dalingge.coinvista.core.ui.componet.image.NetWorkImage
+import com.dalingge.coinvista.core.ui.componet.layout.CoordinatorLayout
+import com.dalingge.coinvista.core.ui.componet.layout.CoordinatorState
+import com.dalingge.coinvista.core.ui.componet.layout.rememberCoordinatorState
+import com.dalingge.coinvista.core.ui.componet.network.BaseNetWorkListView
+import com.dalingge.coinvista.core.ui.componet.refresh.RefreshLayout
+import com.dalingge.coinvista.core.ui.componet.refresh.rememberRefreshState
 import com.dalingge.coinvista.core.ui.componet.scaffold.CommonScaffold
 import com.dalingge.coinvista.core.ui.componet.tab.ScrollableTextTabComponent
 import com.dalingge.coinvista.core.util.extension.toCompactMoney
 import com.dalingge.coinvista.feature.main.R
-import com.dalingge.coinvista.main.model.HomeTab
+import com.dalingge.coinvista.main.model.MarketTab
+import com.dalingge.coinvista.main.model.MarketTabState
+import com.dalingge.coinvista.main.model.MarketTabUiState
 import com.dalingge.coinvista.main.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import java.util.Locale
 
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -86,9 +112,34 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
     val selectedTabIndex by viewModel.selectedTabIndex.collectAsState()
     val isAnimatingTabChange by viewModel.isAnimatingTabChange.collectAsState()
 
+    val coordinatorState = rememberCoordinatorState()
+
+    // 获取标签页状态提供者
+    val tabStateProvider: @Composable (Int) -> MarketTabState = { index ->
+        val viewState by viewModel.getTabState(index).collectAsState()
+       // val currentData = (viewState.uiState as? MarketTabUiState.CryptoList)?.data ?: emptyList()
+        val canRefresh = remember(coordinatorState.collapsedHeight) {
+            { coordinatorState.collapsedHeight == 0f }
+        }
+        MarketTabState(
+            uiState = viewState.uiState,
+            isRefreshing = viewState.isRefreshing,
+            loadMoreState = viewState.loadMoreState,
+            onRetry = { viewModel.retryRequest(index) },
+            onRefresh = { viewModel.onRefresh(index) },
+            onLoadMore = { viewModel.onLoadMore(index) },
+            shouldTriggerLoadMore = { lastIndex, totalCount ->
+                viewModel.shouldTriggerLoadMore(lastIndex, totalCount, index)
+            },
+            enablePullToRefresh = canRefresh
+        )
+    }
+
     HomeScreen(
         marketsCap = marketsCapState,
         fearGreed = fearGreedState,
+        tabs = viewModel.tabs,
+        coordinatorState = coordinatorState,
         selectedTabIndex = selectedTabIndex,
         isAnimatingTabChange = isAnimatingTabChange,
         toSearch = viewModel::toSearch,
@@ -96,6 +147,7 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
         onTabSelected = viewModel::updateSelectedTab,
         onTabByPageChanged = viewModel::updateTabByPage,
         onAnimationCompleted = viewModel::notifyAnimationCompleted,
+        tabStateProvider = tabStateProvider
     )
 }
 
@@ -104,6 +156,8 @@ internal fun HomeRoute(viewModel: HomeViewModel = koinViewModel()) {
 internal fun HomeScreen(
     marketsCap: MarketsCap = MarketsCap(),
     fearGreed: FearGreed = FearGreed(),
+    tabs: List<MarketTab> = emptyList(),
+    coordinatorState: CoordinatorState = CoordinatorState(),
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
     toSearch: () -> Unit = {},
@@ -111,24 +165,51 @@ internal fun HomeScreen(
     onTabSelected: (Int) -> Unit = {},
     onTabByPageChanged: (Int) -> Unit = {},
     onAnimationCompleted: () -> Unit = {},
+    tabStateProvider: @Composable (Int) -> MarketTabState = { _ ->
+        MarketTabState(
+            uiState = MarketTabUiState.Loading,
+            isRefreshing = false,
+            loadMoreState = LoadMoreState.PullToLoad,
+            onRetry = {},
+            onRefresh = {},
+            onLoadMore = {},
+            shouldTriggerLoadMore = { _, _ -> false }
+        )
+    },
 ) {
     // 创建TopAppBar的滚动行为
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    val lazyListState = rememberLazyListState()
+    val contentScrollableState = remember { lazyListState }
 
     CommonScaffold(
         topBar = { HomeTopAppBar(scrollBehavior, toSearch, toGitHubPage) },
         scrollBehavior = scrollBehavior
     ) { paddingValues ->
-        HomeContentView(
-            marketsCap = marketsCap,
-            fearGreed = fearGreed,
-            padding = paddingValues,
-            selectedTabIndex = selectedTabIndex,
-            isAnimatingTabChange = isAnimatingTabChange,
-            onTabSelected = onTabSelected,
-            onTabByPageChanged = onTabByPageChanged,
-            onAnimationCompleted = onAnimationCompleted
-        )
+
+        CoordinatorLayout(
+            nestedScrollableState = { contentScrollableState },
+            state = coordinatorState,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            collapsableContent = {
+                GlobalStatsSection(marketsCap, fearGreed)
+            },
+        ) {
+
+            HomeContentView(
+                tabs = tabs,
+                selectedTabIndex = selectedTabIndex,
+                isAnimatingTabChange = isAnimatingTabChange,
+                onTabSelected = onTabSelected,
+                onTabByPageChanged = onTabByPageChanged,
+                onAnimationCompleted = onAnimationCompleted,
+                tabStateProvider = tabStateProvider
+            )
+        }
+
     }
 }
 
@@ -208,22 +289,19 @@ private fun HomeTopAppBar(
  */
 @Composable
 private fun HomeContentView(
-    marketsCap: MarketsCap,
-    fearGreed: FearGreed,
-    padding: PaddingValues = PaddingValues(),
+    tabs: List<MarketTab>,
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
     onTabSelected: (Int) -> Unit = {},
     onTabByPageChanged: (Int) -> Unit = {},
     onAnimationCompleted: () -> Unit = {},
+    tabStateProvider: @Composable (Int) -> MarketTabState,
 ) {
 
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(selectedTabIndex) { HomeTab.entries.size }
+    val pagerState = rememberPagerState(selectedTabIndex) { tabs.size }
 
-    Column(modifier = Modifier.padding(padding)) {
-
-        GlobalStatsSection(marketsCap, fearGreed)
+    Column {
 
         // Pager 与 Tab 联动
         // 处理页面状态变化
@@ -236,7 +314,7 @@ private fun HomeContentView(
         )
 
         ScrollableTextTabComponent(
-            tabs = HomeTab.entries.map { it.label },
+            tabs = tabs.map { it.title },
             selectedIndex = selectedTabIndex,
             onTabSelected = { index ->
                 onTabSelected(index)
@@ -248,11 +326,77 @@ private fun HomeContentView(
 
         HorizontalDivider(thickness = 5.dp, color = BgContentLight)
 
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(30.dp)
+                .background(Color.White)
+        ) {
+
+            Text(
+                text = "#",
+                modifier = Modifier
+                    .width(40.dp)
+                    .align(Alignment.CenterStart),
+                color = TextTertiaryLight,
+                style = BodyMedium,
+                textAlign = TextAlign.Center,
+                fontSize = 10.sp
+            )
+
+            Text(
+                text = "市值",
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 40.dp),
+                color = TextTertiaryLight,
+                style = BodyMedium,
+                fontSize = 10.sp
+            )
+
+            Text(
+                text = "价格",
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 116.dp),
+                color = TextTertiaryLight,
+                style = BodyMedium,
+                fontSize = 10.sp
+            )
+
+            Text(
+                text = "24小时%",
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp),
+                color = TextTertiaryLight,
+                style = BodyMedium,
+                fontSize = 10.sp
+            )
+        }
+
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.weight(1f),
+            beyondViewportPageCount = 1
         ) { page ->
+            // 获取当前标签页的状态
+            val tabState = tabStateProvider(page)
 
+            BaseNetWorkListView(
+                uiState = tabState.uiState,
+                onRetry = tabState.onRetry
+            ) {
+                MarketTabContent(
+                    marketsCoins = tabState.uiState,
+                    isRefreshing = tabState.isRefreshing,
+                    loadMoreState = tabState.loadMoreState,
+                    onRefresh = tabState.onRefresh,
+                    onLoadMore = tabState.onLoadMore,
+                    shouldTriggerLoadMore = tabState.shouldTriggerLoadMore,
+                    enablePullToRefresh = tabState.enablePullToRefresh
+                )
+            }
 
         }
     }
@@ -352,6 +496,132 @@ fun StatItem(title: String, value: String, change: String, isNegative: Boolean, 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MarketTabContent(
+    marketsCoins: List<MarketsCoins> = emptyList(),
+    onMarketCoinsClick: (String) -> Unit = {},
+    isRefreshing: Boolean,
+    loadMoreState: LoadMoreState,
+    onRefresh: () -> Unit,
+    onLoadMore: () -> Unit,
+    shouldTriggerLoadMore: (lastIndex: Int, totalCount: Int) -> Boolean,
+    enablePullToRefresh: () -> Boolean,
+) {
+
+    val refreshState = rememberRefreshState(shouldEnableRefresh = enablePullToRefresh)
+
+    // 每页是一个 LazyColumn
+    RefreshLayout(
+        refreshState = refreshState,
+        isRefreshing = isRefreshing,
+        loadMoreState = loadMoreState,
+        onRefresh = onRefresh,
+        onLoadMore = onLoadMore,
+        shouldTriggerLoadMore = shouldTriggerLoadMore
+    ) {
+        items(
+            items = marketsCoins,
+            key = { it.id.hashCode() }
+        ) {
+            CoinItem(item = it, onMarketCoinsClick = onMarketCoinsClick)
+        }
+    }
+}
+
+@Composable
+private fun CoinItem(
+    item: MarketsCoins,
+    onMarketCoinsClick: (String) -> Unit = {},
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(55.dp)
+            .background(Color.White)
+            .clickable { onMarketCoinsClick(item.id) }
+            .padding(end = 16.dp)) {
+
+        Text(
+            text = item.rank,
+            modifier = Modifier
+                .width(40.dp)
+                .align(Alignment.CenterStart),
+            color = TextSecondaryLight,
+            style = DisplayMedium,
+            textAlign = TextAlign.Center,
+            fontSize = 14.sp
+        )
+
+        Row(
+            modifier = Modifier
+                .padding(start = 40.dp)
+                .align(Alignment.CenterStart),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            NetWorkImage(
+                model = item.icon,
+                modifier = Modifier
+                    .size(25.dp)
+                    .clip(CircleShape)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column {
+
+                Text(
+                    modifier = Modifier.width(100.dp),
+                    text = item.symbol,
+                    color = TextPrimaryLight,
+                    style = DisplayMedium,
+                    fontSize = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(3.dp))
+
+                Text(
+                    text = item.marketCap.toCompactMoney(),
+                    color = TextTertiaryLight,
+                    style = BodyMedium,
+                    fontSize = 12.sp
+                )
+            }
+        }
+
+        Text(
+            text = "$" + String.format(Locale.US, "%.2f", item.price),
+            modifier = Modifier
+                .padding(end = 100.dp)
+                .align(Alignment.CenterEnd),
+            color = if (item.priceChange1d < 0) MarkerRedColor else MarkerGreenColor,
+            style = DisplayMedium,
+            fontSize = 14.sp
+        )
+
+        Box(
+            modifier = Modifier
+                .size(65.dp, 30.dp)
+                .clip(ShapeXSmall)
+                .background(if (item.priceChange1d < 0) MarkerRedColor else MarkerGreenColor)
+                .align(Alignment.CenterEnd)
+        ) {
+            Text(
+                text = String.format(Locale.US, "%.2f%s", item.priceChange1d, "%").replace("-", ""),
+                modifier = Modifier.align(Alignment.Center),
+                color = Color.White,
+                fontSize = 13.sp,
+                style = DisplayMedium,
+                overflow = TextOverflow.Clip,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
 /**
  * 处理页面状态变化的副作用
  *
@@ -399,5 +669,26 @@ private fun HandlePageStateChanges(
 fun HomeScreenPreview() {
     AppTheme {
         HomeScreen(MarketsCap())
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun CoinItemPreview() {
+    AppTheme {
+        CoinItem(
+            item = MarketsCoins(
+                id = "bitcoin",
+                icon = "https://static.coinstats.app/coins/1650455588819.png",
+                name = "Bitcoin",
+                symbol = "BTC",
+                rank = "1",
+                price = 91209.26781332532,
+                priceBtc = 1.0,
+                volume = 43148347685.14807,
+                marketCap = 1820006238824.5676
+            )
+        )
     }
 }

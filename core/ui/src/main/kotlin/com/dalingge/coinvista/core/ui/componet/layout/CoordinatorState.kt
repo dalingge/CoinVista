@@ -17,6 +17,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import kotlin.math.absoluteValue
 
 @Composable
 fun rememberCoordinatorState(): CoordinatorState {
@@ -95,7 +96,8 @@ class CoordinatorState {
     internal val nestedScrollConnection = object : NestedScrollConnection {
         override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
             // 水平方向不消耗
-            if (available.x != 0f) return Offset.Zero
+            if (available.x.absoluteValue > available.y.absoluteValue ) return Offset.Zero
+
             // 向上滑动，如果没有达到最大可折叠高度，则自己先消耗
             if (available.y < 0 && collapsedHeight < maxCollapsableHeight) {
                 return consume(available)
@@ -109,6 +111,11 @@ class CoordinatorState {
             available: Offset,
             source: NestedScrollSource
         ): Offset {
+            // 【优化】同上，横向主导时不处理
+            if (available.x.absoluteValue  > available.y.absoluteValue ) {
+                return Offset.Zero
+            }
+
             if (available.y > 0) {
                 return consume(available)
             }
