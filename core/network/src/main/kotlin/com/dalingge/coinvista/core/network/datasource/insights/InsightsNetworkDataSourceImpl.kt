@@ -7,7 +7,7 @@ import com.dalingge.coinvista.core.network.service.InsightsService
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/11/21  18:29
  */
 class InsightsNetworkDataSourceImpl(private val insightsService: InsightsService) : BaseNetworkDataSource(), InsightsNetworkDataSource {

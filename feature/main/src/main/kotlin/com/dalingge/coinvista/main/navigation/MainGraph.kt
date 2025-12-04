@@ -12,7 +12,7 @@ import com.dalingge.coinvista.navigation.routes.MainRoutes
 /**
  *
  * @Description : 主模块导航图
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/11  16:04
  */
 @OptIn(ExperimentalSharedTransitionApi::class)

@@ -6,7 +6,7 @@ import retrofit2.http.GET
 /**
  *
  * @Description :市场洞察相关接口
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/11/21  18:18
  */
 interface InsightsService {

@@ -1,17 +1,19 @@
 package com.dalingge.coinvista.core.network.service
 
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 /**
  *
  * @Description : 行情相关接口
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/21  10:25
  */
 interface MarketService {
@@ -48,5 +50,25 @@ interface MarketService {
      */
     @GET("/tickers/exchanges")
     suspend fun getTickersExchanges(): List<TickersExchanges>
+
+
+    /**
+     * 获取加密货币类别
+     */
+    @GET
+    suspend fun getCoinsCategories(@Url url: String = "https://api.coin-stats.com/v5/coins/categories/list"): List<MarketsCategories>
+
+
+    /**
+     * 获取加密货币类别列表
+     */
+    @GET
+    suspend fun getCoinsCategoriesSingle(
+        @Url url: String = "https://api.coin-stats.com/v5/coins/categories/single",
+        @Query("id") id: String,
+        @Query("skip") page: Int,
+        @Query("limit") limit: Int,
+        @Query("sortBy") sortBy: String,
+    ): List<TickersExchanges>
 
 }

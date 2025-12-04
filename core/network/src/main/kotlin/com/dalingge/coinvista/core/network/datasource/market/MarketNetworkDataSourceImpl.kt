@@ -1,6 +1,7 @@
 package com.dalingge.coinvista.core.network.datasource.market
 
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
@@ -10,7 +11,7 @@ import com.dalingge.coinvista.core.network.service.MarketService
 /**
  *
  * @Description : 行情相关数据源实现类
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/21  17:54
  * @property marketService 行情服务接口，用于发起实际的网络请求
  */
@@ -52,6 +53,13 @@ class MarketNetworkDataSourceImpl(private val marketService: MarketService) : Ba
      */
     override suspend fun getTickersExchanges(): List<TickersExchanges> {
         return marketService.getTickersExchanges()
+    }
+
+    /**
+     *  获取加密货币类别
+     */
+    override suspend fun getCoinsCategories(): List<MarketsCategories> {
+        return marketService.getCoinsCategories()
     }
 
 }

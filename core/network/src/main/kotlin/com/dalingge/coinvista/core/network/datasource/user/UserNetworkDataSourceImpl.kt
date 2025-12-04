@@ -6,7 +6,7 @@ import com.dalingge.coinvista.core.network.service.UserService
 /**
  *
  * @Description : 用户相关数据源实现类
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/21  17:54
  * @property userService 用户服务接口，用于发起实际的网络请求
  */

@@ -6,7 +6,7 @@ import com.dalingge.coinvista.core.model.entity.FearGreed
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/11/21  18:28
  */
 interface InsightsNetworkDataSource{

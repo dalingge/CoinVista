@@ -1,16 +1,16 @@
 package com.dalingge.coinvista.core.network.datasource.market
 
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
-import retrofit2.http.Query
 
 
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/21  17:36
  */
 interface MarketNetworkDataSource {
@@ -46,5 +46,11 @@ interface MarketNetworkDataSource {
      *  获取交易所列表
      */
     suspend fun getTickersExchanges(): List<TickersExchanges>
+
+
+    /**
+     *  获取加密货币类别
+     */
+    suspend fun getCoinsCategories(): List<MarketsCategories>
 
 }

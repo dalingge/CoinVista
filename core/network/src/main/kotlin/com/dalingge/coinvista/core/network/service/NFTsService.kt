@@ -8,7 +8,7 @@ import retrofit2.http.Query
 /**
  *
  * @Description :NFT相关接口
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/12/2  17:27
  */
 interface NFTsService {

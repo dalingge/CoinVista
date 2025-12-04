@@ -32,11 +32,31 @@ data class MarketsCoins(
 )
 
 @Serializable
+data class MarketsCategories(
+    val id: String = "",
+    val categoryId: String = "",
+    val title: String = "",
+    val totalP24: Double = 0.0,
+    val coinsCount: Int = 0,
+    val totalMC: Double = 0.0,
+    val totalVolume24: Double = 0.0,
+    val totalP1h: Double = 0.0,
+    val totalP7d: Double = 0.0,
+    val coins: List<MarketsCategoriesCoins> = emptyList()
+)
+
+@Serializable
+data class MarketsCategoriesCoins(
+    val ic: String = "",
+    val s: String = ""
+)
+
+@Serializable
 data class TickersExchanges(
     val id: String = "",
     val icon: String = "",
     val name: String = "",
-    val rank: String = "",
+    val rank: Int = 0,
     val change24h: Double = 0.0,
     val url: String = "",
     val volume24h: Double = 0.0,

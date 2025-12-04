@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/11/21  18:32
  */
 class InsightsRepository(

@@ -22,7 +22,7 @@ import kotlin.math.abs
 /**
  *
  * @Description : 股票行情界面中，数字根据涨跌自动显示红绿颜色
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/31  12:56
  */
 @Composable

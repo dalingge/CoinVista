@@ -155,7 +155,7 @@ fun NetWorkImage(
 }
 
 @Composable
-fun NetWorkImage(model: Any?, modifier: Modifier = Modifier,){
+fun NetWorkImage(model: Any?, modifier: Modifier = Modifier){
     AsyncImage(
         model =model,
         contentDescription = null,

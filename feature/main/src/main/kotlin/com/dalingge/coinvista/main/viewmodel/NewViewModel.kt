@@ -4,13 +4,7 @@ import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
 import com.dalingge.coinvista.core.data.state.AppState
 import com.dalingge.coinvista.navigation.AppNavigator
 
-/**
- *
- * @Description :
- * @Author :Dalingge
- * @Time :2025/11/24  18:27
- */
-class PortfolioViewModel(
+class NewViewModel(
     navigator: AppNavigator,
     appState: AppState
 ) : BaseViewModel(navigator, appState) {

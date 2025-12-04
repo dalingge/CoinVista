@@ -8,7 +8,7 @@ import com.dalingge.coinvista.navigation.routes.MainRoutes
 /**
  *
  * @Description : 启动页 ViewModel
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/14  14:22
  */
 class SplashViewModel(

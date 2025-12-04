@@ -36,7 +36,7 @@ import kotlin.math.sin
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/11/24  14:00
  */
 

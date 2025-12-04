@@ -5,32 +5,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.dalingge.coinvista.core.design.theme.AppTheme
-import com.dalingge.coinvista.main.viewmodel.PortfolioViewModel
+import com.dalingge.coinvista.main.viewmodel.NewViewModel
 import org.koin.androidx.compose.koinViewModel
-
-/**
- *
- * @Description :
- * @Author :Dalingge
- * @Time :2025/11/24  18:26
- */
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-internal fun PortfolioRoute(viewModel: PortfolioViewModel = koinViewModel()){
+internal fun NewRoute(viewModel: NewViewModel = koinViewModel()){
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-internal fun PortfolioScreen() {
+internal fun NewScreen() {
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showBackground = true)
 @Composable
-fun PortfolioScreenPreview() {
+fun NewScreenPreview() {
     AppTheme {
-        PortfolioScreen()
+        NewScreen()
     }
 }

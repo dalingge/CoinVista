@@ -22,17 +22,15 @@ object MainRoutes {
     data object Main
 
     /**
-     * 首页路由
-     */
-    @Serializable
-    data object Home
-
-    /**
-     * 行情页面路由
+     * 市场页面路由
      */
     @Serializable
     data object Market
-
+    /**
+     * 首页路由
+     */
+    @Serializable
+    data object New
     /**
      * 投资组合页面路由
      */

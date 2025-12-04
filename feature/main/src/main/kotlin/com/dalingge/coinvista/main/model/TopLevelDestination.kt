@@ -10,15 +10,15 @@ enum class TopLevelDestination(
     @param:DrawableRes val iconResId: Int,
     val route: Any,
 ) {
-    HOME(
-        titleTextId = R.string.main_tab_home,
-        iconResId = R.drawable.ic_tab_home,
-        route = MainRoutes.Home
-    ),
-    MARKET(
-        titleTextId = R.string.main_tab_market,
-        iconResId = R.drawable.ic_tab_market,
+    MARKETS(
+        titleTextId = R.string.main_tab_markets,
+        iconResId = R.drawable.ic_tab_markets,
         route = MainRoutes.Market
+    ),
+    NEWS(
+        titleTextId = R.string.main_tab_news,
+        iconResId = R.drawable.ic_tab_news,
+        route = MainRoutes.New
     ),
     PORTFOLIO(
         titleTextId = R.string.main_tab_portfolio,

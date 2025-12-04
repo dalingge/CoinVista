@@ -3,7 +3,7 @@ package com.dalingge.coinvista.core.ui.componet.loading
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/17  17:32
  */
 

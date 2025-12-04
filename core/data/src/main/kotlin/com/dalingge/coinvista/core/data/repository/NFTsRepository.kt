@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/12/2  17:38
  */
 class NFTsRepository(
@@ -26,6 +26,6 @@ class NFTsRepository(
      */
     fun getNFTsTrending(page: Int, ): Flow<NetworkPageData<NFTsTrending>> =
         flow {
-            emit(nftsNetworkDataSource.getNFTsTrending(page, 20))
+            emit(nftsNetworkDataSource.getNFTsTrending(page, 50))
         }.flowOn(Dispatchers.IO)
 }

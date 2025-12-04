@@ -1,6 +1,7 @@
 package com.dalingge.coinvista.core.data.repository
 
 import com.dalingge.coinvista.core.model.entity.MarketsCap
+import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 /**
  *
  * @Description :
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/21  11:01
  */
 class MarketRepository(
@@ -28,7 +29,6 @@ class MarketRepository(
             emit(marketNetworkDataSource.getMarketsCap())
         }.flowOn(Dispatchers.IO)
 
-
     /**
      *  加密货币所有数据
      *
@@ -40,21 +40,27 @@ class MarketRepository(
         type: Int,
     ): Flow<NetworkPageData<MarketsCoins>> =
         flow {
-            val sortBy = if (type == 0) "rank" else "priceChange1d"
+            val sortBy = if (type == 0) "rank" else if(type == 1) "volume" else "priceChange1d"
             val sortDir = if (type == 0 || type == 4) "asc" else "desc"
             val priceChange1dGreaterThan = if (type == 3) 0f else null
             val priceChange1dLessThan = if (type == 4) 0f else null
-            emit(marketNetworkDataSource.getCoins(page, 20, sortBy, sortDir, 300, priceChange1dGreaterThan, priceChange1dLessThan))
+            emit(marketNetworkDataSource.getCoins(page, 50, sortBy, sortDir, 300, priceChange1dGreaterThan, priceChange1dLessThan))
         }.flowOn(Dispatchers.IO)
-
-
 
     /**
      * 获取交易所列表
      */
     fun getTickersExchanges(): Flow<List<TickersExchanges>> =
         flow {
-            emit(marketNetworkDataSource.getTickersExchanges())
+            emit(marketNetworkDataSource.getTickersExchanges().sortedBy { it.rank })
+        }.flowOn(Dispatchers.IO)
+
+    /**
+     * 获取加密货币类别
+     */
+    fun getCoinsCategories(): Flow<List<MarketsCategories>> =
+        flow {
+            emit(marketNetworkDataSource.getCoinsCategories())
         }.flowOn(Dispatchers.IO)
 
 }

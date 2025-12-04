@@ -41,7 +41,7 @@ import kotlin.collections.forEachIndexed
 /**
  *
  * @Description : 主界面路由入口
- * @Author :丁博洋
+ * @Author :Dalingge
  * @Time :2025/10/14  15:12
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -145,8 +145,8 @@ private fun MainScreenContentView(
         userScrollEnabled = false
     ) { page: Int ->
         when (page) {
-            0 -> HomeRoute()
-            1 -> MarketRoute()
+            0 -> MarketRoute()
+            1 -> NewRoute()
             2 -> PortfolioRoute()
             3 -> MineRoute()
         }
