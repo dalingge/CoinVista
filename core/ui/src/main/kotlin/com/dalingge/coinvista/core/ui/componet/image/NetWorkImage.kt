@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -14,12 +16,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
+import com.dalingge.coinvista.core.ui.R
 import com.dalingge.coinvista.core.ui.componet.loading.WeLoading
 
 /**
@@ -109,22 +113,22 @@ fun NetWorkImage(
                 ) {
                     // 如果提供了onErrorClick回调，则显示可点击的图标按钮
                     if (onErrorClick != null) {
-//                        IconButton(onClick = onErrorClick) {
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.ic_error),
-//                                contentDescription = "Error",
-//                                tint = errorColor,
-//                                modifier = Modifier.size(24.dp)
-//                            )
-//                        }
+                        IconButton(onClick = onErrorClick) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_image_error),
+                                contentDescription = "Error",
+                                tint = errorColor,
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
                     } else {
                         // 否则显示普通图标
-//                        Icon(
-//                            painter = painterResource(id = R.drawable.ic_error),
-//                            contentDescription = "Error",
-//                            tint = errorColor,
-//                            modifier = Modifier.size(24.dp)
-//                        )
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_image_error),
+                            contentDescription = "Error",
+                            tint = errorColor,
+                            modifier = Modifier.size(40.dp)
+                        )
                     }
                 }
             }

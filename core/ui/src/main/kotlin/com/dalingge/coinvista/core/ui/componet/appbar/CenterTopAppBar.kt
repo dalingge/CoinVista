@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.ArrowLeftIcon
+import com.dalingge.coinvista.core.design.theme.DisplayLarge
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
 
 
@@ -72,8 +73,7 @@ fun CenterTopAppBar(
                     text = finalTitle,
                     maxLines = 1,
                     fontSize = 18.sp,
-                    fontFamily = robotoSansFamily,
-                    fontWeight = FontWeight.Normal,
+                    style = DisplayLarge,
                     overflow = TextOverflow.Ellipsis
                 )
             }

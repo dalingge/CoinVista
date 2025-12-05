@@ -1,17 +1,5 @@
 package com.dalingge.coinvista.main.model
 
-//enum class MarketState(val label: String) {
-//    TOP("排行榜"),
-//    TRENDING("热门"),
-//    WATCHLIST("自选"),
-//    TOP_GAINERS("涨幅榜"),
-//    TOP_LOSERS("跌幅榜"),
-//    COMPLETED("分类"),
-//    EXCHANGE("交易所"),
-//    NFT("NFTs"),
-//}
-
-
 sealed class MarketTab(val title: String, val index: Int) {
     // 1. 通用列表类型 (排行榜、热门、涨幅、跌幅)
     // 它们共享一套 UI 和数据结构，只是请求参数不同

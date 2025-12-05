@@ -2,6 +2,7 @@ package com.dalingge.coinvista
 
 import android.app.Application
 import android.content.res.Configuration
+import com.dalingge.coinvista.common.dl.commonModule
 import com.dalingge.coinvista.core.data.di.appStateModule
 import com.dalingge.coinvista.core.network.dl.networkModule
 import com.dalingge.coinvista.dl.appModule
@@ -25,7 +26,7 @@ class Application : Application() {
         startKoin {
             androidLogger(if (debugMode) Level.DEBUG else Level.NONE)
             androidContext(app)
-            modules(appModule, networkModule,appStateModule,mainModule)
+            modules(appModule, networkModule,appStateModule,mainModule,commonModule)
         }
     }
 

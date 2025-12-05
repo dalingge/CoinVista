@@ -170,7 +170,7 @@ abstract class BaseNetWorkListViewModel<T : Any>(
                 viewModelScope.launch {
                     _loadMoreState.value = LoadMoreState.Success
                     delay(400)
-                    _listData.value = _listData.value + newList
+                    _listData.value += newList
                     _loadMoreState.value =
                         if (hasNextPage) LoadMoreState.PullToLoad else LoadMoreState.NoMore
                 }

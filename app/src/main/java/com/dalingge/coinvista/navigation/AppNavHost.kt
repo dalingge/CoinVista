@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.dalingge.coinvista.common.navigation.commonGraph
 import com.dalingge.coinvista.main.navigation.mainGraph
 import com.dalingge.coinvista.navigation.routes.MainRoutes
 import kotlinx.coroutines.flow.collectLatest
@@ -69,8 +70,7 @@ fun AppNavHost(
         ) {
             // 只调用模块级Graph函数，大大减少了冲突可能性
             mainGraph(navController,this@SharedTransitionLayout)
-
-//            tradeGraph(navController)
+            commonGraph(navController)
         }
     }
 }

@@ -57,9 +57,7 @@ class MarketViewModel(
     private val _selectedTabIndex = MutableStateFlow(0)
     val selectedTabIndex = _selectedTabIndex.asStateFlow()
 
-    /**
-     * 是否正在进行标签切换动画
-     */
+    // 是否正在进行标签切换动画
     private val _isAnimatingTabChange = MutableStateFlow(false)
     val isAnimatingTabChange: StateFlow<Boolean> = _isAnimatingTabChange.asStateFlow()
 

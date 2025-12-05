@@ -310,17 +310,17 @@ private fun MarketContentView(
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(selectedTabIndex) { tabs.size }
 
-    Column {
+    // Pager 与 Tab 联动
+    // 处理页面状态变化
+    HandlePageStateChanges(
+        pageState = pagerState,
+        selectedTabIndex = selectedTabIndex,
+        isAnimatingTabChange = isAnimatingTabChange,
+        onTabByPageChanged = onTabByPageChanged,
+        onAnimationCompleted = onAnimationCompleted
+    )
 
-        // Pager 与 Tab 联动
-        // 处理页面状态变化
-        HandlePageStateChanges(
-            pageState = pagerState,
-            selectedTabIndex = selectedTabIndex,
-            isAnimatingTabChange = isAnimatingTabChange,
-            onTabByPageChanged = onTabByPageChanged,
-            onAnimationCompleted = onAnimationCompleted
-        )
+    Column {
 
         ScrollableTextTabComponent(
             tabs = tabs.map { it.title },
@@ -1124,7 +1124,7 @@ fun CategoriesListItem(item: MarketsCategories, onMarketCoinsClick: (String) -> 
  * @param onAnimationCompleted 标签切换动画完成时的回调
  */
 @Composable
-private fun HandlePageStateChanges(
+fun HandlePageStateChanges(
     pageState: PagerState,
     selectedTabIndex: Int,
     isAnimatingTabChange: Boolean,

@@ -65,9 +65,9 @@ val networkModule = module {
     single {
         OkHttpClient.Builder()
             .cache(Cache(File(androidApplication().cacheDir, "okhttp"), 100 * 1024 * 1024))
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .enableMultiBaseUrls()
             .addInterceptor(HeaderInterceptor())
             .apply {

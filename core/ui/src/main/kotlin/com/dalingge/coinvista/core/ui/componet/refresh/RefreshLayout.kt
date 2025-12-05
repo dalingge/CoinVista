@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -38,12 +39,12 @@ import kotlin.math.roundToInt
  * @param shouldTriggerLoadMore 判断是否应该触发加载更多的函数
  * @param gridContent 网格内容构建器（网格模式时使用）
  * @param content 列表内容构建器（列表模式时使用）
- * 
+ *
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RefreshLayout(
-    refreshState:RefreshState = rememberRefreshState(),
+    refreshState: RefreshState? = null,
     modifier: Modifier = Modifier,
     isGrid: Boolean = false,
     listState: LazyListState? = null,
@@ -57,8 +58,8 @@ fun RefreshLayout(
     gridContent: LazyStaggeredGridScope.() -> Unit = {},
     content: LazyListScope.() -> Unit = {},
 ) {
-//    val coroutineScope = rememberCoroutineScope()
-//    val refreshState = rememberRefreshState(coroutineScope)
+    val coroutineScope = rememberCoroutineScope()
+    val refreshState = refreshState ?: rememberRefreshState(coroutineScope)
 
     // 同步刷新状态
     LaunchedEffect(isRefreshing) {

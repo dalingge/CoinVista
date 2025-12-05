@@ -5,6 +5,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.dalingge.coinvista.core.design.theme.AppTheme
+import com.dalingge.coinvista.core.ui.componet.appbar.CenterTopAppBar
+import com.dalingge.coinvista.core.ui.componet.scaffold.CommonScaffold
 import com.dalingge.coinvista.main.viewmodel.PortfolioViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -19,11 +21,17 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 internal fun PortfolioRoute(viewModel: PortfolioViewModel = koinViewModel()){
 
+    PortfolioScreen()
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun PortfolioScreen() {
+
+    CommonScaffold(
+        topBar = { CenterTopAppBar(titleText = "投资组合", showBackIcon = false) },
+    ) { paddingValues ->
+    }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
