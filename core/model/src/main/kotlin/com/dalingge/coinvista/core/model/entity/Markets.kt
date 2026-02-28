@@ -42,13 +42,13 @@ data class MarketsCategories(
     val totalVolume24: Double = 0.0,
     val totalP1h: Double = 0.0,
     val totalP7d: Double = 0.0,
-    val coins: List<MarketsCategoriesCoins> = emptyList()
+    val coins: List<MarketsCategoriesCoins> = emptyList(),
 )
 
 @Serializable
 data class MarketsCategoriesCoins(
     val ic: String = "",
-    val s: String = ""
+    val s: String = "",
 )
 
 @Serializable
@@ -62,6 +62,24 @@ data class TickersExchanges(
     val volume24h: Double = 0.0,
     val volume7d: Double = 0.0,
     val volume1m: Double = 0.0,
+)
+
+
+@Serializable
+data class SearchList(
+    val title: String = "",
+    val data: List<SearchItem> = emptyList(),
+)
+
+@Serializable
+data class SearchItem(
+    val id: String = "",
+    val name: String = "",
+    val icon: String = "",
+    val subIcon: String = "",
+    val label: String = "",
+    val p24: Double = 0.0,
+    val pu24: Double = 0.0,
 )
 
 

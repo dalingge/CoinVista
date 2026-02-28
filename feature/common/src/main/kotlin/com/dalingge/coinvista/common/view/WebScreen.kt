@@ -31,9 +31,12 @@ import com.dalingge.coinvista.common.viewmodel.WebViewModel
 import com.dalingge.coinvista.core.design.component.FullScreenBox
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.CommonIcon
+import com.dalingge.coinvista.core.navigation.NavigationService.navigateBack
+import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 import com.dalingge.coinvista.core.ui.componet.scaffold.AppScaffold
 import com.dalingge.coinvista.feature.common.R
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import kotlin.apply
 import kotlin.let
 import kotlin.text.startsWith
@@ -45,7 +48,9 @@ import kotlin.text.startsWith
  */
 @Composable
 internal fun WebRoute(
-    viewModel: WebViewModel = koinViewModel()
+    navKey: CommonRoutes.Web,
+    viewModel: WebViewModel = koinViewModel(
+        parameters = { parametersOf(navKey) }),
 ) {
     // 收集WebView数据
     val webViewData by viewModel.webViewData.collectAsState()
@@ -64,7 +69,6 @@ internal fun WebRoute(
         currentProgress = currentProgress,
         shouldRefresh = shouldRefresh,
         showDropdownMenu = showDropdownMenu,
-        onBackClick = viewModel::navigateBack,
         onTitleChange = viewModel::updatePageTitle,
         onProgressChange = viewModel::updateProgress,
         onRefreshClick = viewModel::refreshPage,
@@ -100,18 +104,17 @@ internal fun WebScreen(
     currentProgress: Int = 0,
     shouldRefresh: Boolean = false,
     showDropdownMenu: Boolean = false,
-    onBackClick: () -> Unit = {},
     onTitleChange: (String) -> Unit = {},
     onProgressChange: (Int) -> Unit = {},
     onRefreshClick: () -> Unit = {},
     onResetRefreshState: () -> Unit = {},
     onOpenInBrowser: () -> Unit = {},
     onShowDropdownMenu: () -> Unit = {},
-    onDismissDropdownMenu: () -> Unit = {}
+    onDismissDropdownMenu: () -> Unit = {},
 ) {
     AppScaffold(
         titleText = pageTitle,
-        onBackClick = onBackClick,
+        onBackClick = { navigateBack() },
         topBarActions = {
             WebScreenTopBarActions(
                 showDropdownMenu = showDropdownMenu,
@@ -148,7 +151,7 @@ private fun WebScreenTopBarActions(
     onShowDropdownMenu: () -> Unit,
     onDismissDropdownMenu: () -> Unit,
     onRefreshClick: () -> Unit,
-    onOpenInBrowser: () -> Unit
+    onOpenInBrowser: () -> Unit,
 ) {
     // 溢出菜单按钮
     IconButton(onClick = onShowDropdownMenu) {
@@ -194,7 +197,7 @@ private fun WebViewContent(
     shouldRefresh: Boolean,
     onTitleChange: (String) -> Unit,
     onProgressChange: (Int) -> Unit,
-    onResetRefreshState: () -> Unit
+    onResetRefreshState: () -> Unit,
 ) {
     var webView by remember { mutableStateOf<WebView?>(null) }
 
@@ -233,6 +236,7 @@ private fun WebViewContent(
                     }
 
                     webViewClient = object : WebViewClient() {
+                        @Deprecated("Deprecated in Java")
                         override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                             // 如果是 HTTP 或 HTTPS 链接，在 WebView 中加载
                             if (url.startsWith("http://") || url.startsWith("https://")) {

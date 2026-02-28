@@ -18,60 +18,63 @@ targetSdk = "36"
 
 # 构建工具版本
 # Android Gradle Plugin: https://developer.android.com/studio/releases/gradle-plugin
-agp = "8.13.0"
+agp = "9.0.1"
 # Kotlin 编译器: https://kotlinlang.org/docs/releases.html
 # 注意: 当前 kotlin 版本为 2.2.10 注意需要和 hilt 版本对应
-kotlin = "2.2.21"
+kotlin = "2.3.10"
 # KSP (Kotlin Symbol Processing): https://github.com/google/ksp
 # 说明: Kotlin 注解处理器，用于代码生成
-ksp-kitlin = "2.2.0-2.0.2"
+ksp-kitlin = "2.3.4"
 # Android 核心库版本
 # AndroidX Core KTX: https://developer.android.com/jetpack/androidx/releases/core
 coreKtx = "1.17.0"
 
-appcompat = "1.7.1"
 # 动画相关版本
 # Lottie Compose 动画库: https://airbnb.io/lottie/#/android-compose
 # 说明: 支持 After Effects 动画的 Compose 库
-lottie = "6.7.0"
+lottie = "6.7.1"
 # 数据存储相关版本
 # 腾讯 MMKV 高性能存储: https://github.com/Tencent/MMKV
-mmkv = "2.2.4"
+mmkv = "2.3.0"
 # AndroidX Activity Compose: https://developer.android.com/jetpack/androidx/releases/activity
-activity = "1.11.0"
+activity = "1.12.4"
 # 权限相关版本
 # XXPermissions 权限框架: https://github.com/getActivity/XXPermissions
-xxpermissions = "26.5"
+xxpermissions = "28.0"
 # 网络请求相关版本
 # scarlet websocket 客户端: https://github.com/Tinder/Scarlet/
 scarlet = "0.1.12"
 # OkHttp HTTP 客户端: https://square.github.io/okhttp/
-okhttp = "5.2.1"
+okhttp = "5.3.2"
 # Retrofit HTTP 客户端: https://square.github.io/retrofit/
 retrofit = "3.0.0"
-# Chucker 网络调试工具: https://github.com/liujingxing/rxhttp
+# Chucker 网络调试工具: https://github.com/ChuckerTeam/chucker
 # 说明: 通过 OkHttp 拦截器机制在应用通知栏显示网络请求功能
-chucker = "4.2.0"
+chucker = "4.3.0"
 # Jetpack Compose 相关版本
 # Compose BOM: https://developer.android.com/jetpack/compose/bom
 # 说明: BOM 统一管理所有 Compose 库版本，确保兼容性
-composeBom = "2025.10.00"
+composeBom = "2026.02.00"
 # 导航相关版本
 # Navigation Compose: https://developer.android.com/jetpack/androidx/releases/navigation
 navigation = "2.9.5"
+# Navigation3 https://developer.android.com/guide/navigation/navigation-3
+navigation3 = "1.0.1"
 # 序列化相关版本
 # Kotlinx Serialization JSON: https://github.com/Kotlin/kotlinx.serialization
-kotlinxSerializationJson = "1.9.0"
+kotlinxSerializationJson = "1.10.0"
 
 # Material Design Components: https://github.com/material-components/material-components-android
-material = "1.14.0-alpha05"
+material = "1.14.0-alpha09"
+# AndroidX AppCompat: https://developer.android.com/jetpack/androidx/releases/appcompat
+appcompat = "1.7.1"
 
 startup = "1.2.0"
 
-lifecycle = "2.9.4"
+lifecycle = "2.10.0"
 # 图片加载相关版本
 # Coil  图片加载库: https://coil-kt.github.io/coil/
-coil = "3.3.0"
+coil = "3.4.0"
 moshi = "1.15.2"
 xlog = "1.11.1"
 koin = "4.1.1"
@@ -91,6 +94,7 @@ androidx-startup = { group = "androidx.startup", name = "startup-runtime", versi
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewModel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-navigation3= { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycle" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Jetpack Compose 相关库
@@ -104,14 +108,18 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material = { group = "androidx.compose.material", name = "material" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
+androidx-compose-navigation3 = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation3" }
 
 # 导航相关库
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
-androidx-navigation-ui = { group = "androidx.navigation",  name = "navigation-ui",version.ref = "navigation" }
-androidx-navigation-fragment = { group = "androidx.navigation",  name = "navigation-fragment",version.ref = "navigation" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
+androidx-navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }
+androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
+androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 
 # 序列化相关库
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationJson" }
 
 # 序列化相关库
 moshi-ktx = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
@@ -128,14 +136,14 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 
 # 网络调试相关库
 chucker-library = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
-chucker-library-no= { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
+chucker-library-no = { module = "com.github.chuckerteam.chucker:library-no-op", version.ref = "chucker" }
 
 scarlet-core = { group = "com.tinder.scarlet", name = "scarlet", version.ref = "scarlet" }
 scarlet-okhttp = { group = "com.tinder.scarlet", name = "websocket-okhttp", version.ref = "scarlet" }
 scarlet-lifecycle = { group = "com.tinder.scarlet", name = "lifecycle-android", version.ref = "scarlet" }
 
 # 图片加载相关库
-coil-core= { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
+coil-core = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
@@ -143,6 +151,7 @@ coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "c
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 
 # 依赖注入相关库
+koin-bom = { group = "io.insert-koin", name = "koin-bom",version.ref = "koin" }
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-compat = { group = "io.insert-koin", name = "koin-android-compat", version.ref = "koin" }
@@ -151,6 +160,7 @@ koin-navigation = { group = "io.insert-koin", name = "koin-androidx-navigation",
 koin-startup = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 koin-compose-navigation = { group = "io.insert-koin", name = "koin-androidx-compose-navigation", version.ref = "koin" }
+koin-compose-navigation3 = {group = "io.insert-koin", name = "koin-compose-navigation3", version.ref = "koin"}
 
 # 权限相关库
 xxpermissions = { module = "com.github.getActivity:XXPermissions", version.ref = "xxpermissions" }
@@ -188,7 +198,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp-kitlin" }
 
-coinvista-android-application= { id = "com.dalingge.coinvista.android.application" }
+coinvista-android-application = { id = "com.dalingge.coinvista.android.application" }
 coinvista-android-application-compose = { id = "com.dalingge.coinvista.android.application.compose" }
 coinvista-android-library = { id = "com.dalingge.coinvista.android.library" }
 coinvista-android-library-compose = { id = "com.dalingge.coinvista.android.library.compose" }

@@ -3,6 +3,7 @@ package com.dalingge.coinvista.core.network.datasource.market
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
+import com.dalingge.coinvista.core.model.entity.SearchList
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import com.dalingge.coinvista.core.network.base.BaseNetworkDataSource
@@ -60,6 +61,22 @@ class MarketNetworkDataSourceImpl(private val marketService: MarketService) : Ba
      */
     override suspend fun getCoinsCategories(): List<MarketsCategories> {
         return marketService.getCoinsCategories()
+    }
+
+    /**
+     *  热门搜索
+     */
+    override suspend fun searchTrendingCoins(): List<SearchList> {
+        return marketService.searchTrendingCoins()
+    }
+
+    /**
+     *  搜索
+     *
+     *  @param query 模糊搜索
+     */
+    override suspend fun searchCoins(query: String): List<SearchList> {
+        return marketService.searchCoins(query = query)
     }
 
 }

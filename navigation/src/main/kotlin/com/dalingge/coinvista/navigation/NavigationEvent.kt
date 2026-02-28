@@ -1,7 +1,6 @@
 package com.dalingge.coinvista.navigation
 
 import androidx.navigation.NavOptions
-import com.joker.coolmall.navigation.NavigationResultKey
 
 /**
  * 导航事件

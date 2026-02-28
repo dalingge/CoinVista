@@ -1,7 +1,10 @@
 package com.dalingge.coinvista.main.view
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -63,6 +66,7 @@ import com.dalingge.coinvista.core.design.theme.MarkerGreenColor
 import com.dalingge.coinvista.core.design.theme.MarkerRedColor
 import com.dalingge.coinvista.core.design.theme.ShapeMedium
 import com.dalingge.coinvista.core.design.theme.ShapeXSmall
+import com.dalingge.coinvista.core.design.theme.SpaceHorizontalMedium
 import com.dalingge.coinvista.core.design.theme.SpacePaddingMedium
 import com.dalingge.coinvista.core.design.theme.SpacePaddingSmall
 import com.dalingge.coinvista.core.design.theme.SpaceVerticalSmall
@@ -95,6 +99,7 @@ import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.model.MarketTab
 import com.dalingge.coinvista.main.model.MarketTabState
 import com.dalingge.coinvista.main.model.MarketTabUiState
+import com.dalingge.coinvista.main.model.RankType
 import com.dalingge.coinvista.main.viewmodel.MarketViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -103,7 +108,11 @@ import java.util.Locale
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-internal fun MarketRoute(viewModel: MarketViewModel = koinViewModel()) {
+internal fun MarketRoute(
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedContentScope: AnimatedContentScope? = null,
+    viewModel: MarketViewModel = koinViewModel(),
+) {
 
     // 获取生命周期所有者
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -148,6 +157,8 @@ internal fun MarketRoute(viewModel: MarketViewModel = koinViewModel()) {
         marketsCap = marketsCapState,
         fearGreed = fearGreedState,
         tabs = viewModel.tabs,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedContentScope,
         coordinatorState = coordinatorState,
         selectedTabIndex = selectedTabIndex,
         isAnimatingTabChange = isAnimatingTabChange,
@@ -160,12 +171,14 @@ internal fun MarketRoute(viewModel: MarketViewModel = koinViewModel()) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MarketScreen(
     marketsCap: MarketsCap = MarketsCap(),
     fearGreed: FearGreed = FearGreed(),
     tabs: List<MarketTab> = emptyList(),
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     coordinatorState: CoordinatorState = CoordinatorState(),
     selectedTabIndex: Int = 0,
     isAnimatingTabChange: Boolean = false,
@@ -193,7 +206,9 @@ internal fun MarketScreen(
     val contentScrollableState = remember { lazyListState }
 
     CommonScaffold(
-        topBar = { HomeTopAppBar(scrollBehavior, toSearch, toGitHubPage) },
+        topBar = {
+            HomeTopAppBar(sharedTransitionScope, animatedVisibilityScope, scrollBehavior, toSearch, toGitHubPage)
+        },
         scrollBehavior = scrollBehavior
     ) { paddingValues ->
 
@@ -232,6 +247,8 @@ internal fun MarketScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 private fun HomeTopAppBar(
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     scrollBehavior: TopAppBarScrollBehavior,
     toSearch: () -> Unit,
     toGitHubPage: () -> Unit,
@@ -240,6 +257,7 @@ private fun HomeTopAppBar(
         scrollBehavior = scrollBehavior,
         title = {
             // 中间搜索框
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -247,10 +265,24 @@ private fun HomeTopAppBar(
                     .clip(ShapeMedium)
                     .background(BgContentLight)
                     .clickable { toSearch() }
-                    .padding(horizontal = 12.dp),
-
+//                    .let {
+//                        if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+//                            with(sharedTransitionScope) {
+//                                it.sharedElement(
+//                                    sharedContentState = rememberSharedContentState(key = "search_element"),
+//                                    animatedVisibilityScope = animatedVisibilityScope
+//                                )
+//                            }
+//                        } else {
+//                            it
+//                        }
+//                    }
+                ,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+
+                SpaceHorizontalMedium()
+
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = "搜索",
@@ -265,7 +297,6 @@ private fun HomeTopAppBar(
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
-
         },
         actions = {
             IconButton(
@@ -1159,8 +1190,18 @@ fun HandlePageStateChanges(
 @Preview(showBackground = true)
 @Composable
 fun MarketScreenPreview() {
+    val tabs = listOf(
+        MarketTab.CryptoRank(0, RankType.TOP),
+        MarketTab.CryptoRank(1, RankType.HOT),
+        MarketTab.Watchlist(2),
+        MarketTab.CryptoRank(3, RankType.GAINERS),
+        MarketTab.CryptoRank(4, RankType.LOSERS),
+        MarketTab.Categories(5),
+        MarketTab.Exchanges(6),
+        MarketTab.Nft(7),
+    )
     AppTheme {
-        MarketScreen()
+        MarketScreen(tabs = tabs)
     }
 }
 

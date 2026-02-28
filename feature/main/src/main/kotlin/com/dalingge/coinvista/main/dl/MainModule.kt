@@ -17,10 +17,10 @@ import org.koin.dsl.module
  */
 val mainModule = module {
 
-    viewModel { SplashViewModel(get(), get()) }
-    viewModel { MainViewModel(get(), get()) }
-    viewModel { MarketViewModel(get(), get(), get(), get(), get()) }
-    viewModel { NewViewModel(get(), get(),get()) }
-    viewModel { PortfolioViewModel(get(), get()) }
-    viewModel { MineViewModel(get(), get()) }
+    viewModel { SplashViewModel() }
+    viewModel { MainViewModel() }
+    viewModel { MarketViewModel(get(), get(), get()) }
+    viewModel { NewViewModel(get()) }
+    viewModel { PortfolioViewModel() }
+    viewModel { MineViewModel() }
 }

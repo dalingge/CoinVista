@@ -1,4 +1,4 @@
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.dalingge.coinvista.plugin.configureKotlinAndroid
 import com.dalingge.coinvista.plugin.libs
 import org.gradle.api.Plugin
@@ -29,16 +29,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
         with(target) {
 
+            with(pluginManager) {
+                apply("com.android.library") // 应用Android库插件
+            }
+
             //  读取 local.properties 文件
             val localProperties = Properties()
             val localPropertiesFile = rootProject.file("local.properties")
             if (localPropertiesFile.exists()) {
                 localProperties.load(FileInputStream(localPropertiesFile))
-            }
-
-            with(pluginManager) {
-                apply("com.android.library")
-                apply("org.jetbrains.kotlin.android")
             }
 
             extensions.configure<LibraryExtension> {
@@ -77,7 +76,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
                 configureKotlinAndroid(this)
 
-                defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+              //  defaultConfig.targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
 
 
                 flavorDimensions += listOf("env")

@@ -1,9 +1,8 @@
 package com.dalingge.coinvista.main.viewmodel
 
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
-import com.dalingge.coinvista.core.data.state.AppState
-import com.dalingge.coinvista.navigation.AppNavigator
-import com.dalingge.coinvista.navigation.routes.MainRoutes
+import com.dalingge.coinvista.core.navigation.navigateAndCloseCurrent
+import com.dalingge.coinvista.core.navigation.routes.MainRoutes
 
 /**
  *
@@ -12,9 +11,7 @@ import com.dalingge.coinvista.navigation.routes.MainRoutes
  * @Time :2025/10/14  14:22
  */
 class SplashViewModel(
-    navigator: AppNavigator,
-    appState: AppState
-) : BaseViewModel(navigator, appState) {
+) : BaseViewModel() {
 
     /**
      * 检查是否已显示过引导页，并根据结果跳转到相应页面

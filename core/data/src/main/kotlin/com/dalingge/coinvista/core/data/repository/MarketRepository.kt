@@ -3,6 +3,7 @@ package com.dalingge.coinvista.core.data.repository
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
+import com.dalingge.coinvista.core.model.entity.SearchList
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSource
@@ -61,6 +62,23 @@ class MarketRepository(
     fun getCoinsCategories(): Flow<List<MarketsCategories>> =
         flow {
             emit(marketNetworkDataSource.getCoinsCategories())
+        }.flowOn(Dispatchers.IO)
+
+    /**
+     * 热门搜索列表
+     */
+    fun searchTrendingCoins(): Flow<List<SearchList>> =
+        flow {
+            emit(marketNetworkDataSource.searchTrendingCoins())
+        }.flowOn(Dispatchers.IO)
+
+
+    /**
+     * 模糊搜索
+     */
+    fun searchCoins(query: String): Flow<List<SearchList>> =
+        flow {
+            emit(marketNetworkDataSource.searchCoins(query))
         }.flowOn(Dispatchers.IO)
 
 }

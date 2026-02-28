@@ -1,6 +1,8 @@
 package com.dalingge.coinvista.main.view
 
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
@@ -47,12 +49,16 @@ import kotlin.collections.forEachIndexed
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MainRoute(
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedContentScope: AnimatedContentScope? = null,
     viewModel: MainViewModel = koinViewModel(),
 ) {
     // 从ViewModel获取当前导航状态
     val currentPageIndex by viewModel.currentPageIndex.collectAsState()
 
     MainScreen(
+        sharedTransitionScope = sharedTransitionScope,
+        animatedContentScope = animatedContentScope,
         currentPageIndex = currentPageIndex,
         onPageChanged = viewModel::updatePageIndex,
         onNavigationItemSelected = viewModel::updateDestination,
@@ -67,6 +73,8 @@ internal fun MainRoute(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MainScreen(
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedContentScope: AnimatedContentScope? = null,
     currentPageIndex: Int = 0,
     onPageChanged: (Int) -> Unit = {},
     onNavigationItemSelected: (Int) -> Unit = {},
@@ -128,7 +136,9 @@ internal fun MainScreen(
     ) { paddingValues ->
         MainScreenContentView(
             pageState = pageState,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedContentScope = animatedContentScope
         )
     }
 }
@@ -138,6 +148,8 @@ internal fun MainScreen(
 private fun MainScreenContentView(
     pageState: PagerState,
     paddingValues: PaddingValues,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedContentScope: AnimatedContentScope? = null,
 ) {
     HorizontalPager(
         state = pageState,
@@ -145,7 +157,10 @@ private fun MainScreenContentView(
         userScrollEnabled = false
     ) { page: Int ->
         when (page) {
-            0 -> MarketRoute()
+            0 -> MarketRoute(
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
+            )
             1 -> NewRoute()
             2 -> PortfolioRoute()
             3 -> MineRoute()

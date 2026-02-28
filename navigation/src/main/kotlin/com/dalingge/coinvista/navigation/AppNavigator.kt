@@ -2,7 +2,6 @@ package com.dalingge.coinvista.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
-import com.joker.coolmall.navigation.NavigationResultKey
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -35,7 +34,7 @@ import kotlinx.coroutines.flow.asSharedFlow
  *     }
  * }
  */
-class AppNavigator() {
+class AppNavigator {
 
     private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
     val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()

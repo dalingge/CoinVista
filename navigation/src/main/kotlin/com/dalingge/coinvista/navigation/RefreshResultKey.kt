@@ -1,7 +1,5 @@
 package com.dalingge.coinvista.navigation
 
-import com.joker.coolmall.navigation.NavigationResultKey
-
 /**
  * 通用的页面刷新结果 Key。
  *

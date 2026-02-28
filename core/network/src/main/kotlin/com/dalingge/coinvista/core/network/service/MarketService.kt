@@ -3,6 +3,7 @@ package com.dalingge.coinvista.core.network.service
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
+import com.dalingge.coinvista.core.model.entity.SearchList
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import retrofit2.http.GET
@@ -70,5 +71,26 @@ interface MarketService {
         @Query("limit") limit: Int,
         @Query("sortBy") sortBy: String,
     ): List<TickersExchanges>
+
+
+    /**
+     *  热门搜索
+     */
+    @GET
+    suspend fun searchTrendingCoins(
+        @Url url: String = "https://api.coin-stats.com/v2/trending/search",
+    ): List<SearchList>
+
+
+    /**
+     *  搜索
+     *
+     *  @param query 模糊搜索
+     */
+    @GET
+    suspend fun searchCoins(
+        @Url url: String = "https://api.coin-stats.com/v2/search",
+        @Query("query") query: String,
+    ): List<SearchList>
 
 }

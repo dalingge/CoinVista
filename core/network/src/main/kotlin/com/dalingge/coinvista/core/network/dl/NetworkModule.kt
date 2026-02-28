@@ -151,5 +151,4 @@ val networkModule = module {
     single<UserNetworkDataSource> { UserNetworkDataSourceImpl(get()) }
     single<NewsNetworkDataSource> { NewsNetworkDataSourceImpl(get()) }
 
-
 }

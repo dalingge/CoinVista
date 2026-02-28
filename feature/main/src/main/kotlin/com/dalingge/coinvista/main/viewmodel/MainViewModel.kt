@@ -1,8 +1,6 @@
 package com.dalingge.coinvista.main.viewmodel
 
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
-import com.dalingge.coinvista.core.data.state.AppState
-import com.dalingge.coinvista.navigation.AppNavigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,10 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * @Author :Dalingge
  * @Time :2025/10/14  15:14
  */
-class MainViewModel(
-    navigator: AppNavigator,
-    appState: AppState
-) : BaseViewModel(navigator, appState) {
+class MainViewModel: BaseViewModel() {
 
 
 

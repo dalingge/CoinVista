@@ -1,7 +1,7 @@
 package com.dalingge.coinvista.common.dl
 
-import androidx.lifecycle.SavedStateHandle
 import com.dalingge.coinvista.common.viewmodel.WebViewModel
+import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -14,8 +14,8 @@ import org.koin.dsl.module
  */
 val commonModule = module {
 
-    viewModel {(handle: SavedStateHandle) ->
-        WebViewModel(get(), get(),handle,androidApplication())
+    viewModel {(navKey: CommonRoutes.Web) ->
+        WebViewModel(navKey,androidApplication())
     }
 
 }

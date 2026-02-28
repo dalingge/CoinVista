@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.dalingge.coinvista.core.design.theme.AppTheme
+import com.dalingge.coinvista.core.navigation.AppNavigator
 import com.dalingge.coinvista.navigation.AppNavHost
-import com.dalingge.coinvista.navigation.AppNavigator
 import org.koin.android.ext.android.inject
 
 

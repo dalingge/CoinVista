@@ -1,10 +1,9 @@
 package com.dalingge.coinvista.common.navigation
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavKey
 import com.dalingge.coinvista.common.view.WebRoute
-import com.dalingge.coinvista.navigation.routes.CommonRoutes
+import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 
 /**
  * 通用模块导航图
@@ -13,16 +12,9 @@ import com.dalingge.coinvista.navigation.routes.CommonRoutes
  * @Author :Dalingge
  * @Time :2025/10/14  14:59
  */
-fun NavGraphBuilder.commonGraph(navController: NavHostController) {
-    webScreen()
-}
-
-
-/**
- * 网页页面导航
- */
-fun NavGraphBuilder.webScreen() {
-    composable<CommonRoutes.Web> {
-        WebRoute()
+fun EntryProviderScope<NavKey>.commonGraph() {
+    entry<CommonRoutes.Web> { key ->
+        WebRoute(key)
     }
 }
+

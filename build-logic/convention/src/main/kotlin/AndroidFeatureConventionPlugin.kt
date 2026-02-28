@@ -1,3 +1,4 @@
+import com.dalingge.coinvista.plugin.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -28,12 +29,17 @@ class AndroidFeatureConventionPlugin : Plugin<Project>{
             dependencies {
 
                 // 项目内基础模块依赖
-                "implementation"(project(":navigation")) // 导航模块
+                "implementation"(project(":core:navigation")) // 导航模块
                 "implementation"(project(":core:design")) // 设计系统
                 "implementation"(project(":core:data")) // 数据
                 "implementation"(project(":core:common")) // 公共
                 "implementation"(project(":core:model")) // 模型
                 "implementation"(project(":core:ui")) // 模型
+                "implementation"(project(":core:util")) // 工具类
+
+                "implementation"(libs.findLibrary("androidx.navigation3.runtime").get())
+                "implementation"(libs.findLibrary("androidx.navigation3.ui").get())
+                "implementation"(libs.findLibrary("androidx.lifecycle.navigation3").get())
 
                 // Jetpack Navigation Compose导航框架
                // "implementation"(libs.findLibrary("androidx.navigation.compose").get())

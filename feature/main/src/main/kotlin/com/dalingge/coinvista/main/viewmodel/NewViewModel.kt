@@ -8,26 +8,19 @@ import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
 import com.dalingge.coinvista.core.common.result.ResultHandler
 import com.dalingge.coinvista.core.common.result.asResult
 import com.dalingge.coinvista.core.data.repository.NewsRepository
-import com.dalingge.coinvista.core.data.state.AppState
 import com.dalingge.coinvista.core.model.entity.NewsItem
-import com.dalingge.coinvista.core.model.response.NetworkPageMeta
-import com.dalingge.coinvista.main.model.MarketTab
-import com.dalingge.coinvista.main.model.MarketTabUiState
+import com.dalingge.coinvista.core.navigation.navigate
+import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 import com.dalingge.coinvista.main.model.NewsState
 import com.dalingge.coinvista.main.model.NewsTabState
-import com.dalingge.coinvista.main.model.TabViewState
-import com.dalingge.coinvista.navigation.AppNavigator
-import com.dalingge.coinvista.navigation.routes.CommonRoutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class NewViewModel(
-    navigator: AppNavigator,
-    appState: AppState,
     private val newsRepository: NewsRepository,
-) : BaseViewModel(navigator, appState), DefaultLifecycleObserver {
+) : BaseViewModel(), DefaultLifecycleObserver {
 
 
     // 当前选中的标签索引
@@ -205,6 +198,6 @@ class NewViewModel(
      * 跳转到新闻详情页面
      */
     fun toNewsPage(url: String) {
-        navigate(CommonRoutes.Web(url = url))
+       navigate(CommonRoutes.Web(url = url))
     }
 }

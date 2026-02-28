@@ -19,36 +19,31 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
  * - Kotlin JVM 目标版本配置
  * - Core library desugaring 启用
  */
-internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, *, *, *, *, *>) {
+internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension) {
+
+    commonExtension.compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
+
+    commonExtension.defaultConfig.minSdk = libs.findVersion("minSdk").get().toString().toInt()
+
+    // 统一启用 BuildConfig 生成
+    commonExtension.buildFeatures.buildConfig = true
+//    dataBinding {
+//        enable = true
+//    }
+//
+//    viewBinding {
+//        enable = true
+//    }
+//
+//    buildFeatures {
+//        buildConfig = true
+//    }
 
 
-    commonExtension.apply {
+    commonExtension.compileOptions.sourceCompatibility = JavaVersion.VERSION_11
+    commonExtension.compileOptions.targetCompatibility = JavaVersion.VERSION_11
+    //   isCoreLibraryDesugaringEnabled = true
 
-        compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
-
-        defaultConfig {
-            minSdk = libs.findVersion("minSdk").get().toString().toInt()
-        }
-
-        dataBinding {
-            enable = true
-        }
-
-        viewBinding {
-            enable = true
-        }
-
-        buildFeatures {
-            buildConfig = true
-        }
-
-
-        compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_11
-            targetCompatibility = JavaVersion.VERSION_11
-         //   isCoreLibraryDesugaringEnabled = true
-        }
-    }
 
     configureKotlin<KotlinAndroidProjectExtension>()
 
@@ -57,7 +52,6 @@ internal fun Project.configureKotlinAndroid(commonExtension: CommonExtension<*, 
 //        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
     }
 }
-
 
 
 /**

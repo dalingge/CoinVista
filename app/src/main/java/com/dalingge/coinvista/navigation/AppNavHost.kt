@@ -1,18 +1,30 @@
 package com.dalingge.coinvista.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.IntOffset
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.dalingge.coinvista.common.navigation.commonGraph
+import com.dalingge.coinvista.core.navigation.AppNavigator
+import com.dalingge.coinvista.core.navigation.NavigationService
+import com.dalingge.coinvista.core.navigation.createBackStackNavigationController
+import com.dalingge.coinvista.core.navigation.routes.MainRoutes
 import com.dalingge.coinvista.main.navigation.mainGraph
-import com.dalingge.coinvista.navigation.routes.MainRoutes
-import kotlinx.coroutines.flow.collectLatest
+import com.dalingge.coinvista.market.navigation.marketGraph
 
 /**
  * 应用导航宿主
@@ -23,54 +35,97 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun AppNavHost(
     navigator: AppNavigator,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    val navController = rememberNavController()
+    // 创建应用级回退栈，首个页面固定为主页面。
+    val backStack = rememberNavBackStack(MainRoutes.Splash)
+    // 基于当前回退栈构建导航控制器，供 AppNavigator 分发命令时使用。
+    val navigationController = remember(backStack, navigator) {
+        createBackStackNavigationController(backStack, navigator)
+    }
 
-    // 监听导航事件
-    LaunchedEffect(navController) {
-        navigator.navigationEvents.collectLatest { event ->
-            navController.handleNavigationEvent(event)
+    // 在组合生命周期内绑定/解绑导航控制器，确保导航命令总是指向当前有效宿主。
+    DisposableEffect(navigationController) {
+        // 绑定到 AppNavigator，接收全局导航命令。
+        navigator.attachController(navigationController)
+        // 绑定到全局导航服务，支持业务层直接调用 navigate(...)。
+        NavigationService.bind(navigator)
+        onDispose {
+            // 宿主销毁时先解绑导航服务，避免持有失效导航器引用。
+            NavigationService.unbind(navigator)
+            // 最后从 AppNavigator 注销控制器，防止后续命令误发到旧宿主。
+            navigator.detachController(navigationController)
         }
     }
 
     SharedTransitionLayout {
-        NavHost(
-            navController = navController,
-            startDestination = MainRoutes.Splash,
+        NavDisplay(
+            backStack = backStack,
             modifier = modifier,
-            // 页面进入动画
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(300)
-                )
-            },
-            // 页面退出动画
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(300)
-                )
-            },
-            // 返回时页面进入动画
-            popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(300)
-                )
-            },
-            // 返回时页面退出动画
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(300)
-                )
-            }
-        ) {
-            // 只调用模块级Graph函数，大大减少了冲突可能性
-            mainGraph(navController,this@SharedTransitionLayout)
-            commonGraph(navController)
-        }
+            onBack = { navigationController.navigateBack() },
+            entryDecorators = listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator(),
+            ),
+            transitionSpec = { createForwardTransition() }, //使用此辅助函数定义向前导航动画
+            popTransitionSpec = { createBackwardTransition() },//使用此辅助函数可为特定 NavEntry 定义返回导航动画
+            predictivePopTransitionSpec = { createBackwardTransition() },//使用此辅助函数为特定 NavEntry 定义预测性返回手势的动画
+            entryProvider = appEntryProvider(this),
+        )
     }
+}
+
+/**
+ * 页面切换动画时长（毫秒）
+ */
+private const val NAV_ANIMATION_DURATION = 300
+
+/**
+ * 页面切换动画规范
+ */
+private val NAV_ANIMATION_SPEC: FiniteAnimationSpec<IntOffset> =
+    tween(durationMillis = NAV_ANIMATION_DURATION)
+
+
+/**
+ * 创建前进导航动画（右入左出）
+ *
+ * @return 前进导航动画
+ * @author Joker.X
+ */
+private fun createForwardTransition() = slideInHorizontally(
+    initialOffsetX = { it },
+    animationSpec = NAV_ANIMATION_SPEC,
+) togetherWith slideOutHorizontally(
+    targetOffsetX = { -it },
+    animationSpec = NAV_ANIMATION_SPEC,
+)
+
+/**
+ * 创建返回导航动画（左入右出）
+ *
+ * @return 返回导航动画
+ * @author Joker.X
+ */
+private fun createBackwardTransition() = slideInHorizontally(
+    initialOffsetX = { -it },
+    animationSpec = NAV_ANIMATION_SPEC,
+) togetherWith slideOutHorizontally(
+    targetOffsetX = { it },
+    animationSpec = NAV_ANIMATION_SPEC,
+)
+
+
+/**
+ * 构建应用级路由注册器
+ *
+ * 按模块聚合 graph，避免全部 entry 混在同一个函数中。
+ *
+ * @return 应用级 EntryProvider
+ * @author Joker.X
+ */
+private fun appEntryProvider(sharedTransitionScope: SharedTransitionScope) = entryProvider {
+    mainGraph(sharedTransitionScope)
+    commonGraph()
+    marketGraph()
 }

@@ -3,8 +3,11 @@ package com.dalingge.coinvista.core.network.datasource.market
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.entity.MarketsCategories
 import com.dalingge.coinvista.core.model.entity.MarketsCoins
+import com.dalingge.coinvista.core.model.entity.SearchList
 import com.dalingge.coinvista.core.model.entity.TickersExchanges
 import com.dalingge.coinvista.core.model.response.NetworkPageData
+import retrofit2.http.Query
+import retrofit2.http.Url
 
 
 /**
@@ -52,5 +55,17 @@ interface MarketNetworkDataSource {
      *  获取加密货币类别
      */
     suspend fun getCoinsCategories(): List<MarketsCategories>
+
+    /**
+     *  热门搜索
+     */
+    suspend fun searchTrendingCoins(): List<SearchList>
+
+    /**
+     *  搜索
+     *
+     *  @param query 模糊搜索
+     */
+    suspend fun searchCoins(query: String): List<SearchList>
 
 }

@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.navigation)
+    implementation(projects.core.navigation)
     implementation(projects.core.design)
     implementation(projects.core.data)
     implementation(projects.core.common)
@@ -58,6 +58,10 @@ dependencies {
     implementation(projects.feature.auth)
     // 通用模块
     implementation(projects.feature.common)
+
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.navigation3)
 
     // 测试依赖
     testImplementation(libs.junit)

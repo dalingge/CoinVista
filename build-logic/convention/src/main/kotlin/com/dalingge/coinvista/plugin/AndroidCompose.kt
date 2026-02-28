@@ -14,47 +14,44 @@ import org.gradle.kotlin.dsl.dependencies
  *
  * 通过扩展 CommonExtension 来实现对 Android 库和应用模块的 Compose 配置
  */
-internal fun Project.configureAndroidCompose(commonExtension: CommonExtension<*, *, *, *, *, *>) {
+internal fun Project.configureAndroidCompose(commonExtension: CommonExtension) {
 
-    commonExtension.apply {
-        // 启用 Compose 构建功能
-        buildFeatures {
-            compose = true
-        }
+    // 启用 Compose 构建功能
+    commonExtension.buildFeatures.compose = true
 
-        // 配置 Compose 相关依赖
-        dependencies {
-            //BOM 与库版本对应表 https://developer.android.com/develop/ui/compose/bom/bom-mapping
-            // 使用 Compose BOM 统一依赖版本
-            val bom = libs.findLibrary("androidx.compose.bom").get()
-            "implementation"(platform(bom))
+    // 配置 Compose 相关依赖
+    dependencies {
+        //BOM 与库版本对应表 https://developer.android.com/develop/ui/compose/bom/bom-mapping
+        // 使用 Compose BOM 统一依赖版本
+        val bom = libs.findLibrary("androidx.compose.bom").get()
+        "implementation"(platform(bom))
 
-            // 核心 UI 组件
-            "implementation"(libs.findLibrary("androidx.ui").get())
-            "implementation"(libs.findLibrary("androidx.ui.graphics").get())
-            "implementation"(libs.findLibrary("androidx.ui.tooling.preview").get())
-            "implementation"(libs.findLibrary("androidx.material3").get())
+        // 核心 UI 组件
+        "implementation"(libs.findLibrary("androidx.ui").get())
+        "implementation"(libs.findLibrary("androidx.ui.graphics").get())
+        "implementation"(libs.findLibrary("androidx.ui.tooling.preview").get())
+        "implementation"(libs.findLibrary("androidx.material3").get())
 
-            // Compose 集成支持
-            "implementation"(libs.findLibrary("androidx.activity.compose").get())
-            "implementation"(libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
+        // Compose 集成支持
+        "implementation"(libs.findLibrary("androidx.activity.compose").get())
+        "implementation"(libs.findLibrary("androidx.lifecycle.runtime.ktx").get())
 
-             // Compose 动画组
-            "implementation"(libs.findLibrary("androidx.compose.animation").get())
+        // Compose 动画组
+        "implementation"(libs.findLibrary("androidx.compose.animation").get())
 
-            // 开发调试工具
-            "debugImplementation"(libs.findLibrary("androidx.ui.tooling").get())
-            "debugImplementation"(libs.findLibrary("androidx.ui.test.manifest").get())
+        // 开发调试工具
+        "debugImplementation"(libs.findLibrary("androidx.ui.tooling").get())
+        "debugImplementation"(libs.findLibrary("androidx.ui.test.manifest").get())
 
-            // 测试依赖
-            "androidTestImplementation"(platform(bom))
-            "androidTestImplementation"(libs.findLibrary("androidx.ui.test.junit4").get())
+        // 测试依赖
+        "androidTestImplementation"(platform(bom))
+        "androidTestImplementation"(libs.findLibrary("androidx.ui.test.junit4").get())
 
-            "implementation"(libs.findLibrary("koin.core").get())
-            "implementation"(libs.findLibrary("koin.compose").get())
-            "implementation"(libs.findLibrary("koin.compose.navigation").get())
-        }
+        //koin注入工具
+        "implementation"(libs.findLibrary("koin.core").get())
+        "implementation"(libs.findLibrary("koin.compose").get())
     }
+
 }
 
 

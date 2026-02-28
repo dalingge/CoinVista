@@ -2,13 +2,14 @@ package com.dalingge.coinvista.main.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.navigation3.runtime.NavKey
+import com.dalingge.coinvista.core.navigation.routes.MainRoutes
 import com.dalingge.coinvista.feature.main.R
-import com.dalingge.coinvista.navigation.routes.MainRoutes
 
 enum class TopLevelDestination(
     @param:StringRes val titleTextId: Int,
     @param:DrawableRes val iconResId: Int,
-    val route: Any,
+    val route: NavKey,
 ) {
     MARKETS(
         titleTextId = R.string.main_tab_markets,

@@ -48,13 +48,12 @@ include(":core:model")
 include(":core:network")
 include(":core:ui")
 include(":core:util")
+include(":core:navigation")
 // feature 功能模块
 include(":feature:main")
 include(":feature:auth")
 include(":feature:common")
 include(":feature:market")
-// 导航模块
-include(":navigation")
 
 
 // JDK 版本检查：确保使用 JDK 17 或更高版本进行构建

@@ -1,6 +1,6 @@
 package com.dalingge.coinvista.dl
 
-import com.dalingge.coinvista.navigation.AppNavigator
+import com.dalingge.coinvista.core.navigation.AppNavigator
 import org.koin.dsl.module
 
 /**
@@ -12,6 +12,6 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    single { AppNavigator() }
+    single { AppNavigator(get()) }
 }
 

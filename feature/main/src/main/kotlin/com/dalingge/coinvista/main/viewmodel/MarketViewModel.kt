@@ -10,16 +10,17 @@ import com.dalingge.coinvista.core.common.result.Result
 import com.dalingge.coinvista.core.data.repository.InsightsRepository
 import com.dalingge.coinvista.core.data.repository.MarketRepository
 import com.dalingge.coinvista.core.data.repository.NFTsRepository
-import com.dalingge.coinvista.core.data.state.AppState
 import com.dalingge.coinvista.core.model.entity.FearGreed
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import com.dalingge.coinvista.core.model.response.NetworkPageMeta
+import com.dalingge.coinvista.core.navigation.navigate
+import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
+import com.dalingge.coinvista.core.navigation.routes.MarketRoutes
 import com.dalingge.coinvista.main.model.MarketTab
 import com.dalingge.coinvista.main.model.MarketTabUiState
 import com.dalingge.coinvista.main.model.RankType
 import com.dalingge.coinvista.main.model.TabViewState
-import com.dalingge.coinvista.navigation.AppNavigator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,12 +29,10 @@ import kotlinx.coroutines.flow.update
 import kotlin.collections.emptyList
 
 class MarketViewModel(
-    navigator: AppNavigator,
-    appState: AppState,
     private val marketRepository: MarketRepository,
     private val insightsRepository: InsightsRepository,
     private val nftsRepository: NFTsRepository,
-) : BaseViewModel(navigator, appState), DefaultLifecycleObserver {
+) : BaseViewModel(), DefaultLifecycleObserver {
 
     // 定义 Tab 结构
     val tabs = listOf(
@@ -349,23 +348,16 @@ class MarketViewModel(
      * 跳转到搜索页面
      */
     fun toSearch() {
-
+        navigate(MarketRoutes.Search)
     }
 
     /**
      * 跳转到 GitHub 页面
      */
     fun toGitHubPage() {
-        val url = "https://github.com/Joker-x-dev/CoolMallKotlin"
+        val url = "https://github.com/dalingge/CoinVista"
         val title = "GitHub"
-//        super.toPage(
-//            "${CommonRoutes.WEB}?url=${
-//                java.net.URLEncoder.encode(
-//                    url,
-//                    "UTF-8"
-//                )
-//            }&title=${java.net.URLEncoder.encode(title, "UTF-8")}"
-//        )
+        navigate(CommonRoutes.Web(url = url, title = title))
     }
 
 }

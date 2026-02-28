@@ -1,4 +1,4 @@
-package com.joker.coolmall.navigation
+package com.dalingge.coinvista.navigation
 
 /**
  * 导航返回结果的类型安全 Key。
