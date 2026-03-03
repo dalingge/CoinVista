@@ -25,18 +25,22 @@ import com.dalingge.coinvista.core.navigation.createBackStackNavigationControlle
 import com.dalingge.coinvista.core.navigation.routes.MainRoutes
 import com.dalingge.coinvista.main.navigation.mainGraph
 import com.dalingge.coinvista.market.navigation.marketGraph
+import org.koin.compose.navigation3.koinEntryProvider
+import org.koin.core.annotation.KoinExperimentalAPI
 
 /**
  * 应用导航宿主
  * 配置整个应用的导航图和动画
  */
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, KoinExperimentalAPI::class)
 @Composable
 fun AppNavHost(
     navigator: AppNavigator,
     modifier: Modifier = Modifier,
 ) {
+
+    val entryProvider = koinEntryProvider<Any>()
     // 创建应用级回退栈，首个页面固定为主页面。
     val backStack = rememberNavBackStack(MainRoutes.Splash)
     // 基于当前回退栈构建导航控制器，供 AppNavigator 分发命令时使用。
@@ -70,7 +74,7 @@ fun AppNavHost(
             transitionSpec = { createForwardTransition() }, //使用此辅助函数定义向前导航动画
             popTransitionSpec = { createBackwardTransition() },//使用此辅助函数可为特定 NavEntry 定义返回导航动画
             predictivePopTransitionSpec = { createBackwardTransition() },//使用此辅助函数为特定 NavEntry 定义预测性返回手势的动画
-            entryProvider = appEntryProvider(this),
+            entryProvider = entryProvider,
         )
     }
 }

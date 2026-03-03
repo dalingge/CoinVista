@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
  *
  * 通过StateFlow提供响应式的状态管理，任何组件都可以订阅状态变化
  */
+
 class AppState (
    private val applicationScope: CoroutineScope
 ) {

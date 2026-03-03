@@ -59,13 +59,9 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun SplashRoute(
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
-    viewModel : SplashViewModel = koinViewModel()
+    viewModel : SplashViewModel
 ) {
     SplashScreen(
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope,
         toHome = viewModel::toMainPage
     )
 }

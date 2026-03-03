@@ -47,9 +47,6 @@ internal fun Project.configureAndroidCompose(commonExtension: CommonExtension) {
         "androidTestImplementation"(platform(bom))
         "androidTestImplementation"(libs.findLibrary("androidx.ui.test.junit4").get())
 
-        //koin注入工具
-        "implementation"(libs.findLibrary("koin.core").get())
-        "implementation"(libs.findLibrary("koin.compose").get())
     }
 
 }

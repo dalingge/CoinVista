@@ -23,6 +23,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project>{
         with(target) {
             pluginManager.apply {
                 apply("com.dalingge.coinvista.android.library.compose") // 应用Android库和Compose配置
+                apply("com.dalingge.coinvista.android.hilt")
             }
 
             // 配置Feature模块依赖

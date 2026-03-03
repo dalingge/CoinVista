@@ -31,6 +31,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             with(pluginManager) {
                 apply("com.android.library") // 应用Android库插件
+
+                apply("com.dalingge.coinvista.android.hilt")
             }
 
             //  读取 local.properties 文件

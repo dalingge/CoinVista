@@ -51,7 +51,7 @@ import kotlin.collections.forEachIndexed
 internal fun MainRoute(
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedContentScope: AnimatedContentScope? = null,
-    viewModel: MainViewModel = koinViewModel(),
+    viewModel: MainViewModel,
 ) {
     // 从ViewModel获取当前导航状态
     val currentPageIndex by viewModel.currentPageIndex.collectAsState()

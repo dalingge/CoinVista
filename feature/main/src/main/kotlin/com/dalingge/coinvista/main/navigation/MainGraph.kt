@@ -29,12 +29,12 @@ fun EntryProviderScope<NavKey>.mainGraph(
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun EntryProviderScope<NavKey>.splashScreen(sharedTransitionScope: SharedTransitionScope) {
-    entry<MainRoutes.Splash> {
-        SplashRoute(
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = LocalNavAnimatedContentScope.current
-        )
-    }
+//    entry<MainRoutes.Splash> {
+//        SplashRoute(
+//            sharedTransitionScope = sharedTransitionScope,
+//            animatedContentScope = LocalNavAnimatedContentScope.current
+//        )
+//    }
 }
 
 /**
@@ -42,10 +42,10 @@ fun EntryProviderScope<NavKey>.splashScreen(sharedTransitionScope: SharedTransit
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun EntryProviderScope<NavKey>.mainScreen(sharedTransitionScope: SharedTransitionScope) {
-    entry<MainRoutes.Main> {
-        MainRoute(
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = LocalNavAnimatedContentScope.current,
-        )
-    }
+//    entry<MainRoutes.Main> {
+//        MainRoute(
+//            sharedTransitionScope = sharedTransitionScope,
+//            animatedContentScope = LocalNavAnimatedContentScope.current,
+//        )
+//    }
 }

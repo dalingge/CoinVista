@@ -11,6 +11,6 @@ plugins {
     alias(libs.plugins.ksp) apply false
     // Android库插件，用于构建Android库模块
     alias(libs.plugins.android.library) apply false
-
-
+    // koin插件，用于依赖注入框架的支持
+    alias(libs.plugins.koin.compiler) apply false
 }

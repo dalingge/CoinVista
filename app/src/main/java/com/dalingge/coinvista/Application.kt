@@ -9,6 +9,7 @@ import com.dalingge.coinvista.dl.appModule
 import com.dalingge.coinvista.main.dl.mainModule
 import com.dalingge.coinvista.market.dl.marketModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
