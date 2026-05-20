@@ -1,5 +1,6 @@
 package com.dalingge.coinvista.common.view
 
+import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
@@ -22,6 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -32,11 +35,8 @@ import com.dalingge.coinvista.core.design.component.FullScreenBox
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.CommonIcon
 import com.dalingge.coinvista.core.navigation.NavigationService.navigateBack
-import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 import com.dalingge.coinvista.core.ui.componet.scaffold.AppScaffold
 import com.dalingge.coinvista.feature.common.R
-import org.koin.androidx.compose.koinViewModel
-import org.koin.core.parameter.parametersOf
 import kotlin.apply
 import kotlin.let
 import kotlin.text.startsWith
@@ -48,9 +48,7 @@ import kotlin.text.startsWith
  */
 @Composable
 internal fun WebRoute(
-    navKey: CommonRoutes.Web,
-    viewModel: WebViewModel = koinViewModel(
-        parameters = { parametersOf(navKey) }),
+    viewModel: WebViewModel,
 ) {
     // 收集WebView数据
     val webViewData by viewModel.webViewData.collectAsState()
@@ -108,7 +106,7 @@ internal fun WebScreen(
     onProgressChange: (Int) -> Unit = {},
     onRefreshClick: () -> Unit = {},
     onResetRefreshState: () -> Unit = {},
-    onOpenInBrowser: () -> Unit = {},
+    onOpenInBrowser: (Context) -> Unit = {},
     onShowDropdownMenu: () -> Unit = {},
     onDismissDropdownMenu: () -> Unit = {},
 ) {
@@ -151,8 +149,9 @@ private fun WebScreenTopBarActions(
     onShowDropdownMenu: () -> Unit,
     onDismissDropdownMenu: () -> Unit,
     onRefreshClick: () -> Unit,
-    onOpenInBrowser: () -> Unit,
+    onOpenInBrowser: (Context) -> Unit,
 ) {
+    val context = LocalContext.current
     // 溢出菜单按钮
     IconButton(onClick = onShowDropdownMenu) {
         CommonIcon(
@@ -175,7 +174,9 @@ private fun WebScreenTopBarActions(
         // 用浏览器打开选项
         DropdownMenuItem(
             text = { Text("用浏览器打开") },
-            onClick = onOpenInBrowser
+            onClick = {
+                onOpenInBrowser(context)
+            }
         )
     }
 }
@@ -199,81 +200,88 @@ private fun WebViewContent(
     onProgressChange: (Int) -> Unit,
     onResetRefreshState: () -> Unit,
 ) {
+    val isPreview = LocalInspectionMode.current
     var webView by remember { mutableStateOf<WebView?>(null) }
 
     // 处理刷新逻辑
     LaunchedEffect(shouldRefresh) {
-        if (shouldRefresh) {
+        if (!isPreview && shouldRefresh) {
             webView?.reload()
             onResetRefreshState()
         }
     }
 
     FullScreenBox {
-        AndroidView(
-            factory = { context ->
-                WebView(context).apply {
-                    webView = this
-                    settings.apply {
-                        layoutParams = ViewGroup.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
+        if (isPreview) {
+            // 在预览模式下显示一个占位符
+            Text(text = "WebView Placeholder (URL: $url)", modifier = Modifier.fillMaxSize())
+        } else {
+            AndroidView(
+                factory = { context ->
+                    WebView(context).apply {
+                        webView = this
+                        settings.apply {
+                            // ...
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
 
-                        // 安全设置
-                        javaScriptEnabled = true
-                        loadsImagesAutomatically = true
-                        useWideViewPort = true
-                        loadWithOverviewMode = true
-                        setSupportZoom(true)
-                        builtInZoomControls = true
-                        displayZoomControls = false
-                        setSupportMultipleWindows(false)
-                        javaScriptCanOpenWindowsAutomatically = true
-                        domStorageEnabled = true
-                        safeBrowsingEnabled = true
-                        mediaPlaybackRequiresUserGesture = false
-                    }
+                            // 安全设置
+                            javaScriptEnabled = true
+                            loadsImagesAutomatically = true
+                            useWideViewPort = true
+                            loadWithOverviewMode = true
+                            setSupportZoom(true)
+                            builtInZoomControls = true
+                            displayZoomControls = false
+                            setSupportMultipleWindows(false)
+                            javaScriptCanOpenWindowsAutomatically = true
+                            domStorageEnabled = true
+                            safeBrowsingEnabled = true
+                            mediaPlaybackRequiresUserGesture = false
+                        }
 
-                    webViewClient = object : WebViewClient() {
-                        @Deprecated("Deprecated in Java")
-                        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                            // 如果是 HTTP 或 HTTPS 链接，在 WebView 中加载
-                            if (url.startsWith("http://") || url.startsWith("https://")) {
-                                view.loadUrl(url)
-                                return false
-                            } else {
-                                // 对于其他类型的链接（如 tel:, mailto:, geo: 等），使用系统应用打开
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                                    context.startActivity(intent)
-                                    return true
-                                } catch (_: Exception) {
-                                    // 如果无法打开浏览器的情况
+                        webViewClient = object : WebViewClient() {
+                            @Deprecated("Deprecated in Java")
+                            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                                // 如果是 HTTP 或 HTTPS 链接，在 WebView 中加载
+                                if (url.startsWith("http://") || url.startsWith("https://")) {
+                                    view.loadUrl(url)
                                     return false
+                                } else {
+                                    // 对于其他类型的链接（如 tel:, mailto:, geo: 等），使用系统应用打开
+                                    try {
+                                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                                        context.startActivity(intent)
+                                        return true
+                                    } catch (_: Exception) {
+                                        // 如果无法打开浏览器的情况
+                                        return false
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onReceivedTitle(view: WebView?, title: String?) {
-                            super.onReceivedTitle(view, title)
-                            title?.let { onTitleChange(it) }
+                        webChromeClient = object : WebChromeClient() {
+                            override fun onReceivedTitle(view: WebView?, title: String?) {
+                                super.onReceivedTitle(view, title)
+                                title?.let { onTitleChange(it) }
+                            }
+
+                            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                                super.onProgressChanged(view, newProgress)
+                                onProgressChange(newProgress)
+                            }
                         }
 
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            super.onProgressChanged(view, newProgress)
-                            onProgressChange(newProgress)
-                        }
+                        // 加载 URL
+                        loadUrl(url)
                     }
-
-                    // 加载 URL
-                    loadUrl(url)
-                }
-            },
-            modifier = Modifier.fillMaxSize()
-        )
+                },
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
         // 进度条 - 显示在 WebView 上方
         if (currentProgress < 100) {

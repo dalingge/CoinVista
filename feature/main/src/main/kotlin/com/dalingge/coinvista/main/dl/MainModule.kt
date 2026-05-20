@@ -9,12 +9,11 @@ import com.dalingge.coinvista.main.viewmodel.NewViewModel
 import com.dalingge.coinvista.main.viewmodel.MineViewModel
 import com.dalingge.coinvista.main.viewmodel.PortfolioViewModel
 import com.dalingge.coinvista.main.viewmodel.SplashViewModel
-import org.koin.androidx.scope.dsl.activityRetainedScope
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import org.koin.dsl.navigation3.navigation
+import org.koin.plugin.module.dsl.viewModel
 
 /**
  *
@@ -25,12 +24,12 @@ import org.koin.dsl.navigation3.navigation
 @OptIn(KoinExperimentalAPI::class)
 val mainModule = module {
 
-    viewModel { SplashViewModel() }
-    viewModel { MainViewModel() }
-    viewModel { MarketViewModel(get(), get(), get()) }
-    viewModel { NewViewModel(get()) }
-    viewModel { PortfolioViewModel() }
-    viewModel { MineViewModel() }
+    viewModel<SplashViewModel>()
+    viewModel<MainViewModel>()
+    viewModel<MarketViewModel>()
+    viewModel<NewViewModel>()
+    viewModel<PortfolioViewModel>()
+    viewModel<MineViewModel>()
 
     navigation<MainRoutes.Splash> {
         SplashRoute(viewModel = koinViewModel())

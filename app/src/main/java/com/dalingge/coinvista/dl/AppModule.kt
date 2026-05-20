@@ -1,7 +1,11 @@
 package com.dalingge.coinvista.dl
 
 import com.dalingge.coinvista.core.navigation.AppNavigator
+import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSource
+import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSourceImpl
+import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.single
 
 /**
  *
@@ -12,6 +16,6 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    single { AppNavigator(get()) }
+    single<AppNavigator>()
 }
 

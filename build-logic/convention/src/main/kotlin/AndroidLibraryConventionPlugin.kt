@@ -62,10 +62,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         val corePath = coreMatch.groupValues[1].replace("[\\\\/]".toRegex(), ".")
                         "${libs.findVersion("packageName").get()}.$corePath"
                     }
-                    // navigation模块命名空间
-                    project.path == ":navigation" -> {
-                        "${libs.findVersion("packageName").get()}.navigation"
-                    }
                     // 其他模块命名空间
                     else -> {
 //                        val modulePath = project.path.removePrefix(":").replace(":", ".")

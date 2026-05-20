@@ -9,9 +9,6 @@ dependencies {
     // 引入 util 模块
     implementation(projects.core.util)
 
-    //图片相关
-    implementation(libs.coil.core)
-    implementation(libs.coil.okhttp)
     // 网络相关
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.okhttp.core)

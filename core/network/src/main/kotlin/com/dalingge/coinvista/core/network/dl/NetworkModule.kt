@@ -1,14 +1,13 @@
 package com.dalingge.coinvista.core.network.dl
 
-import coil3.ImageLoader
-import coil3.disk.DiskCache
-import coil3.disk.directory
-import coil3.memory.MemoryCache
-import coil3.network.okhttp.OkHttpNetworkFetcherFactory
-import coil3.request.crossfade
-import coil3.util.DebugLogger
+
+import android.app.Application
+import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.dalingge.coinvista.core.network.BuildConfig
+import com.dalingge.coinvista.core.network.adapter.KotlinxMessageAdapter
+import com.dalingge.coinvista.core.network.adapter.StringMessageAdapter
+import com.dalingge.coinvista.core.network.coroutines.CoroutinesStreamAdapterFactory
 import com.dalingge.coinvista.core.network.datasource.insights.InsightsNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.insights.InsightsNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.datasource.market.MarketNetworkDataSource
@@ -22,6 +21,7 @@ import com.dalingge.coinvista.core.network.datasource.trading.TradingNetworkData
 import com.dalingge.coinvista.core.network.datasource.user.UserNetworkDataSource
 import com.dalingge.coinvista.core.network.datasource.user.UserNetworkDataSourceImpl
 import com.dalingge.coinvista.core.network.interceptor.HeaderInterceptor
+import com.dalingge.coinvista.core.network.interceptor.ServerTimeInterceptor
 import com.dalingge.coinvista.core.network.multibaseurls.enableMultiBaseUrls
 import com.dalingge.coinvista.core.network.service.InsightsService
 import com.dalingge.coinvista.core.network.service.MarketService
@@ -29,13 +29,20 @@ import com.dalingge.coinvista.core.network.service.NFTsService
 import com.dalingge.coinvista.core.network.service.NewsService
 import com.dalingge.coinvista.core.network.service.TradingService
 import com.dalingge.coinvista.core.network.service.UserService
+import com.dalingge.coinvista.core.network.service.WebSocketService
+import com.tinder.scarlet.Scarlet
+import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
+import com.tinder.scarlet.retry.LinearBackoffStrategy
+import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.single
+import org.koin.plugin.module.dsl.create
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.io.File
@@ -50,105 +57,93 @@ import java.util.concurrent.TimeUnit
  * @Time :2022/8/4  15:11
  */
 
+
 val networkModule = module {
 
-    single {
-        Json {
-            //  prettyPrint = true        // 美化输出，便于阅读
-            ignoreUnknownKeys = true  // 忽略未知字段
-            isLenient = true         // 宽松模式
-            //   encodeDefaults = true    // 编码默认值
-            coerceInputValues = true // 强制输入值（如null转默认值）
-        }
-    }
+    single { create(::json) }
+    single { create(::okHttp) }
+    single { create(::retrofit) }
+    
+    single { create(::scarlet) }
+    single { create(::webSocketService) }
 
-    single {
-        OkHttpClient.Builder()
-            .cache(Cache(File(androidApplication().cacheDir, "okhttp"), 100 * 1024 * 1024))
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .enableMultiBaseUrls()
-            .addInterceptor(HeaderInterceptor())
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    addInterceptor(
-                        ChuckerInterceptor.Builder(androidApplication())
-                            .alwaysReadResponseBody(true)
-                            .build()
-                    )
-                    addNetworkInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    })
-                }
-            }
-            .retryOnConnectionFailure(true)
-            .proxy(if (BuildConfig.DEBUG) null else Proxy.NO_PROXY)
-            .hostnameVerifier { _, _ -> true } //忽略host验证
-            .build()
-    }
+    single { create(::marketService) }
+    single { create(::insightsService) }
+    single { create(::nftsService) }
+    single { create(::tradingService) }
+    single { create(::userService) }
+    single { create(::newsService) }
 
-    single {
-        val contentType = "application/json".toMediaType()
-        Retrofit.Builder()
-            .baseUrl("https://openapiv1.coinstats.app/")
-            .client(get())
-            .addConverterFactory(get<Json>().asConverterFactory(contentType))
-            .build()
-    }
-
-
-//    single {
-//
-//        val client = OkHttpClient.Builder()
-//            .addInterceptor(HeaderInterceptor())
-//            .pingInterval(10, TimeUnit.SECONDS)
-//            .build()
-//
-//        val scarlet = Scarlet.Builder()
-//            .webSocketFactory(client.newWebSocketFactory("wss://push.stellaforex.com/stream"))
-//            .lifecycle( AndroidLifecycle.ofApplicationForeground(get()))
-//            .backoffStrategy(LinearBackoffStrategy(2000))
-//            .addMessageAdapterFactory(StringMessageAdapter.Factory())
-//            .addMessageAdapterFactory(KotlinxMessageAdapter.Factory(get()))
-//            .addStreamAdapterFactory(CoroutinesStreamAdapterFactory())
-//            .build()
-//        scarlet.create<WebSocketService>()
-//    }
-
-    single {
-        ImageLoader.Builder(androidApplication())
-            .crossfade(true)
-            .logger(if (BuildConfig.DEBUG) DebugLogger() else null)
-            .memoryCache {
-                MemoryCache.Builder()
-                    .maxSizePercent(androidApplication(), 0.25)
-                    .build()
-            }
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(androidApplication().cacheDir.resolve("image_cache"))
-                    .maxSizeBytes(100L * 1024 * 1024)
-                    .build()
-            }
-            .components {
-                add(OkHttpNetworkFetcherFactory(get<OkHttpClient>().newBuilder().build()))
-            }
-            .build()
-    }
-
-    single { get<Retrofit>().create(MarketService::class.java) }
-    single { get<Retrofit>().create(InsightsService::class.java) }
-    single { get<Retrofit>().create(NFTsService::class.java) }
-    single { get<Retrofit>().create(TradingService::class.java) }
-    single { get<Retrofit>().create(UserService::class.java) }
-    single { get<Retrofit>().create(NewsService::class.java) }
-
-    single<MarketNetworkDataSource> { MarketNetworkDataSourceImpl(get()) }
-    single<InsightsNetworkDataSource> { InsightsNetworkDataSourceImpl(get()) }
-    single<NFTsNetworkDataSource> { NFTsNetworkDataSourceImpl(get()) }
-    single<TradingNetworkDataSource> { TradingNetworkDataSourceImpl(get()) }
-    single<UserNetworkDataSource> { UserNetworkDataSourceImpl(get()) }
-    single<NewsNetworkDataSource> { NewsNetworkDataSourceImpl(get()) }
+    single<MarketNetworkDataSourceImpl>() bind MarketNetworkDataSource::class
+    single<InsightsNetworkDataSourceImpl>() bind InsightsNetworkDataSource::class
+    single<NFTsNetworkDataSourceImpl>() bind NFTsNetworkDataSource::class
+    single<TradingNetworkDataSourceImpl>() bind TradingNetworkDataSource::class
+    single<UserNetworkDataSourceImpl>() bind UserNetworkDataSource::class
+    single<NewsNetworkDataSourceImpl>() bind NewsNetworkDataSource::class
 
 }
+
+private fun json(): Json = Json {
+    //  prettyPrint = true        // 美化输出，便于阅读
+    ignoreUnknownKeys = true  // 忽略未知字段
+    isLenient = true         // 宽松模式
+    //   encodeDefaults = true    // 编码默认值
+    coerceInputValues = true // 强制输入值（如null转默认值）
+}
+
+private fun okHttp(context: Context): OkHttpClient = OkHttpClient.Builder()
+    .cache(Cache(File(context.cacheDir, "okhttp"), 100 * 1024 * 1024))
+    .connectTimeout(30, TimeUnit.SECONDS)
+    .readTimeout(30, TimeUnit.SECONDS)
+    .writeTimeout(30, TimeUnit.SECONDS)
+    .enableMultiBaseUrls()
+    .addInterceptor(HeaderInterceptor())
+    .addInterceptor(ServerTimeInterceptor())
+    .apply {
+        if (BuildConfig.DEBUG) {
+            addInterceptor(
+                ChuckerInterceptor.Builder(context)
+                    .alwaysReadResponseBody(true)
+                    .build()
+            )
+            addNetworkInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+        }
+    }
+    .retryOnConnectionFailure(true)
+    .proxy(if (BuildConfig.DEBUG) null else Proxy.NO_PROXY)
+    .hostnameVerifier { _, _ -> true } //忽略host验证
+    .build()
+
+private fun retrofit(client: OkHttpClient, json: Json): Retrofit = Retrofit.Builder()
+    .baseUrl("https://openapiv1.coinstats.app/")
+    .client(client)
+    .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+    .build()
+
+private fun scarlet(context: Application, json: Json):Scarlet {
+    val client = OkHttpClient.Builder()
+        .addInterceptor(HeaderInterceptor())
+        .pingInterval(10, TimeUnit.SECONDS)
+        .build()
+
+   return Scarlet.Builder()
+        .webSocketFactory(client.newWebSocketFactory("wss://push.stellaforex.com/stream"))
+        .lifecycle(AndroidLifecycle.ofApplicationForeground(context))
+        .backoffStrategy(LinearBackoffStrategy(2000))
+        .addMessageAdapterFactory(StringMessageAdapter.Factory())
+        .addMessageAdapterFactory(KotlinxMessageAdapter.Factory(json))
+        .addStreamAdapterFactory(CoroutinesStreamAdapterFactory())
+        .build()
+}
+
+private fun webSocketService(scarlet: Scarlet): WebSocketService = scarlet.create(WebSocketService::class.java)
+
+
+private fun marketService(retrofit: Retrofit): MarketService = retrofit.create(MarketService::class.java)
+private fun insightsService(retrofit: Retrofit): InsightsService = retrofit.create(InsightsService::class.java)
+private fun nftsService(retrofit: Retrofit): NFTsService = retrofit.create(NFTsService::class.java)
+private fun tradingService(retrofit: Retrofit): TradingService = retrofit.create(TradingService::class.java)
+private fun userService(retrofit: Retrofit): UserService = retrofit.create(UserService::class.java)
+private fun newsService(retrofit: Retrofit): NewsService = retrofit.create(NewsService::class.java)

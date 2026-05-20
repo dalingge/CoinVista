@@ -53,20 +53,20 @@ fun relaunchApp(killProcess: Boolean = true) =
     if (killProcess) Process.killProcess(Process.myPid())
   }
 
-//fun doOnAppStatusChanged(onForeground: ((Activity) -> Unit)? = null, onBackground: ((Activity) -> Unit)? = null) =
-//  doOnAppStatusChanged(object : OnAppStatusChangedListener {
-//    override fun onForeground(activity: Activity) {
-//      onForeground?.invoke(activity)
-//    }
-//
-//    override fun onBackground(activity: Activity) {
-//      onBackground?.invoke(activity)
-//    }
-//  })
-//
-//fun doOnAppStatusChanged(listener: OnAppStatusChangedListener) {
-//  AppInitializer.Companion.onAppStatusChangedListener = listener
-//}
+fun doOnAppStatusChanged(onForeground: ((Activity) -> Unit)? = null, onBackground: ((Activity) -> Unit)? = null) =
+  doOnAppStatusChanged(object : OnAppStatusChangedListener {
+    override fun onForeground(activity: Activity) {
+      onForeground?.invoke(activity)
+    }
+
+    override fun onBackground(activity: Activity) {
+      onBackground?.invoke(activity)
+    }
+  })
+
+fun doOnAppStatusChanged(listener: OnAppStatusChangedListener) {
+ // AppInitializer.Companion.onAppStatusChangedListener = listener
+}
 
 interface OnAppStatusChangedListener {
   fun onForeground(activity: Activity)

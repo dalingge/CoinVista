@@ -17,7 +17,6 @@ import kotlin.text.isNotEmpty
  */
 class WebViewModel(
     navKey: CommonRoutes.Web,
-    private val context: Context,
 ) : BaseViewModel() {
 
     /**
@@ -58,7 +57,7 @@ class WebViewModel(
     init {
         // 从路由获取参数
         val url = webViewRoute.url
-        val title = webViewRoute.title?:""
+        val title = webViewRoute.title ?: ""
 
         if (url.isNotEmpty()) {
             _webViewData.value = WebViewData(url = url, title = title)
@@ -102,14 +101,14 @@ class WebViewModel(
     /**
      * 用浏览器打开当前页面
      */
-    fun openInBrowser() {
+    fun openInBrowser(context: Context) {
         val currentUrl = _webViewData.value.url
         if (currentUrl.isNotEmpty()) {
             try {
                 val intent = Intent(Intent.ACTION_VIEW, currentUrl.toUri()).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                context.startActivity(intent)
+                 context.startActivity(intent)
             } catch (e: Exception) {
                 // 处理无法打开浏览器的情况
                 e.printStackTrace()

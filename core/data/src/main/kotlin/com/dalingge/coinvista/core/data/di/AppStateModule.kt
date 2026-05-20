@@ -9,8 +9,10 @@ import com.dalingge.coinvista.core.data.state.AppState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.koin.plugin.module.dsl.factory
+import org.koin.plugin.module.dsl.single
+import org.koin.plugin.module.dsl.create
 
 /**
  *
@@ -19,23 +21,20 @@ import org.koin.dsl.module
  * @Time :2025/10/14  14:43
  */
 
-// 1. 定义限定符
-val ApplicationScope = named("ApplicationScope")
 
-// 2. 应用状态模块
+
+fun dispatcherDefault(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
 val appStateModule = module {
-    single<CoroutineScope>(ApplicationScope) {
-        CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    }
-    single { AppState(get(ApplicationScope)) }
 
-    factory { MarketRepository(get()) }
-    factory { InsightsRepository(get()) }
-    factory { NFTsRepository(get()) }
-    factory { NewsRepository(get()) }
-    factory { TradingRepository(get()) }
+    single { create(::dispatcherDefault) }
 
+    single<AppState>()
 
-    //single { WebSocketRepository(get()) }
+    factory<MarketRepository>()
+    factory<InsightsRepository>()
+    factory<NFTsRepository>()
+    factory<NewsRepository>()
+    factory<TradingRepository>()
 
 }

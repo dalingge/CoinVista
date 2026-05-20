@@ -50,6 +50,10 @@ dependencies {
     implementation(projects.core.common)
     implementation(projects.core.network)
 
+    //图片相关
+    implementation(libs.coil.core)
+    implementation(libs.coil.okhttp)
+
     // 首页模块
     implementation(projects.feature.main)
     //市场交易模块

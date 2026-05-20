@@ -13,8 +13,8 @@ import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
  * @Time :2025/10/14  14:59
  */
 fun EntryProviderScope<NavKey>.commonGraph() {
-    entry<CommonRoutes.Web> { key ->
-        WebRoute(key)
-    }
+//    entry<CommonRoutes.Web> { key ->
+//        WebRoute(key)
+//    }
 }
 
