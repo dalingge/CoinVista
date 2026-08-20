@@ -1,6 +1,8 @@
 <div align="center">
 
-<img src="docs/image/logo.jpg" alt="CoinVista logo" width="120" height="120" />
+<img src="docs/image/ic_logo.png" alt="CoinVista logo" width="120" />
+
+# CoinVista
 
 **Vision powered by data.**
 
