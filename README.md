@@ -1,3 +1,5 @@
+**English** | [简体中文](README_CN.md)
+
 <div align="center">
 
 <img src="docs/image/ic_logo.png" alt="CoinVista logo" width="120" />
