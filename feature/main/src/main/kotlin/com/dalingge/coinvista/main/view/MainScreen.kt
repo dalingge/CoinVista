@@ -1,8 +1,6 @@
 package com.dalingge.coinvista.main.view
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
@@ -30,12 +28,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
 import com.dalingge.coinvista.main.model.TopLevelDestination
 import com.dalingge.coinvista.main.viewmodel.MainViewModel
+import com.yiqun.nav.annotation.Screen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.forEachIndexed
@@ -46,19 +44,13 @@ import kotlin.collections.forEachIndexed
  * @Author :Dalingge
  * @Time :2025/10/14  15:12
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
+@Screen(route = "app/main")
 @Composable
-internal fun MainRoute(
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedContentScope: AnimatedContentScope? = null,
-    viewModel: MainViewModel,
-) {
+internal fun MainRoute(viewModel: MainViewModel = koinViewModel()) {
     // 从ViewModel获取当前导航状态
     val currentPageIndex by viewModel.currentPageIndex.collectAsState()
 
     MainScreen(
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope,
         currentPageIndex = currentPageIndex,
         onPageChanged = viewModel::updatePageIndex,
         onNavigationItemSelected = viewModel::updateDestination,
@@ -70,11 +62,8 @@ internal fun MainRoute(
  * 主界面
  * 包含底部导航栏和四个主要页面
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MainScreen(
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedContentScope: AnimatedContentScope? = null,
     currentPageIndex: Int = 0,
     onPageChanged: (Int) -> Unit = {},
     onNavigationItemSelected: (Int) -> Unit = {},
@@ -136,20 +125,15 @@ internal fun MainScreen(
     ) { paddingValues ->
         MainScreenContentView(
             pageState = pageState,
-            paddingValues = paddingValues,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = animatedContentScope
+            paddingValues = paddingValues
         )
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun MainScreenContentView(
     pageState: PagerState,
-    paddingValues: PaddingValues,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedContentScope: AnimatedContentScope? = null,
+    paddingValues: PaddingValues
 ) {
     HorizontalPager(
         state = pageState,
@@ -157,10 +141,7 @@ private fun MainScreenContentView(
         userScrollEnabled = false
     ) { page: Int ->
         when (page) {
-            0 -> MarketRoute(
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
-            )
+            0 -> MarketRoute()
             1 -> NewRoute()
             2 -> PortfolioRoute()
             3 -> MineRoute()
@@ -168,8 +149,6 @@ private fun MainScreenContentView(
     }
 }
 
-
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {

@@ -4,10 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.dalingge.coinvista.core.common.base.state.BaseNetWorkUiState
 import com.dalingge.coinvista.core.common.result.ResultHandler
 import com.dalingge.coinvista.core.common.result.asResult
-import com.dalingge.coinvista.core.navigation.NavigationResultKey
-import com.dalingge.coinvista.core.navigation.RefreshResult
-import com.dalingge.coinvista.core.navigation.RefreshResultKey
-import com.dalingge.coinvista.core.navigation.resultEvents
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -173,16 +169,16 @@ abstract class BaseNetWorkViewModel<T>: BaseViewModel() {
      *
      * @param key 刷新结果的类型安全 Key，默认使用全局的 [RefreshResultKey]
      */
-    fun observeRefreshState(
-        key: NavigationResultKey<RefreshResult> = RefreshResultKey,
-    ) {
-        if (refreshObserveJob != null) return
-        refreshObserveJob = viewModelScope.launch {
-            resultEvents(key).collect { refreshResult ->
-                if (refreshResult.refresh == true) {
-                    executeRequest()
-                }
-            }
-        }
-    }
+//    fun observeRefreshState(
+//        key: NavigationResultKey<RefreshResult> = RefreshResultKey,
+//    ) {
+//        if (refreshObserveJob != null) return
+//        refreshObserveJob = viewModelScope.launch {
+//            resultEvents(key).collect { refreshResult ->
+//                if (refreshResult.refresh == true) {
+//                    executeRequest()
+//                }
+//            }
+//        }
+//    }
 }

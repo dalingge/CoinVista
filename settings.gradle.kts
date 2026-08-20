@@ -29,6 +29,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://jitpack.io")
+        maven {
+            url = uri("http://gitlab.yqkj.group/api/v4/projects/310/packages/maven")
+            isAllowInsecureProtocol = true
+        }
     }
 }
 
@@ -48,7 +52,7 @@ include(":core:model")
 include(":core:network")
 include(":core:ui")
 include(":core:util")
-include(":core:navigation")
+
 // feature 功能模块
 include(":feature:main")
 include(":feature:auth")

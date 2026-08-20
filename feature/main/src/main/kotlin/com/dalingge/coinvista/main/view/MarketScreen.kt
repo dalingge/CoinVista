@@ -106,7 +106,6 @@ import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun MarketRoute(
     sharedTransitionScope: SharedTransitionScope? = null,
@@ -171,7 +170,7 @@ internal fun MarketRoute(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MarketScreen(
     marketsCap: MarketsCap = MarketsCap(),
@@ -244,7 +243,7 @@ internal fun MarketScreen(
  * @param toSearch 跳转到商品搜索页
  * @param toGitHubPage 跳转到GitHub页
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeTopAppBar(
     sharedTransitionScope: SharedTransitionScope? = null,

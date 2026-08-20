@@ -1,8 +1,6 @@
 package com.dalingge.coinvista.main.view
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -46,20 +44,22 @@ import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.viewmodel.SplashViewModel
+import com.yiqun.nav.annotation.Screen
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * 启动页路由
  *
- * @param sharedTransitionScope 共享转换作用域
- * @param animatedContentScope 动画内容作用域
  * @param viewModel 启动页 ViewModel
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
+
+@Screen(route = "app/splash")
 @Composable
 internal fun SplashRoute(
-    viewModel : SplashViewModel
+    viewModel: SplashViewModel = koinViewModel(),
 ) {
     SplashScreen(
         toHome = viewModel::toMainPage
@@ -69,36 +69,21 @@ internal fun SplashRoute(
 /**
  * 启动页界面
  *
- * @param sharedTransitionScope 共享转换作用域
- * @param animatedContentScope 动画内容作用域
  * @param toHome 导航到主页的回调
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SplashScreen(
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedContentScope: AnimatedContentScope? = null,
-    toHome: () -> Unit = {},
-) {
-    SplashContentView(
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope,
-        toHome = toHome
-    )
+internal fun SplashScreen(toHome: () -> Unit = {}) {
+    SplashContentView(toHome = toHome)
 }
 
 /**
  * 启动页内容视图
  *
- * @param sharedTransitionScope 共享转换作用域
- * @param animatedContentScope 动画内容作用域
  * @param toHome 导航到主页的回调
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun SplashContentView(
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedContentScope: AnimatedContentScope? = null,
     toHome: () -> Unit = {},
 ) {
     // --- 1. 动画状态管理 (保持不变) ---
@@ -117,14 +102,14 @@ private fun SplashContentView(
     )
 
     // 阴影缩放：Logo 越高，阴影越小、越淡
-    val shadowScale = 1.0f - (Math.abs(dy) / 30f) * 0.4f
-    val shadowAlpha = 0.3f - (Math.abs(dy) / 30f) * 0.2f
+    val shadowScale = 1.0f - (abs(dy) / 30f) * 0.4f
+    val shadowAlpha = 0.3f - (abs(dy) / 30f) * 0.2f
 
     // 文字打印机进度 (0f -> 1f)
     val textAnim = remember { Animatable(0f) }
 
     LaunchedEffect(Unit) {
-        delay(500)
+        delay(500.milliseconds)
         textAnim.animateTo(
             targetValue = 1f,
             animationSpec = tween(durationMillis = 1000, easing = FastOutLinearInEasing)
@@ -209,14 +194,10 @@ fun TypewriterText(text: String, progress: Float) {
 /**
  * 启动页界面浅色主题预览
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showBackground = true)
 @Composable
 fun SplashScreenPreview() {
     AppTheme {
-        SplashScreen(
-            sharedTransitionScope = null,
-            animatedContentScope = null
-        )
+        SplashScreen()
     }
 }

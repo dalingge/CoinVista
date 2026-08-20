@@ -64,7 +64,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.util.Locale
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun NewRoute(viewModel: NewViewModel = koinViewModel()) {
 
@@ -111,7 +110,7 @@ internal fun NewRoute(viewModel: NewViewModel = koinViewModel()) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun NewScreen(
     selectedTabIndex: Int = 0,

@@ -1,8 +1,9 @@
 package com.dalingge.coinvista.main.viewmodel
 
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
-import com.dalingge.coinvista.core.navigation.navigateAndCloseCurrent
-import com.dalingge.coinvista.core.navigation.routes.MainRoutes
+import com.dalingge.coinvista.main.view.MainRouteDestination
+import com.dalingge.coinvista.main.view.SplashRouteDestination
+import com.yiqun.nav.runtime.NavCenter
 
 /**
  *
@@ -46,9 +47,13 @@ class SplashViewModel(
      * 跳转到主页并关闭当前启动页
      */
     fun toMainPage() {
-        navigateAndCloseCurrent(
-            route = MainRoutes.Main,
-            currentRoute = MainRoutes.Splash
-        )
+
+        NavCenter.navigate(MainRouteDestination()){
+            clearTask = true
+        }
+//        navigateAndCloseCurrent(
+//            route = MainRoutes.Main,
+//            currentRoute = MainRoutes.Splash
+//        )
     }
 }

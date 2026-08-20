@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 class MainViewModel: BaseViewModel() {
 
 
-
     // 当前页面索引
     private val _currentPageIndex = MutableStateFlow(0)
     val currentPageIndex: StateFlow<Int> = _currentPageIndex.asStateFlow()

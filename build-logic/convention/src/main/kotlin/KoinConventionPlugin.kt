@@ -22,12 +22,11 @@ class KoinConventionPlugin : Plugin<Project> {
                 apply(plugin = "io.insert-koin.compiler.plugin")
 
                 dependencies {
-                    //koin注入工具
+                    // Koin注入工具
                     "implementation"(platform( libs.findLibrary("koin.bom").get()))
                     "implementation"(libs.findLibrary("koin.annotations").get())
                     "implementation"(libs.findLibrary("koin.android").get())
                     "implementation"(libs.findLibrary("koin.compose").get())
-                    "implementation"(libs.findLibrary("koin.compose.navigation3").get())
                 }
             }
         }

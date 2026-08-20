@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.core.net.toUri
 import com.dalingge.coinvista.common.model.WebViewData
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
-import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
+import org.koin.core.annotation.InjectedParam
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,13 +16,13 @@ import kotlin.text.isNotEmpty
  * 网页 ViewModel
  */
 class WebViewModel(
-    navKey: CommonRoutes.Web,
+    @InjectedParam url: String,
 ) : BaseViewModel() {
 
     /**
      * 从路由获取 WebView 路由参数
      */
-    val webViewRoute = navKey
+  //  val webViewRoute = navKey
 
     /**
      * WebView 数据
@@ -56,12 +56,12 @@ class WebViewModel(
 
     init {
         // 从路由获取参数
-        val url = webViewRoute.url
-        val title = webViewRoute.title ?: ""
-
+//        val url = webViewRoute.url
+//        val title = webViewRoute.title ?: ""
+//
         if (url.isNotEmpty()) {
-            _webViewData.value = WebViewData(url = url, title = title)
-            _pageTitle.value = title
+            _webViewData.value = WebViewData(url = url)
+            _pageTitle.value = ""
         }
     }
 

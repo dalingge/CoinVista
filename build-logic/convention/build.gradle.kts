@@ -58,9 +58,9 @@ gradlePlugin {
             id = "com.dalingge.coinvista.android.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
-        // 注册Hilt依赖注入插件
+        // 注册Koin依赖注入插件
         register("androidKoin") {
-            id = "com.dalingge.coinvista.android.hilt"
+            id = "com.dalingge.coinvista.android.koin"
             implementationClass = "KoinConventionPlugin"
         }
         // 注册Android Firebase模块插件

@@ -34,9 +34,12 @@ import com.dalingge.coinvista.common.viewmodel.WebViewModel
 import com.dalingge.coinvista.core.design.component.FullScreenBox
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.CommonIcon
-import com.dalingge.coinvista.core.navigation.NavigationService.navigateBack
 import com.dalingge.coinvista.core.ui.componet.scaffold.AppScaffold
 import com.dalingge.coinvista.feature.common.R
+import com.yiqun.nav.annotation.Screen
+import com.yiqun.nav.runtime.NavCenter
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import kotlin.apply
 import kotlin.let
 import kotlin.text.startsWith
@@ -46,9 +49,11 @@ import kotlin.text.startsWith
  *
  * @param viewModel 网页 ViewModel
  */
+@Screen(route = "common/webview")
 @Composable
 internal fun WebRoute(
-    viewModel: WebViewModel,
+    url: String,
+    viewModel: WebViewModel = koinViewModel(parameters = { parametersOf(url) }),
 ) {
     // 收集WebView数据
     val webViewData by viewModel.webViewData.collectAsState()
@@ -85,7 +90,6 @@ internal fun WebRoute(
  * @param currentProgress 当前加载进度
  * @param shouldRefresh 是否应该刷新页面
  * @param showDropdownMenu 是否显示下拉菜单
- * @param onBackClick 返回按钮回调
  * @param onTitleChange 标题变化回调
  * @param onProgressChange 进度变化回调
  * @param onRefreshClick 刷新按钮回调
@@ -94,7 +98,7 @@ internal fun WebRoute(
  * @param onShowDropdownMenu 显示下拉菜单回调
  * @param onDismissDropdownMenu 隐藏下拉菜单回调
  */
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 internal fun WebScreen(
     webViewData: WebViewData = WebViewData(),
@@ -112,7 +116,7 @@ internal fun WebScreen(
 ) {
     AppScaffold(
         titleText = pageTitle,
-        onBackClick = { navigateBack() },
+        onBackClick = { NavCenter.pop() },
         topBarActions = {
             WebScreenTopBarActions(
                 showDropdownMenu = showDropdownMenu,
@@ -220,20 +224,20 @@ private fun WebViewContent(
                 factory = { context ->
                     WebView(context).apply {
                         webView = this
+                        layoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+
                         settings.apply {
-                            // ...
-                            layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                            )
 
                             // 安全设置
                             javaScriptEnabled = true
                             loadsImagesAutomatically = true
                             useWideViewPort = true
                             loadWithOverviewMode = true
-                            setSupportZoom(true)
-                            builtInZoomControls = true
+                            setSupportZoom(false)
+                            builtInZoomControls = false
                             displayZoomControls = false
                             setSupportMultipleWindows(false)
                             javaScriptCanOpenWindowsAutomatically = true

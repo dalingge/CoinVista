@@ -21,10 +21,10 @@ targetSdk = "36"
 agp = "9.1.0"
 # Kotlin 编译器: https://kotlinlang.org/docs/releases.html
 # 注意: 当前 kotlin 版本为 2.2.10 注意需要和 hilt 版本对应
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 # KSP (Kotlin Symbol Processing): https://github.com/google/ksp
 # 说明: Kotlin 注解处理器，用于代码生成
-ksp-kitlin = "2.3.6"
+ksp-kitlin = "2.3.9"
 # Android 核心库版本
 # AndroidX Core KTX: https://developer.android.com/jetpack/androidx/releases/core
 coreKtx = "1.18.0"
@@ -45,7 +45,7 @@ xxpermissions = "28.2"
 # scarlet websocket 客户端: https://github.com/Tinder/Scarlet/
 scarlet = "0.1.12"
 # OkHttp HTTP 客户端: https://square.github.io/okhttp/
-okhttp = "5.3.2"
+okhttp = "5.4.0"
 # Retrofit HTTP 客户端: https://square.github.io/retrofit/
 retrofit = "3.0.0"
 # Chucker 网络调试工具: https://github.com/ChuckerTeam/chucker
@@ -54,12 +54,12 @@ chucker = "4.3.1"
 # Jetpack Compose 相关版本
 # Compose BOM: https://developer.android.com/jetpack/compose/bom
 # 说明: BOM 统一管理所有 Compose 库版本，确保兼容性
-composeBom = "2026.05.00"
+composeBom = "2026.05.01"
 # 导航相关版本
 # Navigation Compose: https://developer.android.com/jetpack/androidx/releases/navigation
 navigation = "2.9.8"
 # Navigation3 https://developer.android.com/guide/navigation/navigation-3
-navigation3 = "1.1.1"
+navigation3 = "1.1.2"
 # 序列化相关版本
 # Kotlinx Serialization JSON: https://github.com/Kotlin/kotlinx.serialization
 kotlinxSerializationJson = "1.11.0"
@@ -74,17 +74,18 @@ startup = "1.2.0"
 lifecycle = "2.10.0"
 # 图片加载相关版本
 # Coil  图片加载库: https://coil-kt.github.io/coil/
-coil = "3.4.0"
+coil = "3.5.0"
 moshi = "1.15.2"
 xlog = "1.11.1"
-koinBom = "4.2.1"
-koinPlugin = "0.6.2"
+koinBom = "4.2.2"
+koinPlugin = "1.0.1"
 firebaseBom = "34.13.0"
 
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 
+nav3Router = "1.0.0"
 
 [libraries]
 # Android 核心库
@@ -118,6 +119,10 @@ androidx-navigation-fragment = { group = "androidx.navigation", name = "navigati
 androidx-navigation3-runtime = { group = "androidx.navigation3", name = "navigation3-runtime", version.ref = "navigation3" }
 androidx-navigation3-ui = { group = "androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3" }
 
+nav3-router-annotation = { group = "com.yiqun.nav", name = "nav-annotation", version.ref = "nav3Router" }
+nav3-router-runtime = { group = "com.yiqun.nav", name = "nav-runtime", version.ref = "nav3Router" }
+nav3-router-compiler = { group = "com.yiqun.nav", name = "nav-compiler", version.ref = "nav3Router" }
+
 # 序列化相关库
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationJson" }
@@ -150,6 +155,7 @@ coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil"
 coil-svg = { group = "io.coil-kt.coil3", name = "coil-svg", version.ref = "coil" }
 coil-video = { group = "io.coil-kt.coil3", name = "coil-video", version.ref = "coil" }
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+
 
 # 依赖注入相关库
 koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koinBom" }
@@ -208,7 +214,7 @@ coinvista-android-library = { id = "com.dalingge.coinvista.android.library" }
 coinvista-android-library-compose = { id = "com.dalingge.coinvista.android.library.compose" }
 coinvista-android-feature = { id = "com.dalingge.coinvista.android.feature" }
 coinvista-android-firebase = { id = "com.dalingge.coinvista.android.firebase" }
-coinvista-android-hilt = { id = "com.dalingge.coinvista.android.hilt" }
+coinvista-android-koin = { id = "com.dalingge.coinvista.android.koin" }
 
 
 # 版本更新说明

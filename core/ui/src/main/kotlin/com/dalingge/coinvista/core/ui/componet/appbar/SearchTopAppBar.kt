@@ -55,6 +55,7 @@ import com.dalingge.coinvista.core.ui.componet.text.AppText
 import com.dalingge.coinvista.core.ui.componet.text.TextType
 import kotlinx.coroutines.delay
 import org.koin.ext.clearQuotes
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  *
@@ -84,7 +85,7 @@ fun SearchTopAppBar(
     val softKeyboard = LocalSoftwareKeyboardController.current //软键盘
 
     LaunchedEffect(Unit) {
-        delay(100) //延迟操作(关键点)
+        delay(100.milliseconds) //延迟操作(关键点)
         focusRequester.requestFocus()
         softKeyboard?.show()
     }

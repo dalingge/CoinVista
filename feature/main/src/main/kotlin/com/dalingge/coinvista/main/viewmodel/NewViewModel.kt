@@ -9,10 +9,9 @@ import com.dalingge.coinvista.core.common.result.ResultHandler
 import com.dalingge.coinvista.core.common.result.asResult
 import com.dalingge.coinvista.core.data.repository.NewsRepository
 import com.dalingge.coinvista.core.model.entity.NewsItem
-import com.dalingge.coinvista.core.navigation.navigate
-import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
 import com.dalingge.coinvista.main.model.NewsState
 import com.dalingge.coinvista.main.model.NewsTabState
+import com.yiqun.nav.runtime.NavCenter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -198,6 +197,6 @@ class NewViewModel(
      * 跳转到新闻详情页面
      */
     fun toNewsPage(url: String) {
-       navigate(CommonRoutes.Web(url = url))
+        NavCenter.navigate(url)
     }
 }

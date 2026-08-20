@@ -1,7 +1,9 @@
 import com.dalingge.coinvista.plugin.libs
+import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
+
 
 /**
  * Android Feature模块构建插件
@@ -23,14 +25,18 @@ class AndroidFeatureConventionPlugin : Plugin<Project>{
         with(target) {
             pluginManager.apply {
                 apply("com.dalingge.coinvista.android.library.compose") // 应用Android库和Compose配置
-                apply("com.dalingge.coinvista.android.hilt")
+                apply("com.dalingge.coinvista.android.koin")
+                apply("com.google.devtools.ksp")
+            }
+
+            extensions.configure<KspExtension>("ksp") {
+                arg("NAV_MODULE_NAME", name )
             }
 
             // 配置Feature模块依赖
             dependencies {
 
                 // 项目内基础模块依赖
-                "implementation"(project(":core:navigation")) // 导航模块
                 "implementation"(project(":core:design")) // 设计系统
                 "implementation"(project(":core:data")) // 数据
                 "implementation"(project(":core:common")) // 公共
@@ -38,12 +44,9 @@ class AndroidFeatureConventionPlugin : Plugin<Project>{
                 "implementation"(project(":core:ui")) // 模型
                 "implementation"(project(":core:util")) // 工具类
 
-                "implementation"(libs.findLibrary("androidx.navigation3.runtime").get())
-                "implementation"(libs.findLibrary("androidx.navigation3.ui").get())
-                "implementation"(libs.findLibrary("androidx.lifecycle.navigation3").get())
+                "implementation"(libs.findLibrary("nav3.router.runtime").get())
+                "ksp"(libs.findLibrary("nav3.router.compiler").get())
 
-                // Jetpack Navigation Compose导航框架
-               // "implementation"(libs.findLibrary("androidx.navigation.compose").get())
             }
         }
     }

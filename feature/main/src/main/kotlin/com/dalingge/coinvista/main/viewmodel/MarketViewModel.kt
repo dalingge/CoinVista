@@ -14,13 +14,11 @@ import com.dalingge.coinvista.core.model.entity.FearGreed
 import com.dalingge.coinvista.core.model.entity.MarketsCap
 import com.dalingge.coinvista.core.model.response.NetworkPageData
 import com.dalingge.coinvista.core.model.response.NetworkPageMeta
-import com.dalingge.coinvista.core.navigation.navigate
-import com.dalingge.coinvista.core.navigation.routes.CommonRoutes
-import com.dalingge.coinvista.core.navigation.routes.MarketRoutes
 import com.dalingge.coinvista.main.model.MarketTab
 import com.dalingge.coinvista.main.model.MarketTabUiState
 import com.dalingge.coinvista.main.model.RankType
 import com.dalingge.coinvista.main.model.TabViewState
+import com.yiqun.nav.runtime.NavCenter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -64,10 +62,8 @@ class MarketViewModel(
     private val _tabStates = tabs.associate { it.index to MutableStateFlow(TabViewState()) }
 
     // 对外暴露获取特定 Tab 状态的方法
-    fun getTabState(index: Int): StateFlow<TabViewState> {
-        return _tabStates[index]?.asStateFlow()
-            ?: MutableStateFlow(TabViewState()) // Fallback
-    }
+    fun getTabState(index: Int): StateFlow<TabViewState> = _tabStates[index]?.asStateFlow() ?: MutableStateFlow(TabViewState()) // Fallback
+
 
     init {
         requestGreedState()
@@ -348,16 +344,13 @@ class MarketViewModel(
      * 跳转到搜索页面
      */
     fun toSearch() {
-        navigate(MarketRoutes.Search)
+        NavCenter.navigate("market/search")
     }
 
     /**
      * 跳转到 GitHub 页面
      */
     fun toGitHubPage() {
-        val url = "https://github.com/dalingge/CoinVista"
-        val title = "GitHub"
-        navigate(CommonRoutes.Web(url = url, title = title))
+        NavCenter.navigate("https://github.com/dalingge/CoinVista")
     }
-
 }

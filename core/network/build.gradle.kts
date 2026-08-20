@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.coinvista.android.library.compose)
+    alias(libs.plugins.coinvista.android.library)
     alias(libs.plugins.kotlin.serialization)
 }
 

@@ -44,16 +44,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.navigation)
-    implementation(projects.core.design)
-    implementation(projects.core.data)
-    implementation(projects.core.common)
-    implementation(projects.core.network)
-
-    //图片相关
-    implementation(libs.coil.core)
-    implementation(libs.coil.okhttp)
-
     // 首页模块
     implementation(projects.feature.main)
     //市场交易模块
@@ -63,8 +53,17 @@ dependencies {
     // 通用模块
     implementation(projects.feature.common)
 
-    implementation(libs.androidx.navigation3.runtime)
-    implementation(libs.androidx.navigation3.ui)
+    implementation(projects.core.design)
+    implementation(projects.core.data)
+    implementation(projects.core.common)
+    implementation(projects.core.network)
+
+    //图片相关
+    implementation(libs.coil.core)
+    implementation(libs.coil.okhttp)
+
+    implementation(libs.nav3.router.runtime)
+
     implementation(libs.androidx.lifecycle.navigation3)
 
     // 测试依赖

@@ -22,12 +22,3 @@ data class NewsTabState(
     val onLoadMore: () -> Unit = {},
     val shouldTriggerLoadMore: (lastIndex: Int, totalCount: Int) -> Boolean = { _, _ -> false },
 )
-
-//  定义每个 Tab 的完整状态包裹器 (包含分页、刷新状态等)
-//data class TabViewState(
-//    val uiState: BaseNetWorkListUiState = BaseNetWorkListUiState.Loading,
-//    val page: Int = 1,
-//    val isRefreshing: Boolean = false,
-//    val loadMoreState: LoadMoreState = LoadMoreState.PullToLoad,
-//    val hasLoaded: Boolean = false // 标记是否初始化过
-//)

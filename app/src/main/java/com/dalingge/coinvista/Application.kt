@@ -2,6 +2,7 @@ package com.dalingge.coinvista
 
 import android.app.Application
 import android.content.res.Configuration
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
@@ -14,16 +15,20 @@ import coil3.util.DebugLogger
 import com.dalingge.coinvista.common.dl.commonModule
 import com.dalingge.coinvista.core.data.di.appStateModule
 import com.dalingge.coinvista.core.network.dl.networkModule
-import com.dalingge.coinvista.dl.appModule
 import com.dalingge.coinvista.main.dl.mainModule
 import com.dalingge.coinvista.market.dl.marketModule
-import okhttp3.Cache
+import com.yiqun.nav.generated.initCommon
+import com.yiqun.nav.generated.initMain
+import com.yiqun.nav.generated.initMarket
+import com.yiqun.nav.runtime.DefaultSlideTransition
+import com.yiqun.nav.runtime.NavCenter
+import com.yiqun.nav.runtime.handler.BrowserHandler
+import com.yiqun.nav.runtime.handler.WebViewHandler
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.logger.Level
-import java.io.File
 import java.net.Proxy
 
 /**
@@ -35,14 +40,25 @@ class Application : Application(), SingletonImageLoader.Factory {
     override fun onCreate() {
         super.onCreate()
 
+        NavCenter
+            .setFallbackRoute("app/not_found")
+            .addRouteHandler(WebViewHandler("common/webview", setOf("github.com")))
+            .addRouteHandler(BrowserHandler(this))
+            .setDefaultTransition(DefaultSlideTransition()) // 注册全局动画
+          //  .addGlobalInterceptor(AppLoginInterceptor())   // 注册全局拦截器
+            .addEntryDecorator { rememberViewModelStoreNavEntryDecorator() }
+           // .addEntryDecorator(AnalyticsEntryDecorator())//传入自定义的曝光埋点与 onPop 清理装饰器
+            .initMain()
+            .initMarket()
+            .initCommon()
+
         val app = this
         val debugMode = BuildConfig.DEBUG
         startKoin {
             androidLogger(if (debugMode) Level.DEBUG else Level.NONE)
             androidContext(app)
-            modules(appModule, networkModule, appStateModule, mainModule, marketModule, commonModule)
+            modules( networkModule, appStateModule, mainModule, marketModule, commonModule)
         }
-
     }
 
     /**
@@ -67,7 +83,6 @@ class Application : Application(), SingletonImageLoader.Factory {
 
         val okhttp = OkHttpClient.Builder()
             .proxy(if (BuildConfig.DEBUG) null else Proxy.NO_PROXY)
-            .cache(Cache(File(context.cacheDir, "okhttp-coil"), 500 * 1024 * 1024))
             .build()
 
         return ImageLoader.Builder(context)

@@ -17,14 +17,12 @@ import org.koin.androidx.compose.koinViewModel
  * @Time :2025/11/24  18:26
  */
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 internal fun PortfolioRoute(viewModel: PortfolioViewModel = koinViewModel()){
-
     PortfolioScreen()
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PortfolioScreen() {
 
@@ -34,7 +32,6 @@ internal fun PortfolioScreen() {
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Preview(showBackground = true)
 @Composable
 fun PortfolioScreenPreview() {
