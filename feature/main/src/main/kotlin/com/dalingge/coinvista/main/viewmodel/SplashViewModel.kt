@@ -2,8 +2,7 @@ package com.dalingge.coinvista.main.viewmodel
 
 import com.dalingge.coinvista.core.common.base.viewmodel.BaseViewModel
 import com.dalingge.coinvista.main.view.MainRouteDestination
-import com.dalingge.coinvista.main.view.SplashRouteDestination
-import com.yiqun.nav.runtime.NavCenter
+import com.dalingge.nav.runtime.NavCenter
 
 /**
  *
@@ -11,8 +10,7 @@ import com.yiqun.nav.runtime.NavCenter
  * @Author :Dalingge
  * @Time :2025/10/14  14:22
  */
-class SplashViewModel(
-) : BaseViewModel() {
+class SplashViewModel : BaseViewModel() {
 
     /**
      * 检查是否已显示过引导页，并根据结果跳转到相应页面

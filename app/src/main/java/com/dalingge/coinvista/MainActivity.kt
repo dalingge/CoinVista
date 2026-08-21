@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.main.view.SplashRouteDestination
-import com.yiqun.nav.runtime.NavCenter
+import com.dalingge.nav.runtime.NavCenter
 
 
 class MainActivity : ComponentActivity() {

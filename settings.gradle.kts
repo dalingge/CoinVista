@@ -29,10 +29,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://jitpack.io")
-        maven {
-            url = uri("http://gitlab.yqkj.group/api/v4/projects/310/packages/maven")
-            isAllowInsecureProtocol = true
-        }
     }
 }
 

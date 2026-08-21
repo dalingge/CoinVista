@@ -1,6 +1,5 @@
 package com.dalingge.coinvista.main.view
 
-import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
@@ -33,7 +32,7 @@ import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.core.design.theme.robotoSansFamily
 import com.dalingge.coinvista.main.model.TopLevelDestination
 import com.dalingge.coinvista.main.viewmodel.MainViewModel
-import com.yiqun.nav.annotation.Screen
+import com.dalingge.nav.annotation.Screen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.forEachIndexed

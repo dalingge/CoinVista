@@ -11,7 +11,7 @@ import com.dalingge.coinvista.core.data.repository.NewsRepository
 import com.dalingge.coinvista.core.model.entity.NewsItem
 import com.dalingge.coinvista.main.model.NewsState
 import com.dalingge.coinvista.main.model.NewsTabState
-import com.yiqun.nav.runtime.NavCenter
+import com.dalingge.nav.runtime.NavCenter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

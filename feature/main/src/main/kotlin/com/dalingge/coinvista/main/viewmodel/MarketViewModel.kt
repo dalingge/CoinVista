@@ -18,7 +18,7 @@ import com.dalingge.coinvista.main.model.MarketTab
 import com.dalingge.coinvista.main.model.MarketTabUiState
 import com.dalingge.coinvista.main.model.RankType
 import com.dalingge.coinvista.main.model.TabViewState
-import com.yiqun.nav.runtime.NavCenter
+import com.dalingge.nav.runtime.NavCenter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

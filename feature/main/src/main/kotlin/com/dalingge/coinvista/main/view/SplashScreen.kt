@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.dalingge.coinvista.core.design.theme.AppTheme
 import com.dalingge.coinvista.feature.main.R
 import com.dalingge.coinvista.main.viewmodel.SplashViewModel
-import com.yiqun.nav.annotation.Screen
+import com.dalingge.nav.annotation.Screen
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.abs

@@ -13,8 +13,8 @@ import com.dalingge.coinvista.core.ui.componet.appbar.SearchTopAppBar
 import com.dalingge.coinvista.core.ui.componet.network.BaseNetWorkView
 import com.dalingge.coinvista.core.ui.componet.scaffold.AppScaffold
 import com.dalingge.coinvista.market.viewmodel.SearchViewModel
-import com.yiqun.nav.annotation.Screen
-import com.yiqun.nav.runtime.NavCenter
+import com.dalingge.nav.annotation.Screen
+import com.dalingge.nav.runtime.NavCenter
 import org.koin.androidx.compose.koinViewModel
 
 /**

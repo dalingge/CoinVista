@@ -15,14 +15,12 @@ import kotlin.text.isNotEmpty
 /**
  * 网页 ViewModel
  */
-class WebViewModel(
-    @InjectedParam url: String,
-) : BaseViewModel() {
+class WebViewModel(@InjectedParam url: String) : BaseViewModel() {
 
     /**
      * 从路由获取 WebView 路由参数
      */
-  //  val webViewRoute = navKey
+    //  val webViewRoute = navKey
 
     /**
      * WebView 数据
@@ -108,7 +106,7 @@ class WebViewModel(
                 val intent = Intent(Intent.ACTION_VIEW, currentUrl.toUri()).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                 context.startActivity(intent)
+                context.startActivity(intent)
             } catch (e: Exception) {
                 // 处理无法打开浏览器的情况
                 e.printStackTrace()
